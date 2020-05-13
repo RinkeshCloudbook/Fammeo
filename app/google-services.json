@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "961468433086",
+    "firebase_url": "https://fammeo.firebaseio.com",
+    "project_id": "fammeo",
+    "storage_bucket": "fammeo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961468433086:android:59db7f97a68d6259c994ef",
+        "android_client_info": {
+          "package_name": "com.fammeo.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961468433086-equqhq8g8a9onqso3ocrmqsfnc1kp3lm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6DgMOVrTAyKnQrKgqTr0HP8D6lbSgF2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961468433086-equqhq8g8a9onqso3ocrmqsfnc1kp3lm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

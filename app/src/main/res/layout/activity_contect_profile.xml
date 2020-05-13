@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@android:color/white"
+    android:orientation="vertical">
+    <!--tools:context=".activity.ContectProfile"-->
+    <LinearLayout
+        android:id="@+id/lin_dir"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/main_color_500"
+        app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
+        app:theme="@style/AppTheme.Title">
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="@dimen/dimen_40dp"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:src="@drawable/ic_back_arrow" />
+
+        <TextView
+            android:id="@+id/txt_selectDirName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:text="Profile"
+            android:paddingLeft="@dimen/dimen_12dp"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/dimen_18dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/fragment_frame"/>
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/nested_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:scrollbars="none"
+    android:scrollingCache="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/txt_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+            android:textColor="@color/grey_90" />
+
+        <TextView
+            android:id="@+id/txt_uniqueId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:textColor="@color/grey_60" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:visibility="gone"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_margin="@dimen/spacing_middle"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@color/light_green_600"
+                app:srcCompat="@drawable/ic_chat" />
+            <com.fammeo.app.view.siv.CircularImageView
+                android:visibility="gone"
+                android:id="@+id/image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:civ_border="true"
+                app:civ_shadow="true"
+                app:civ_shadow_radius="0"
+                android:background="@drawable/bg_square"
+                app:civ_border_color="@color/purple_500"
+                app:civ_border_width="2dp" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fillAfter="false"
+                    android:fillEnabled="false">
+
+                    <ImageView
+                        android:id="@+id/company_image"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"/>
+
+                    <TextView
+                        android:id="@+id/company_image_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/icon_text" />
+                    <ProgressBar
+                        android:id="@+id/pr_imageLoder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:alpha="0.4"
+                    app:srcCompat="@android:drawable/ic_menu_camera"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+            <ImageButton
+                android:visibility="gone"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_margin="@dimen/spacing_middle"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@color/light_green_600"
+                app:srcCompat="@drawable/ic_call" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_10" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:layout_gravity="center">
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/btn_comapnylist"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="companies"
+                    android:layout_centerInParent="true"
+                    />
+                <LinearLayout
+                    android:id="@+id/lin_companyList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_5dp"
+                    android:background="@drawable/button_shape_profile">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_35dp"
+                        android:text="companies"
+                        android:paddingLeft="@dimen/dimen_5dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_35dp"
+                        android:text=" ("
+                        android:layout_centerInParent="true"
+                        android:gravity="center"/>
+                    <TextView
+                        android:id="@+id/txt_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_35dp"
+                        android:text="0"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_35dp"
+                        android:text=")"
+                        android:paddingRight="@dimen/dimen_5dp"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_20dp"
+            android:layout_marginRight="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:padding="@dimen/dimen_5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/grey_60"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/grey_60" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_20dp"
+            android:layout_marginRight="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:padding="@dimen/dimen_5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/grey_60"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/grey_60" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_20dp"
+            android:layout_marginRight="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/spacing_large">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/grey_60"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/grey_60" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_10dp" />
+        <Button
+            android:visibility="gone"
+            android:id="@+id/btn_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Companies"/>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+    <ProgressBar
+        android:id="@+id/pbHeaderProgress"
+        android:layout_width="@dimen/dimen_50dp"
+        android:layout_height="@dimen/dimen_50dp"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        style="?android:attr/progressBarStyle" >
+    </ProgressBar>
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/bottom_sheet_behavior" />
+
+
+</LinearLayout>

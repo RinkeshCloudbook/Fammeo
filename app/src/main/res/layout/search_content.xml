@@ -1,0 +1,160 @@
+<RelativeLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:mContext=".activity.MainActivity"
+    tools:showIn="@layout/activity_search_user">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/lin_dir"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/main_color_500"
+            app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
+            app:theme="@style/AppTheme.Title">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dimen_40dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:src="@drawable/ic_back_arrow" />
+
+            <TextView
+                android:id="@+id/txt_selectDirName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:text="User Search"
+                android:paddingLeft="@dimen/dimen_12dp"
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/dimen_18dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_edit_frame"
+        android:paddingTop="3dp"
+        android:background="@drawable/gradient"
+        tools:context=".activity.MainActivity">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txt_fName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="fullName"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/dimen_16dp"
+                    android:padding="@dimen/dimen_7dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="@dimen/default_vertical_padding"
+                                android:paddingBottom="@dimen/default_vertical_padding"
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                xmlns:tools="http://schemas.android.com/tools">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <ImageButton
+                                        android:layout_width="?attr/actionBarSize"
+                                        android:layout_height="?attr/actionBarSize"
+                                        android:background="@android:color/transparent"
+                                        android:tint="@color/grey_60"
+                                         />
+
+                                    <EditText
+                                        android:id="@+id/edt_name"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:hint="Search user...."
+                                        android:imeOptions="actionSearch"
+                                        android:maxLines="1"
+                                        android:singleLine="true">
+
+                                        <requestFocus />
+
+                                    </EditText>
+
+                                </LinearLayout>
+
+
+                            </androidx.cardview.widget.CardView>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                    <Button
+                        android:id="@+id/btn_next"
+                        android:layout_width="100dp"
+                        android:layout_height="?attr/actionBarSize"
+                        android:text="Next"
+                        android:padding="@dimen/dimen_7dp"
+                        android:textSize="@dimen/dimen_12dp"
+                        android:background="#173EBC"
+                        android:textColor="#F5F5F8"/>
+
+                </LinearLayout>
+    </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/company_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:visibility="gone" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="New Text"
+        android:id="@+id/message"
+        android:gravity="center"/>
+</RelativeLayout>
