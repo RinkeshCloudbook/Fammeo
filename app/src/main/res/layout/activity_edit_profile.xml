@@ -40,6 +40,36 @@
                 app:contentInsetStartWithNavigation="0dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/lin_dir"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="@color/main_color_500"
+                app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
+                app:theme="@style/AppTheme.Title">
+
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="@dimen/dimen_40dp"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_back_arrow" />
+
+                <TextView
+                    android:id="@+id/txt_selectDirName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:text="Create User"
+                    android:paddingLeft="@dimen/dimen_12dp"
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/dimen_18dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -227,6 +257,7 @@
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                             android:textColor="@color/grey_60" />
                         <EditText
+                            android:id="@+id/edt_uname"
                             style="@style/EditText.Flat.Grey"
                             android:background="@drawable/round_rect_grey_border"
                             android:layout_width="match_parent"
@@ -1041,6 +1072,7 @@
 
 
     <com.fammeo.app.view.siv.CircularImageView
+        android:visibility="gone"
         android:id="@+id/image"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -1053,12 +1085,9 @@
         app:layout_anchorGravity="bottom|center" />
 
     <LinearLayout
-        android:visibility="gone"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="bottom|center"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="130dp"
+        app:layout_anchorGravity="bottom|center"
         app:layout_anchor="@id/app_bar_layout">
 
         <RelativeLayout
@@ -1072,7 +1101,7 @@
                 android:fillAfter="false"
                 android:fillEnabled="false">
 
-                <ImageView
+                <com.fammeo.app.view.siv.CircularImageView
                     android:id="@+id/search_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -1085,7 +1114,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/icon_text" />
+                    android:textStyle="bold"
+                    android:textSize="@dimen/icon_star" />
 
             </RelativeLayout>
 

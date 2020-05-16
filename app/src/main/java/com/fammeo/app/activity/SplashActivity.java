@@ -197,12 +197,9 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
         if (App.getInstance().isConnected() && App.getInstance().getId() != null && App.getInstance().IsLoggedIn()) {
 
             Log.e("TEST","Rk UserId :"+App.getInstance().getId());
+            Log.e("TEST","Rk UserId User:"+App.getInstance().getUserId());
            // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if(App.getInstance().getId() != null){
-                Intent intent = new Intent(SplashActivity.this, EditProfile.class);
-                finish();
-                startActivity(intent);
-            }else
+
             if(true || App.getInstance().isTokenExpired())
             {
                 FirebaseInstanceId.getInstance().getInstanceId()
@@ -224,10 +221,38 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
                                     Log.w(TAG, Token);
                                     if(Token != null && Token.length() > 0)
                                     {
-                                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        finish();
-                                        startActivity(intent);
+                                        SharedPreferences prefs = getSharedPreferences("uId", MODE_PRIVATE);
+                                        String userId = prefs.getString("u","");
+                                        Log.e("TEST","Get User Id :"+userId);
+
+                                        if(userId.equalsIgnoreCase("")){
+                                            if(App.getInstance().getId().equalsIgnoreCase("0")){
+                                                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                                                finish();
+                                                startActivity(intent);
+                                            }else
+                                            {
+                                                //Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                                                Intent intent = new Intent(SplashActivity.this, EditProfile.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                finish();
+                                                startActivity(intent);
+                                            }
+                                        }else {
+                                            if(userId.equalsIgnoreCase("")){
+                                                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                                                finish();
+                                                startActivity(intent);
+                                            }else
+                                            {
+                                                Intent intent = new Intent(SplashActivity.this, EditProfile.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                finish();
+                                                startActivity(intent);
+                                            }
+                                        }
+
+
                                     /*
                                         String PendingInvite = App.getInstance().GetInvite();
                                         if(PendingInvite != null && PendingInvite != "")

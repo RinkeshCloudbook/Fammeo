@@ -1,6 +1,7 @@
 package com.fammeo.app.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,11 +32,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.fammeo.app.R;
 import com.fammeo.app.activity.MainActivity;
 import com.fammeo.app.adapter.fammeoAdapter.SearchListAdapter;
+import com.fammeo.app.animation.ViewAnimation;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataGlobal;
+import com.fammeo.app.common.DataText;
 import com.fammeo.app.common.PassDataInterface;
 import com.fammeo.app.common.SnakebarCustom;
 import com.fammeo.app.model.SearchUserModel;
@@ -46,6 +53,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static com.fammeo.app.constants.Constants.METHOD_SEARCH_GET_USER;
 
 /**
@@ -59,6 +67,8 @@ public class Search extends Fragment implements PassDataInterface{
     ArrayList<SearchUserModel> searchlist = new ArrayList<SearchUserModel>();
     private Toolbar mToolbar;
     boolean flage = false;
+    private View lyt_expand_text;
+    LinearLayout pbHeaderProgress;
     public Search() {
         // Required empty public constructor
     }
@@ -74,14 +84,20 @@ public void setListener(PassDataInterface passDataInterface){
 
         recycler_view = view.findViewById(R.id.recycler_view);
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        pbHeaderProgress = view.findViewById(R.id.pbHeaderProgress);
+        lyt_expand_text = view.findViewById(R.id.lyt_expand_text);
         getActivity().setTitle("Create & Claim Profile");
 
+        pbHeaderProgress.setVisibility(View.GONE);
+
+       hideKeyboard(getActivity());
 
         RecyclerView.LayoutManager recyce = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
         recycler_view.setLayoutManager(recyce);
-        String email = App.getInstance().setEmailName();
+        //String email = App.getInstance().setEmailName();
+
         //((LinearLayout) view.findViewById(R.id.lin_bg_image)).setBackgroundResource(R.drawable.search_bg);
-        ((TextView) view.findViewById(R.id.txt_email)).setText(email);
+        ((TextView) view.findViewById(R.id.txt_email)).setText(App.getInstance().GetEmailName());
         ((TextView) view.findViewById(R.id.txt_name)).setText(App.getInstance().getFullname());
         getSearchUser("");
         ((ImageButton) view.findViewById(R.id.btn_next)).setOnClickListener(new View.OnClickListener() {
@@ -89,51 +105,95 @@ public void setListener(PassDataInterface passDataInterface){
             public void onClick(View v) {
                 Log.e("TEST","Click NEXT");
                 String getName = ((EditText) view.findViewById(R.id.edt_name)).getText().toString();
+                hideKeyboard(getActivity());
                 getSearchUser(getName);
                 if(flage == true){
                     ((CardView) view.findViewById(R.id.card_data)).setVisibility(View.VISIBLE);
                     ((TextView) view.findViewById(R.id.txt_name)).setText(getName);
                 }
+
             }
         });
+        Log.e("TEST","Get Search URl :"+App.getInstance().GetUrl());
+        if(App.getInstance().GetUrl() != null){
+            Glide.with(getActivity()).load(DataText.GetImagePath(App.getInstance().GetUrl()))
+                    .thumbnail(0.5f)
+                    .transition(withCrossFade())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(((ImageView) view.findViewById(R.id.search_image)));
+        }else {
+            String firstLater = App.getInstance().getFullname().substring(0,1).toUpperCase();
 
-        String firstLater = App.getInstance().getFullname().substring(0,1).toUpperCase();
+            ((ImageView) view.findViewById(R.id.search_image)).setImageResource(R.drawable.bg_search_circle);
+            ((ImageView) view.findViewById(R.id.search_image)).setColorFilter(null);
+            ((TextView) view.findViewById(R.id.search_image_text)).setText(firstLater);
+        }
 
-        ((ImageView) view.findViewById(R.id.search_image)).setImageResource(R.drawable.bg_search_circle);
-        ((ImageView) view.findViewById(R.id.search_image)).setColorFilter(null);
-        ((TextView) view.findViewById(R.id.search_image_text)).setText(firstLater);
 
         ((ImageView) view.findViewById(R.id.btn_create)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String uname = ((TextView) view.findViewById(R.id.txt_name)).getText().toString();
-                String mail =  App.getInstance().setEmailName();
+                String mail =  App.getInstance().GetEmailName();
                 String FN = App.getInstance().getFirstName();
                 String LN = App.getInstance().getLastName();
-
-               Log.e("TEST","UName :"+uname);
-               Log.e("TEST","FN :"+FN);
-               Log.e("TEST","LN :"+LN);
-               Log.e("TEST","Email :"+mail);
 
                 passDataInterface.userData(uname,FN,LN,mail,"");
             }
         });
 
+
+        ((ImageButton) view.findViewById(R.id.bt_toggle_text)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSectionText(v);
+            }
+        });
+
+
+
         return view;
+    }
+    public static void hideKeyboard(FragmentActivity activity) {
+        activity.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    private void toggleSectionText(View view) {
+        boolean show = toggleArrow(view);
+        if (show) {
+            ViewAnimation.expand(lyt_expand_text, new ViewAnimation.AnimListener() {
+                @Override
+                public void onFinish() {
+                    //Tools.nestedScrollTo(nested_scroll_view, lyt_expand_text);
+                }
+            });
+        } else {
+            ViewAnimation.collapse(lyt_expand_text);
+        }
+    }
+
+    private boolean toggleArrow(View view) {
+        if (view.getRotation() == 0) {
+            view.animate().setDuration(200).rotation(180);
+            return true;
+        } else {
+            view.animate().setDuration(200).rotation(0);
+            return false;
+        }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
        // getSearchUser("");
     }
 
     private void getSearchUser(final String getText) {
-
+        pbHeaderProgress.setVisibility(View.GONE);
         Log.e("TEST","Call Search User :"+getText);
         // list.clear();
+
         request = new CustomAuthRequest(Request.Method.POST, METHOD_SEARCH_GET_USER, null,0,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -144,6 +204,7 @@ public void setListener(PassDataInterface passDataInterface){
                             Log.e("TEST","Fammeo Search Response :"+response.toString());
                             searchlist.clear();
                             if(strResponse != null){
+                                pbHeaderProgress.setVisibility(View.GONE);
                                 try {
                                     JSONObject obj = new JSONObject(response.toString());
                                     String msg = obj.getString("Message");
@@ -176,6 +237,7 @@ public void setListener(PassDataInterface passDataInterface){
 
                                  } catch (JSONException e) {
                                     e.printStackTrace();
+
                                 }
                             }else {
 //                                pbHeaderProgress.setVisibility(View.VISIBLE);
@@ -187,7 +249,7 @@ public void setListener(PassDataInterface passDataInterface){
         {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //pbHeaderProgress.setVisibility(View.VISIBLE);
+              //  pbHeaderProgress.setVisibility(View.VISIBLE);
                 //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
             }
         }) {

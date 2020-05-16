@@ -9,7 +9,7 @@ import java.util.List;
 public class UserSmallJ extends CommonJsonClass{
     public String Id ;
     public long ACId;
-    public String FN ;
+    public String FN  = "Temp";
     public String MN ;
     public String LN ;
     public String Email ;

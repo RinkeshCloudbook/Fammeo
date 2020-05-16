@@ -11,22 +11,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.CreateUser;
+import com.fammeo.app.activity.MainActivity;
+import com.fammeo.app.fragment.FragmentCreate;
 
 import java.util.ArrayList;
 
 public class UserSuggestion extends RecyclerView.Adapter<UserSuggestion.ViewHolder> {
-        CreateUser createUser;
+        Fragment mFragment;
         ArrayList<String> suglist;
         Context context;
 
-    public UserSuggestion(FragmentActivity activity, ArrayList<String> suglist) {
+
+    public UserSuggestion(FragmentCreate fragmentCreate, Context context, ArrayList<String> suglist) {
         this.suglist = suglist;
-        this.context = activity;
+        this.mFragment = fragmentCreate;
+        this.context = context;
     }
 
     @NonNull
@@ -44,7 +49,11 @@ public class UserSuggestion extends RecyclerView.Adapter<UserSuggestion.ViewHold
             @Override
             public void onClick(View v) {
                 Log.e("TEST","Selected Name :"+suglist.get(i));
-                createUser.getSugName(suglist.get(i),false);
+                String getName = suglist.get(i).toString();
+                //if (mFragment instanceof FragmentCreate)
+               // CreateUser.getSugName(getName);
+                //FragmentCreate.getSugName(getName);
+                ((FragmentCreate) mFragment).getSugName(getName,false);
             }
         });
     }

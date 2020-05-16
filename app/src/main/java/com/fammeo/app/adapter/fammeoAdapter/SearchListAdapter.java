@@ -36,6 +36,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
     Context context;
     ArrayList<SearchUserModel> searchlist;
     PassDataInterface dataInterface;
+    String imgUrl;
 
     public SearchListAdapter(Fragment mfragment, Context applicationContext, ArrayList<SearchUserModel> searchlist,PassDataInterface dataInterface) {
         this.context = applicationContext;
@@ -62,7 +63,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
         holder.txt_email.setText(email);
 
         String firstLater = fullName.substring(0,1).toUpperCase();
-        final String imgUrl = searchlist.get(i).url;
+        imgUrl = searchlist.get(i).url;
         Log.e("TEST","Get Image Url :"+imgUrl);
         if(imgUrl != null){
             Glide.with(context).load(DataText.GetImagePath(imgUrl))
@@ -81,6 +82,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
             @Override
             public void onClick(View v) {
                 Log.e("TEST","Adapter Click :"+fullName);
+
                 dataInterface.userData(fullName,FN,LN,email,imgUrl);
                // ((Search) mfragment).getUerData(fullName,FN,LN,email,imgUrl);
 

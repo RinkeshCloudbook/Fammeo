@@ -4,12 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.Search">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
-
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -149,6 +148,186 @@
 
 
                     </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginRight="@dimen/spacing_large"
+                        ads:cardCornerRadius="@dimen/dimen_5dp"
+                        ads:cardElevation="3dp"
+                        android:layout_marginTop="@dimen/dimen_10dp">
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/nested_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:scrollbars="none"
+                            android:scrollingCache="true"
+                            android:background="@drawable/gradient"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                        <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                         android:background="@drawable/round_rect_grey_border"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_45dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:background="@drawable/round_rect_grey_border">
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Instructions "
+                                android:paddingLeft="@dimen/dimen_10dp"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/grey_80" />
+
+                            <ImageButton
+                                android:id="@+id/bt_toggle_text"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="?attr/actionBarSize"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:tint="@color/grey_80"
+                                ads:srcCompat="@drawable/ic_expand_arrow" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/lyt_expand_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/dimen_10dp">
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="@dimen/dimen_20dp"
+                                    android:layout_height="@dimen/dimen_20dp"
+                                    android:src="@drawable/ic_pluse"
+                                    android:background="@drawable/shape_circle_themcolor"
+                                    android:tint="@color/item_row_start_color"
+                                    android:padding="@dimen/dimen_5dp"
+                                    />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+                                    <TextView
+                                        android:padding="@dimen/dimen_10dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/spacing_medium"
+                                        android:text="Profile page will help your friends,
+                                                     colleagues and others in searching, knowing, connecting with you. "
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                        android:textColor="@color/grey_60" />
+                                </LinearLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/dimen_10dp">
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="@dimen/dimen_20dp"
+                                    android:layout_height="@dimen/dimen_20dp"
+                                    android:src="@drawable/ic_pluse"
+                                    android:background="@drawable/shape_circle_themcolor"
+                                    android:tint="@color/item_row_start_color"
+                                    android:padding="@dimen/dimen_5dp"
+                                    />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+                                    <TextView
+                                        android:layout_marginTop="@dimen/dimen_5dp"
+                                        android:padding="@dimen/dimen_5dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/spacing_medium"
+                                        android:text="Promote your profile page by adding a link
+                                                        wherever you want, on your own websites or social media "
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                        android:textColor="@color/grey_60" />
+                                </LinearLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/dimen_10dp">
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="@dimen/dimen_20dp"
+                                    android:layout_height="@dimen/dimen_20dp"
+                                    android:src="@drawable/ic_pluse"
+                                    android:background="@drawable/shape_circle_themcolor"
+                                    android:tint="@color/item_row_start_color"
+                                    android:padding="@dimen/dimen_5dp"
+                                    />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+                                    <TextView
+                                        android:padding="@dimen/dimen_7dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/spacing_medium"
+                                        android:text="Personal profile will help you showcase your professional skills and experience"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                        android:textColor="@color/grey_60" />
+                                </LinearLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/dimen_10dp">
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="@dimen/dimen_20dp"
+                                    android:layout_height="@dimen/dimen_20dp"
+                                    android:src="@drawable/ic_pluse"
+                                    android:background="@drawable/shape_circle_themcolor"
+                                    android:tint="@color/item_row_start_color"
+                                    android:padding="@dimen/dimen_5dp"
+                                    />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+                                    <TextView
+                                        android:padding="@dimen/dimen_7dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/spacing_medium"
+                                        android:text="Show your real self by linking your social profile like twitter, LinkedIn, Facebook etc. "
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                        android:textColor="@color/grey_60" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                        </androidx.core.widget.NestedScrollView>
+
+                    </androidx.cardview.widget.CardView>
 
                     <View
                         android:layout_width="match_parent"
@@ -171,7 +350,8 @@
                         android:background="#F19292"
                         android:padding="@dimen/dimen_7dp"
                         ads:cardCornerRadius="10dp"
-                        ads:cardElevation="2dp">
+                        ads:cardElevation="2dp"
+                        android:layout_marginTop="@dimen/dimen_10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -278,13 +458,31 @@
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         </LinearLayout>
-        <TextView
+        <LinearLayout
             android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="New Text"
-            android:id="@+id/message"
-            android:gravity="center"/>
+            android:id="@+id/pbHeaderProgress"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/dimen_10dp"
+            android:background="@drawable/style_progress_container_background"
+            android:orientation="vertical">
+        <ProgressBar
+            android:id="@+id/prgLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:indeterminate="true"
+            android:padding="@dimen/dimen_10dp"
+            style="?android:attr/progressBarStyle"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textSize="@dimen/dimen_16dp"
+            />
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

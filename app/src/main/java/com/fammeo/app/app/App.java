@@ -97,7 +97,7 @@ public class App extends Application implements Constants{
     private SharedPreferences sharedPref;
 
     //private GPSTracker gps;
-    private String firstname, middlename, lastname, username,email, fullname, accessToken, AndroidId, gcmToken = "", FCMToken = "", fb_id = "", photoUrl, coverUrl, area = "", country = "", city = "";
+    private String firstname, middlename, lastname, username,email,url, fullname, accessToken, AndroidId, gcmToken = "", FCMToken = "", fb_id = "", photoUrl, coverUrl, area = "", country = "", city = "";
     private Double lat = 0.000000, lng = 0.000000;
     private String id, UserId;
     private DateTime token_expiry;
@@ -508,6 +508,7 @@ public class App extends Application implements Constants{
 
 
     public String getUserId() {
+       // return "rin_1234";
         return this.UserId;
     }
     public Gson getGSON() {
@@ -939,9 +940,19 @@ public class App extends Application implements Constants{
         this.lastname = lastname;
     }
 
-    public String setEmailName() {
+    public void SetEmailName(String email) {
+
+        this.email = email;
+    }
+
+    public String GetEmailName() {
 
         return mUserJ.PE;
+    }
+
+    public String GetUrl() {
+
+        return mUserJ.I;
     }
 
     public String getFirstName() {
@@ -1000,7 +1011,7 @@ public class App extends Application implements Constants{
 
         if (this.photoUrl == null) {
 
-            this.photoUrl = "";
+            this.photoUrl = "null";
         }
 
         return this.photoUrl;
@@ -1359,6 +1370,8 @@ private List<ACJM> ACs;
                 JSONObject obj = ResultJ;
                 App.getInstance().setDeviceId(obj.getString("DId"));
                 UserSmallJ userj = UserSmallJ.getJSON(obj.getString("user"));
+
+                Log.e("TEST","User Small :"+obj.getString("user"));
                 App.getInstance().setUserJ(userj);
                 List<ACJM> ACs = ACJM.getJSONList(obj.getString("SC"));
                 List<ACJM> newACs =new ArrayList<ACJM>();
@@ -1366,6 +1379,7 @@ private List<ACJM> ACs;
                 App.getInstance().setMiddleName(userj.MN);
                 App.getInstance().setLastName(userj.LN);
                 App.getInstance().setPhotoUrl(userj.I);
+                App.getInstance().SetEmailName(userj.PE);
                 App.getInstance().setCoverUrl("");
 
                 JSONObject tokenj = obj.getJSONObject("token");

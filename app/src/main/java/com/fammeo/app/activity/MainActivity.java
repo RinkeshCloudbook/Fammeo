@@ -96,25 +96,6 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
 
     private Bundle bundleUserData = null;
 
-    private String about_title_array[] = {
-            "Ready to Travel",
-            "Pick the Ticket",
-            "Flight to Destination",
-            "Enjoy Holiday"
-    };
-    private String about_description_array[] = {
-            "Choose your destination, plan Your trip. Pick the best place for Your holiday",
-            "Select the day, pick Your ticket. We give you the best prices. We guarantee!",
-            "Safe and Comfort flight is our priority. Professional crew and services.",
-            "Enjoy your holiday, Don't forget to feel the moment and take a photo!",
-    };
-    private int about_images_array[] = {
-            R.drawable.img_wizard_1,
-            R.drawable.img_wizard_1,
-            R.drawable.img_wizard_1,
-            R.drawable.img_wizard_1
-    };
-
     Fragment fragment;
     Boolean action = false;
     int page = 0;
@@ -123,7 +104,7 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
     Context mContext;
     protected DrawerLayout mDrawerLayout;
     private Bundle intentBundle ;
-    private String Mode ;
+    private String Mode, getEmail, getFN , getLN , getUrl;
     private Button btnNext;
 
     String navTitles[];
@@ -133,12 +114,7 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       /* if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getApplicationContext(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-        }*/
+
         ((CardView) findViewById(R.id.card_search)).setBackgroundResource(R.drawable.search_bg);
         edt_name = findViewById(R.id.edt_name);
         recycler_view = findViewById(R.id.recycler_view);
@@ -153,13 +129,15 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
 
         myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+       // viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
         viewPager.setClipToPadding(false);
         viewPager.setPadding(0, 0, 0, 0);
        // viewPager.setPageMargin(getResources().getDimensionPixelOffset(R.dimen.viewpager_margin_overlap));
         viewPager.setOffscreenPageLimit(myViewPagerAdapter.getCount());
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.beginFakeDrag();
+
+        /*viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -177,7 +155,7 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
             @Override
             public void onPageScrollStateChanged(int state) {
             }
-        });
+        });*/
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +175,7 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
             }
         });
 
-        showKeyboard(MainActivity.this);
+        //showKeyboard(MainActivity.this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mContext = getApplicationContext();
         _this = this;
@@ -253,15 +231,18 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
             public void onClick(View v) {
                 String getName = edt_name.getText().toString();
                 ((TextView) findViewById(R.id.txt_name)).setText(getName);
-                hideKeyboard(MainActivity.this);
                 getSearchUser(getName);
             }
         });
 
         Intent intent = getIntent();
-        String getEmail = intent.getStringExtra("E");
+        getEmail = intent.getStringExtra("E");
+        getFN = intent.getStringExtra("FN");
+        getLN = intent.getStringExtra("LN");
+        getUrl = intent.getStringExtra("U");
 
-        String fullName = App.getInstance().getFirstName()+" "+App.getInstance().getLastName();
+
+       /* String fullName = App.getInstance().getFirstName()+" "+App.getInstance().getLastName();
         ((TextView) findViewById(R.id.txt_name)).setText(fullName);
         ((TextView) findViewById(R.id.txt_email)).setText(App.getInstance().setEmailName());
 
@@ -269,7 +250,7 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
 
         ((ImageView) findViewById(R.id.search_image)).setImageResource(R.drawable.bg_search_circle);
         ((ImageView) findViewById(R.id.search_image)).setColorFilter(null);
-        ((TextView) findViewById(R.id.search_image_text)).setText(firstLater);
+        ((TextView) findViewById(R.id.search_image_text)).setText(firstLater);*/
 
         drawerFragment = (FragmentDrawer) getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
@@ -424,7 +405,6 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putBoolean("restore", true);
         outState.putBoolean("restore", true);
         outState.putString("mTitle", getSupportActionBar().getTitle().toString());
       //  getSupportFragmentManager().putFragment(outState, "currentFragment", fragment);
@@ -667,10 +647,6 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
 //                    }
 
         }
-    }
-
-    public Bundle getUserdata() {
-        return bundleUserData;
     }
 
 }

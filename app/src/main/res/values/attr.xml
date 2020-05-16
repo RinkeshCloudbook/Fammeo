@@ -40,6 +40,10 @@
         <attr name="dividerThickness" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="NonSwipeViewPager">
+        <attr name="swipeable" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="DrawerFrameLayout">
         <attr name="drawerMaxWidth" format="dimension" />
     </declare-styleable>

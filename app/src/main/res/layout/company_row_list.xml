@@ -191,25 +191,24 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     />
+
                 <com.fammeo.app.font.FButton
                     android:id="@+id/call_button"
                     android:layout_width="30dp"
                     android:layout_height="match_parent"
-                    android:text="Call"
-                    android:drawablePadding="2dp"
-                    android:textColor="@android:color/white"
-                    fbutton:FButton_FAIconColor="@android:color/white"
-                    fbutton:cornerRadius="4dp"
-                    fbutton:shadowEnabled="true"
-                    fbutton:shadowHeight="3dp"
-                    fbutton:FButton_ButtonText=""
-                    fbutton:FButton_FAIconMarginTop="0dp"
-                    fbutton:FButton_FAIconText="@string/fa_call"
-                    fbutton:FButton_FAIconSize="15"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="right"
-                    />
-
+                    android:drawablePadding="2dp"
+                    android:text="Call"
+                    android:textColor="@android:color/white"
+                    fbutton:FButton_ButtonText=""
+                    fbutton:FButton_FAIconColor="@android:color/white"
+                    fbutton:FButton_FAIconMarginTop="0dp"
+                    fbutton:FButton_FAIconSize="15"
+                    fbutton:FButton_FAIconText="@string/fa_call"
+                    fbutton:cornerRadius="4dp"
+                    fbutton:shadowEnabled="true"
+                    fbutton:shadowHeight="3dp" />
             </LinearLayout>
 
 

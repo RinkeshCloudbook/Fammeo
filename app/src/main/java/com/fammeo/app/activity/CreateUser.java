@@ -257,8 +257,8 @@ public class CreateUser extends AppCompatActivity {
                                             for (int i = 0; i < jsonArray.length(); i++) {
                                                 suglist.add(jsonArray.getString(i));
                                             }
-                                            UserSuggestion adaper = new UserSuggestion(CreateUser.this,suglist);
-                                            recycler_view.setAdapter(adaper);
+                                            /*UserSuggestion adaper = new UserSuggestion(CreateUser.this,suglist);
+                                            recycler_view.setAdapter(adaper);*/
                                         }
 
                                     } catch (JSONException e) {
@@ -306,6 +306,7 @@ public class CreateUser extends AppCompatActivity {
         }
 
     public void  getSugName(String sugName, boolean flag){
+        Log.e("Test","Get Name :"+sugName);
         ((EditText) findViewById(R.id.edt_search)).setText(sugName);
         flags = flag;
     }

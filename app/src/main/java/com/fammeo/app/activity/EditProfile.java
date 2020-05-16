@@ -1,54 +1,78 @@
 package com.fammeo.app.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fammeo.app.R;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataText;
+import com.fammeo.app.view.siv.CircularImageView;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class EditProfile extends AppCompatActivity {
-
+    SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        Toolbar mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        getSupportActionBar().setTitle("Edit Profile");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        sp = getSharedPreferences("uId", MODE_PRIVATE);
+        String userId = sp.getString("u","");
+        String un = sp.getString("un","");
+        Log.e("TEST","Get User Id :"+userId);
+
         Log.e("TEST","Full Name :"+App.getInstance().getFullname());
         Log.e("TEST","FN :"+App.getInstance().getFirstName());
         Log.e("TEST","LN :"+App.getInstance().getLastName());
         Log.e("TEST","User Id :"+App.getInstance().getUserId());
-        Log.e("TEST","Email :"+App.getInstance().setEmailName());
-        Log.e("Text","Image Url :"+App.getInstance().getPhotoUrl());
+        Log.e("TEST","Email :"+App.getInstance().GetEmailName());
+        Log.e("Text","Image Url :"+App.getInstance().GetUrl());
+        Log.e("Text","User Name :"+App.getInstance().getUser());
         ((EditText) findViewById(R.id.edt_fName)).setText(App.getInstance().getFirstName());
         ((EditText) findViewById(R.id.edt_lName)).setText(App.getInstance().getLastName());
-        ((EditText) findViewById(R.id.edt_email)).setText(App.getInstance().setEmailName());
+        ((EditText) findViewById(R.id.edt_email)).setText(App.getInstance().GetEmailName());
+        ((EditText) findViewById(R.id.edt_uname)).setText(un);
 
-        String firstLater = App.getInstance().getFirstName().substring(0,1).toUpperCase();
-        Log.e("TEST","Get Image Url NULL:");
-        ((ImageView) findViewById(R.id.search_image)).setImageResource(R.drawable.bg_search_circle);
-        ((ImageView) findViewById(R.id.search_image)).setColorFilter(null);
-        ((TextView) findViewById(R.id.search_image_text)).setText(firstLater);
-
-        /*if(imgUrl != null){
-            Glide.with(context).load(DataText.GetImagePath(imgUrl))
+        if(App.getInstance().GetUrl() != null){
+            Glide.with(getApplicationContext()).load(DataText.GetImagePath(App.getInstance().GetUrl()))
                     .thumbnail(0.5f)
                     .transition(withCrossFade())
                     .apply(RequestOptions.circleCropTransform())
-                    .into(holder.search_image);
+                    .into(((CircularImageView) findViewById(R.id.search_image)));
+        }else {
+            String firstLater = App.getInstance().getFirstName().substring(0,1).toUpperCase();
+            Log.e("TEST","Get Image Url NULL:");
+            ((CircularImageView) findViewById(R.id.search_image)).setImageResource(R.drawable.bg_search_circle);
+            ((CircularImageView) findViewById(R.id.search_image)).setColorFilter(null);
+            ((TextView) findViewById(R.id.search_image_text)).setText(firstLater);
+        }
+
+
+        /*if(imgUrl != null){
+
 
         }else {
 
@@ -142,5 +166,15 @@ public class EditProfile extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

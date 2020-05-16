@@ -47,6 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+//public class LoginActivity extends ActivityBase {
 public class LoginActivity extends ActivityBase {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int REQUEST_SIGNUP = 0;
@@ -63,7 +64,7 @@ public class LoginActivity extends ActivityBase {
     SignInButton _loginButton;
     //TextView _signupLink;
     private View mView;
-    private String android_id,getUserId,getEmail,getFname,getLname;
+    private String android_id,getUserId,getEmail,getFname,getLname,getUrl;
     private JSONObject ResultJ;
 
     public static void startIntent(Context context) {
@@ -86,6 +87,14 @@ public class LoginActivity extends ActivityBase {
 
         _loginButton = (SignInButton)this.findViewById(R.id.btn_login);
         //_passwordText = (EditText)this.findViewById(R.id.input_password);
+/*
+        Intent intent = getIntent();
+       // Log.e("TEST","Login Again :"+intent.getStringExtra("login"));
+        if(getIntent().getExtras() != null){
+            if(intent.getStringExtra("login").equals("1001")){
+                login();
+            }
+        }*/
 
 
         mView = this.findViewById(R.id.LoginView);
@@ -102,6 +111,7 @@ public class LoginActivity extends ActivityBase {
 
         mAuth = FirebaseAuth.getInstance();
         Log.w(TAG, "onCreate: SignOut2" );
+/*---------------------New change------------------------------------------*/
         mAuth.signOut();
         App.getInstance().ClearData(getApplicationContext());
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -111,7 +121,7 @@ public class LoginActivity extends ActivityBase {
                 updateUI(user);
             }
         };
-
+/*---------------------New change------------------------------------------*/
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -156,9 +166,11 @@ public class LoginActivity extends ActivityBase {
         super.onPause();
     }
 
-    private void updateUI(FirebaseUser user) {
+   /* private void updateUI(FirebaseUser user) {
 
         Log.e("TEST","Firebase user id :"+user);
+        Log.e("TEST","Get  Second time Id :"+getUserId);
+
         if (user != null) {
             if(getUserId.equalsIgnoreCase("null")){
                  Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -166,6 +178,7 @@ public class LoginActivity extends ActivityBase {
                  //intent.putExtra("",);
                  startActivity(intent);
             }else {
+                //Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 Intent i = new Intent(LoginActivity.this, EditProfile.class);
                 startActivity(i);
             }
@@ -176,14 +189,49 @@ public class LoginActivity extends ActivityBase {
                 //App.getInstance().updateGeoLocation();
                 //Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
                 Log.e("TEST","User Id not NULL");
-                /*Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);*/
+                startActivity(intent);
 
             } else {
                 Log.e("TEST","User Id NULL");
-                /*Log.e("TEST","GEt Message :"+RMessage);
-                Toast.makeText(LoginActivity.this, RMessage, Toast.LENGTH_SHORT).show();*/
+                Log.e("TEST","GEt Message :"+RMessage);
+                Toast.makeText(LoginActivity.this, RMessage, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            _loginButton.setEnabled(true);
+        }
+    }*/
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            String RMessage = App.getInstance().SetData(getApplicationContext(), ResultJ);
+            Log.e("TEST","Get RMessage :"+RMessage);
+            Log.e("TEST","Get RMessage :"+App.getInstance().getUserId());
+            if (RMessage == "success") {
+                if (user != null) {
+                    if(getUserId.equalsIgnoreCase("null")){
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("E",getEmail);
+                        intent.putExtra("FN",getFname);
+                        intent.putExtra("LN",getLname);
+                        intent.putExtra("U",getUrl);
+                        //intent.putExtra("",);
+                        startActivity(intent);
+                    }else {
+                        //Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent i = new Intent(LoginActivity.this, SplashActivity.class);
+                        startActivity(i);
+                    }
+            }
+
+                /*Log.i(TAG, "success" + App.getInstance().getCurrentACId());
+                //App.getInstance().updateGeoLocation();
+                Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);*/
+            } else {
+                Toast.makeText(LoginActivity.this, RMessage, Toast.LENGTH_SHORT).show();
             }
         } else {
             _loginButton.setEnabled(true);
@@ -417,7 +465,10 @@ public class LoginActivity extends ActivityBase {
                                 getEmail = obj.getString("PE");
                                 getFname = obj.getString("FN");
                                 getLname = obj.getString("LN");
-
+                                getUrl = obj.getString("I");
+                                /*getEmail = obj.getString("PE");
+                                getFname = obj.getString("FN");
+                                getLname = obj.getString("LN");*/
                                 boolean IsValid = false;
                                 String ToastMessage = "";
                                 if (ResultJ != null) {
@@ -436,6 +487,7 @@ public class LoginActivity extends ActivityBase {
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
+                                        Log.e("Test","Exception :"+e);
                                         DataGlobal.SaveLog(TAG, e);
                                     }
                                 }
@@ -448,6 +500,7 @@ public class LoginActivity extends ActivityBase {
                                 }
                                 hidepDialog();
                             } catch (JSONException ex) {
+                                ex.printStackTrace();
                                 _loginButton.setEnabled(true);
                                 Crashlytics.logException(ex);
                                 SnakebarCustom.danger(LoginActivity.this, mView, getText(R.string.error_signin).toString(), 1000);

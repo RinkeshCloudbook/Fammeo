@@ -2,10 +2,13 @@ package com.fammeo.app.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +24,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +38,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fammeo.app.R;
 import com.fammeo.app.activity.CreateUser;
+import com.fammeo.app.activity.EditProfile;
+import com.fammeo.app.activity.LoginActivity;
 import com.fammeo.app.activity.MainActivity;
 import com.fammeo.app.adapter.UserSuggestion;
 import com.fammeo.app.animation.ViewAnimation;
@@ -47,6 +54,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static com.fammeo.app.constants.Constants.METHOD_SEARCH_CREATE_USER;
 import static com.fammeo.app.constants.Constants.METHOD_SEARCH_NEW_CREATE_USER;
@@ -64,14 +72,17 @@ public class FragmentCreate extends Fragment {
     boolean flags = true;
     String getFullName,getEmail,getUrl,getFN,getLN;
     EditText edt_search;
-    Button btn_createNext;
+    ImageButton btn_createNext;
     View mView;
     ImageButton bt_toggle_text;
     private View lyt_expand_text;
+    LinearLayout pbHeaderProgress;
 
     public FragmentCreate() {
         // Required empty public constructor
     }
+
+
 
 
     @Override
@@ -85,6 +96,8 @@ public class FragmentCreate extends Fragment {
         btn_createNext = view.findViewById(R.id.btn_createNext);
         bt_toggle_text = view.findViewById(R.id.bt_toggle_text);
         lyt_expand_text = (View) view.findViewById(R.id.lyt_expand_text);
+        pbHeaderProgress = view.findViewById(R.id.pbHeaderProgress);
+        edt_search = view.findViewById(R.id.edt_search);
         lyt_expand_text.setVisibility(View.GONE);
 
         RecyclerView.LayoutManager recyce = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
@@ -181,47 +194,60 @@ public class FragmentCreate extends Fragment {
 
     private void createUser(final String uname) {
 
-        //pbHeaderProgress.setVisibility(View.VISIBLE);
+        pbHeaderProgress.setVisibility(View.VISIBLE);
         Log.e("TEST","User Creat");
-        ((TextView) mView.findViewById(R.id.message)).setVisibility(View.GONE);
         // list.clear();
         request = new CustomAuthRequest(Request.Method.POST, METHOD_SEARCH_NEW_CREATE_USER, null,0,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (App.getInstance().authorizeSimple(response)) {
-
                             String strResponse = response.toString();
                             Log.e("TEST","Create Response :"+response.toString());
+                            if(strResponse != null) {
 
-                            if(strResponse != null){
-                                Log.e("TEST","Response Not null");
-                                JSONObject object = new JSONObject();
                                 try {
+                                    JSONObject object = new JSONObject(strResponse);
                                     String getMsg = object.getString("MessageType");
-                                    if(getMsg.equalsIgnoreCase("success")){
-                                        Log.e("TEST","You have joined Successfully");
-                                    }
-                                    JSONObject userObj = object.getJSONObject("obj");
-                                    String GId = userObj.getString("GId");
-                                    String Id = userObj.getString("Id");
-                                    String FN = userObj.getString("FN");
-                                    String userName = userObj.getString("UN");
-                                    String S = userObj.getString("S");
-                                    String I = userObj.getString("I");
-                                    String UserName = userObj.getString("UN");
+                                    Log.e("TEST", "MessageType :" + getMsg);
 
-                                    Log.e("TEST","Gid :"+GId);
-                                    Log.e("TEST","Id :"+Id);
-                                    Log.e("TEST","FN :"+FN);
-                                    Log.e("TEST","UN :"+userName);
-                                    Log.e("TEST","S :"+S);
-                                    Log.e("TEST","I :"+I);
-                                    Log.e("TEST","UserName :"+UserName);
+
+                                    if (getMsg.equalsIgnoreCase("success")) {
+                                        Log.e("TEST", "You have joined Successfully");
+
+                                        JSONObject userObj = object.getJSONObject("obj");
+                                        String Id = userObj.getString("Id");
+                                        String I = userObj.getString("I");
+                                        final String userName = userObj.getString("UN");
+                                        final String s = userObj.getString("S");
+
+                                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("uId", MODE_PRIVATE).edit();
+                                        editor.putString("u",Id);
+                                        editor.putString("un",userName);
+                                        editor.apply();
+
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                toastIconSuccess();
+                                                pbHeaderProgress.setVisibility(View.GONE);
+                                                Intent intent = new Intent(getActivity(), EditProfile.class);
+                                                intent.putExtra("un",userName);
+                                                intent.putExtra("sex",s);
+                                                startActivity(intent);
+                                            }
+                                        }, 5000);
+
+                                    }else if(getMsg.equalsIgnoreCase("error")){
+                                        pbHeaderProgress.setVisibility(View.GONE);
+                                    }
+
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
                             }
                         }else {
 //                                pbHeaderProgress.setVisibility(View.VISIBLE);
@@ -266,10 +292,24 @@ public class FragmentCreate extends Fragment {
         };
     }
 
+    private void toastIconSuccess() {
+        Toast toast = new Toast(getActivity());
+        toast.setDuration(Toast.LENGTH_LONG);
+
+        //inflate view
+        View custom_view = getLayoutInflater().inflate(R.layout.toast_success_text, null);
+        ((TextView) custom_view.findViewById(R.id.message)).setText("You have joined Successfully!");
+        ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_done);
+        ((CardView) custom_view.findViewById(R.id.parent_view)).setCardBackgroundColor(getResources().getColor(R.color.green_500));
+
+        toast.setView(custom_view);
+        toast.show();
+    }
+
     private void CreateUserSearch(final String getText) {
         //pbHeaderProgress.setVisibility(View.VISIBLE);
         Log.e("TEST","Call Search User");
-        ((TextView) mView.findViewById(R.id.message)).setVisibility(View.GONE);
+
         // list.clear();
         request = new CustomAuthRequest(Request.Method.POST, METHOD_SEARCH_CREATE_USER, null,0,
                 new Response.Listener<JSONObject>() {
@@ -300,14 +340,16 @@ public class FragmentCreate extends Fragment {
                                         ((ImageButton) mView.findViewById(R.id.bt_true)).setVisibility(View.GONE);
                                     }else if(msg.equalsIgnoreCase("Available")){
                                         ((ImageButton) mView.findViewById(R.id.bt_false)).setVisibility(View.GONE);
+                                        btn_createNext.setVisibility(View.VISIBLE);
                                         ((ImageButton) mView.findViewById(R.id.bt_true)).setVisibility(View.VISIBLE);
+
                                     }
 
                                     if(jsonArray != null){
                                         for (int i = 0; i < jsonArray.length(); i++) {
                                             suglist.add(jsonArray.getString(i));
                                         }
-                                        UserSuggestion adaper = new UserSuggestion(getActivity(),suglist);
+                                        UserSuggestion adaper = new UserSuggestion(FragmentCreate.this,getContext(),suglist);
                                         recycler_view.setAdapter(adaper);
                                     }
 
@@ -355,9 +397,11 @@ public class FragmentCreate extends Fragment {
         };
     }
 
-    public void  getSugName(String sugName, boolean flag){
-        ((EditText) mView.findViewById(R.id.edt_search)).setText(sugName);
-        flags = flag;
+    public void getSugName(String sugName, boolean flag){
+       Log.e("Test","Static Data :"+sugName);
+        edt_search.setText(sugName);
+        //
+         flags = flag;
     }
 
     @Override
@@ -417,10 +461,12 @@ public class FragmentCreate extends Fragment {
         Log.e("TEST","Get Full LN :"+App.getInstance().getLastName());
         Log.e("TEST","Get Url  :"+getUrl);
         Log.e("TEST","Get Email  :"+getEmail);
+        String url = App.getInstance().getCoverUrl();
+        Log.e("TEST","Photo URL :"+url);
 
         ((TextView) mView.findViewById(R.id.txt_create_name)).setText(getFullName);
         ((TextView) mView.findViewById(R.id.txt_create_email)).setText(getEmail);
-        if(getUrl != null){
+        if(getUrl.length() > 0){
             Glide.with(getActivity()).load(DataText.GetImagePath(getUrl))
                     .thumbnail(0.5f)
                     .transition(withCrossFade())
