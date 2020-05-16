@@ -15,6 +15,83 @@
       },
       "oauth_client": [
         {
+          "client_id": "961468433086-da90kj9jmhgmu3ovgq9qs30ehq50s6is.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fammeo.app",
+            "certificate_hash": "e725736f4ed9e3838c52a7f73680aec0369cf80a"
+          }
+        },
+        {
+          "client_id": "961468433086-p80v9ratq8rcsjl28ll0ruscrm9ghvql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fammeo.app",
+            "certificate_hash": "0f4908155270cedf9fd18098317a1474cecc3dc0"
+          }
+        },
+        {
+          "client_id": "961468433086-3id3b2qqehqi62i89t1fiaeg2escpkgf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fammeo.app",
+            "certificate_hash": "3906c5f607bdb912d0a063d6b31c6c67146da4bb"
+          }
+        },
+        {
+          "client_id": "961468433086-cgjeu57e5ennrda7417sp49ep77vo5q5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fammeo.app",
+            "certificate_hash": "be3c55f142103c8e3f674c42fd8abd12820322f8"
+          }
+        },
+        {
+          "client_id": "961468433086-86vj2knhc74cnfdv8d442nkjhunh86b5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fammeo.app",
+            "certificate_hash": "74cad173998f46895d2dade28345995ffbf2f848"
+          }
+        },
+        {
+          "client_id": "961468433086-ano35i66qnc49vqslc7aspmn5qrsk3q7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fammeo.app",
+            "certificate_hash": "aeef66c654a650be16c80269a76ded4b40a292c1"
+          }
+        },
+        {
+          "client_id": "961468433086-equqhq8g8a9onqso3ocrmqsfnc1kp3lm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6DgMOVrTAyKnQrKgqTr0HP8D6lbSgF2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961468433086-equqhq8g8a9onqso3ocrmqsfnc1kp3lm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961468433086:android:078f8b9c9db8e9a6c994ef",
+        "android_client_info": {
+          "package_name": "com.fammeo.staff"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "961468433086-equqhq8g8a9onqso3ocrmqsfnc1kp3lm.apps.googleusercontent.com",
           "client_type": 3
         }
