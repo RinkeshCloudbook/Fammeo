@@ -27,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         tools:replace="android:allowBackup,android:icon">
-        <activity android:name=".activity.EditProfile"></activity>
+        <activity android:name=".activity.SettingEdit"></activity>
+        <activity android:name=".activity.EditProfile" />
         <activity android:name=".activity.CreateUser" />
         <activity android:name=".activity.SearchUser" />
         <activity android:name=".activity.CompanyList" />

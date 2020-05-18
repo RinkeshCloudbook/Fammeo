@@ -226,14 +226,6 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
             }
         }
 
-        ((Button) findViewById(R.id.btn_next)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String getName = edt_name.getText().toString();
-                ((TextView) findViewById(R.id.txt_name)).setText(getName);
-                getSearchUser(getName);
-            }
-        });
 
         Intent intent = getIntent();
         getEmail = intent.getStringExtra("E");
@@ -287,119 +279,6 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
     }
 
     //  viewpager change listener
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(final int position) {
-            bottomProgressDots(position);
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
-    private void getSearchUser(final String getText) {
-
-            //pbHeaderProgress.setVisibility(View.VISIBLE);
-            Log.e("TEST","Call Search User");
-            // list.clear();
-            request = new CustomAuthRequest(Request.Method.POST, METHOD_SEARCH_GET_USER, null,0,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            if (App.getInstance().authorizeSimple(response)) {
-
-                                String strResponse = response.toString();
-                                Log.e("TEST","Fammeo Search Response :"+response.toString());
-                                searchlist.clear();
-                                if(strResponse != null){
-                                    try {
-                                        //contactList.clear();
-
-                                       //pbHeaderProgress.setVisibility(Vew.GONE);
-                                        JSONObject obj = new JSONObject(response.toString());
-                                        JSONArray jsonArray = obj.getJSONArray("obj");
-//
-                                        if(obj.getJSONArray("obj").length() == 0){
-                                            Log.e("TEST","Json Null");
-                                        }else {
-                                            for (int i = 0; i < jsonArray.length(); i++) {
-                                                // CompanyRelationJ cd = new CompanyRelationJ();
-                                                JSONObject userDetail = jsonArray.getJSONObject(i);
-                                                SearchUserModel SM = new SearchUserModel();
-
-                                                SM.FN = userDetail.getString("FN");
-                                                SM.LN = userDetail.getString("LN");
-                                                SM.url = userDetail.getString("I");
-                                                SM.Email = userDetail.getString("PE");
-
-                                                searchlist.add(SM);
-                                            }
-                                        }
-
-									/*SearchListAdapter adapter = new SearchListAdapter(getApplicationContext(),searchlist);
-									recycler_view.setAdapter(adapter);*/
-
-                                        //adapter.notifyDataSetChanged();
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }else {
-//                                pbHeaderProgress.setVisibility(View.VISIBLE);
-                                    //SnakebarCustom.danger(mContext, View , "Unable to fetch contact: " + "No data found", 5000);
-                                }
-                            }
-                        }
-                    }, new Response.ErrorListener()
-            {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //pbHeaderProgress.setVisibility(View.VISIBLE);
-                    //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
-                }
-            }) {
-
-                @Override
-                protected JSONObject getParams() {
-                    try {
-                        JSONObject params = new JSONObject();
-                        Log.e("TEST","Param :"+getText);
-                        params.put("PageIndex", 1);
-                        params.put("PageSize", 10);
-                        params.put("text", getText.trim());
-                        JSONObject filterExpression = new JSONObject();
-                        /*try {
-                            filterExpression.put("Status", "All");
-
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }*/
-                        //params.put("filterExpression", filterExpression);
-
-                        return params;
-                    } catch (JSONException ex) {
-                        DataGlobal.SaveLog(TAG, ex);
-                        return null;
-                    }
-                }
-
-                @Override
-                protected void onCreateFinished(CustomAuthRequest request) {
-                    int socketTimeout = 300000;//0 seconds - change to what you want
-                    RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                    request.customRequest.setRetryPolicy(policy);
-                    App.getInstance().addToRequestQueue(request);
-                }
-            };
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -409,26 +288,6 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
         outState.putString("mTitle", getSupportActionBar().getTitle().toString());
       //  getSupportFragmentManager().putFragment(outState, "currentFragment", fragment);
     }
-
-    public static void hideKeyboard(MainActivity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    public void showKeyboard(MainActivity activity) {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(
-                edt_name.getApplicationWindowToken(),
-                InputMethodManager.SHOW_FORCED, 0);
-    }
-
 
     @Override
     public void onDrawerItemSelected(View view, int position) {

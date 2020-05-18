@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,7 +100,9 @@ public void setListener(PassDataInterface passDataInterface){
         //((LinearLayout) view.findViewById(R.id.lin_bg_image)).setBackgroundResource(R.drawable.search_bg);
         ((TextView) view.findViewById(R.id.txt_email)).setText(App.getInstance().GetEmailName());
         ((TextView) view.findViewById(R.id.txt_name)).setText(App.getInstance().getFullname());
-        getSearchUser("");
+
+
+
         ((ImageButton) view.findViewById(R.id.btn_next)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +153,14 @@ public void setListener(PassDataInterface passDataInterface){
             }
         });
 
-
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.e("TEST","Handler");
+                getSearchUser("");
+            }
+        },3000);
 
         return view;
     }

@@ -195,8 +195,6 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
 
     public void Authorize() {
         if (App.getInstance().isConnected() && App.getInstance().getId() != null && App.getInstance().IsLoggedIn()) {
-
-            Log.e("TEST","Rk UserId :"+App.getInstance().getId());
             Log.e("TEST","Rk UserId User:"+App.getInstance().getUserId());
            // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -223,8 +221,6 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
                                     {
                                         SharedPreferences prefs = getSharedPreferences("uId", MODE_PRIVATE);
                                         String userId = prefs.getString("u","");
-                                        Log.e("TEST","Get User Id :"+userId);
-
                                         if(userId.equalsIgnoreCase("")){
                                             if(App.getInstance().getId().equalsIgnoreCase("0")){
                                                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
@@ -233,7 +229,7 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
                                             }else
                                             {
                                                 //Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                                                Intent intent = new Intent(SplashActivity.this, EditProfile.class);
+                                                Intent intent = new Intent(SplashActivity.this, SettingEdit.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 finish();
                                                 startActivity(intent);
@@ -245,7 +241,7 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
                                                 startActivity(intent);
                                             }else
                                             {
-                                                Intent intent = new Intent(SplashActivity.this, EditProfile.class);
+                                                Intent intent = new Intent(SplashActivity.this, SettingEdit.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 finish();
                                                 startActivity(intent);
