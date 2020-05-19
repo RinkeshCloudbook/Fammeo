@@ -48,6 +48,7 @@ public interface Constants {
  public static final String METHOD_GET_PUBLIC_LANGUAGE_USER = API_User_DOMAIN + "api/user/getpubliclanguages" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SAVE_LANGUAGE_USER = API_User_DOMAIN + "api/user/savelanguages" + API_FILE_EXTENSION;
  public static final String METHOD_GET_USERDATA_USER = API_User_DOMAIN + "api/user/getuser" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_SAVEMAIL_USER = API_User_DOMAIN + "api/user/saveemails" + API_FILE_EXTENSION;
 
  public static final String METHOD_NOTIFICATIONS_GET = API_User_DOMAIN + "api/notification/getdata" + API_FILE_EXTENSION;
  public static final String METHOD_NOTIFICATIONS_Remove = API_User_DOMAIN + "api/notification/remove" + API_FILE_EXTENSION;

@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/gradient"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -25,6 +24,7 @@
                 app:srcCompat="@drawable/ic_close" />
 
             <TextView
+                android:id="@+id/dailog_header"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -43,6 +43,7 @@
                 android:paddingLeft="@dimen/spacing_xsmall"
                 android:paddingRight="@dimen/spacing_xsmall"
                 android:text="SAVE"
+                android:layout_marginRight="@dimen/dimen_10dp"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
@@ -53,16 +54,13 @@
         android:id="@+id/card_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_large"
-        android:layout_marginRight="@dimen/spacing_large"
-        android:layout_marginBottom="@dimen/spacing_large"
-        android:background="#F19292"
+        android:layout_marginLeft="@dimen/spacing_medium"
+        android:layout_marginRight="@dimen/spacing_medium"
         android:padding="@dimen/dimen_7dp"
         app:cardCornerRadius="@dimen/dimen_5dp"
         app:cardElevation="2dp">
-
-
             <LinearLayout
+                android:id="@+id/lin_dailog_edit"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
