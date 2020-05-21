@@ -3,6 +3,7 @@ package com.fammeo.app.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,17 +11,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -28,8 +24,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,18 +35,18 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fammeo.app.R;
+import com.fammeo.app.adapter.fammeoAdapter.CityAdapter;
+import com.fammeo.app.adapter.fammeoAdapter.EmailDailogeAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.EmailListAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.LanguageAdapter;
+import com.fammeo.app.adapter.fammeoAdapter.LanguageListAdapter;
 import com.fammeo.app.app.App;
-import com.fammeo.app.common.AlertDailogBox;
 import com.fammeo.app.common.DataGlobal;
 import com.fammeo.app.common.DataText;
 import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.model.EmailModel;
-import com.fammeo.app.model.EmailType;
 import com.fammeo.app.util.CustomAuthRequest;
 import com.fammeo.app.view.siv.CircularImageView;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import org.json.JSONArray;
@@ -65,7 +59,9 @@ import java.util.List;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static com.fammeo.app.constants.Constants.METHOD_GET_PUBLIC_LANGUAGE_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SAVEMAIL_USER;
+import static com.fammeo.app.constants.Constants.METHOD_GET_SAVE_ADDRESS_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SAVE_LANGUAGE_USER;
+import static com.fammeo.app.constants.Constants.METHOD_GET_SEARCHCITY_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_USERDATA_USER;
 
 public class SettingEdit extends AppCompatActivity {
@@ -74,14 +70,22 @@ public class SettingEdit extends AppCompatActivity {
     public CustomAuthRequest request;
     private String userId;
     ArrayList<CommonModel> lanList = new ArrayList<>();
-    RecyclerView recycler_view,recycler_view_email;
-    Button bt_save;
+    ArrayList<CommonModel> cityList = new ArrayList<>();
+    ArrayList<EmailModel> emailList;
+    RecyclerView recycler_view,recycler_view_email,recycler_view_lang,recycler_add_type,recycler_view_lang_dbox;
+    private Button bt_save,bt_save_address;
     ImageButton bt_true;
-    EditText edt_lang,edt_emailtwo;
-    List<String> allLangList = new ArrayList<>();
+    EditText edt_lang,edt_city;
+    List<String> allLangList = new ArrayList<String>();
     ChipGroup tag_group;
     LinearLayout pbHeaderProgress;
-    String pe,peType,valid_email;
+    String pe,peType,cityName,cityState,cityCountry;
+    JSONArray arr;
+    LanguageListAdapter listAdapter,listAdapter1;
+    ArrayList<String> lanListName = new ArrayList<>();
+    List<CommonModel> profileLangList;
+    private EmailListAdapter emailadapter = null;
+    private EmailDailogeAdapter emailAdapterDialogList = null;
 
 
     @Override
@@ -91,6 +95,7 @@ public class SettingEdit extends AppCompatActivity {
         pbHeaderProgress = findViewById(R.id.pbHeaderProgress);
 
         recycler_view_email = findViewById(R.id.recycler_view_email);
+        recycler_view_lang = findViewById(R.id.recycler_view_lang);
         sp = getSharedPreferences("uId", MODE_PRIVATE);
         userId = sp.getString("u","");
         String un = sp.getString("un","");
@@ -106,16 +111,20 @@ public class SettingEdit extends AppCompatActivity {
         Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        getSupportActionBar().setTitle("Edit Profile");
+        getSupportActionBar().setTitle("View Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((ImageButton) findViewById(R.id.imgbt_lang)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Log.e("TEST","Click Language Edit");
-                AlertDailogBox dailogBox = new AlertDailogBox(getApplicationContext(),"Edit Language");
-                dailogBox.show();*/
                 showCustomDialog();
+            }
+        });
+        ((ImageButton) findViewById(R.id.img_edt_address)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                addressCustomDialog();
             }
         });
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -128,6 +137,288 @@ public class SettingEdit extends AppCompatActivity {
         getUserData();
     }
 
+    private void addressCustomDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.address_dialog_event);
+        dialog.setCancelable(true);
+
+        final EditText edt_addressType = dialog.findViewById(R.id.edt_addressType);
+        final EditText edt_address = dialog.findViewById(R.id.edt_address);
+        edt_city = dialog.findViewById(R.id.edt_city);
+        bt_save_address = dialog.findViewById(R.id.bt_save_address);
+        recycler_add_type = dialog.findViewById(R.id.recycler_add_type);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        edt_addressType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAdrressType(v);
+            }
+        });
+
+        edt_city.addTextChangedListener(new TextWatcher() {
+            long lastChange=0;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() >= 3){
+                    final String cName = s.toString();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            seachCity(cName);
+                            recycler_add_type.setVisibility(View.VISIBLE);
+                        }
+                    },300);
+                    lastChange = System.currentTimeMillis();
+                }else if(s.length() == 0){
+                    recycler_view.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        ((Button) dialog.findViewById(R.id.bt_save_address)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("TEST","Address Type :"+edt_addressType.getText().toString());
+                Log.e("TEST","Address  :"+edt_address.getText().toString());
+                Log.e("TEST","Address City :"+edt_city.getText().toString());
+                saveAddress(cityName,cityCountry,edt_address.getText().toString(),cityState,edt_addressType.getText());
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    private void saveAddress(final String cityName, final String cityCountry, final String address, final String cityState, final Editable addType) {
+
+            Log.e("TEST","Save Address :");
+            // list.clear();
+            request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SAVE_ADDRESS_USER, null,0,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (App.getInstance().authorizeSimple(response)) {
+                                String strResponse = response.toString();
+                                Log.e("TEST","Save Address Response :"+response.toString());
+                                if(strResponse != null) {
+                                    pbHeaderProgress.setVisibility(View.GONE);
+                                    lanList.clear();
+                                    try {
+                                        JSONObject object = new JSONObject(strResponse);
+                                        String msgType = object.getString("MessageType");
+                                        if(msgType.equalsIgnoreCase("success"));
+                                        toastIconSuccess("address");
+                                        // getUserData();
+                                      //  JSONObject obj = object.getJSONObject("obj");
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Log.e("TEST","Get JSONException :"+e);
+                                    }
+                                }
+                            }else {
+                                //  pbHeaderProgress.setVisibility(View.VISIBLE);
+                                //SnakebarCustom.danger(mContext, View , "Unable to fetch contact: " + "No data found", 5000);
+                            }
+                        }
+
+                    }, new Response.ErrorListener()
+            {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //pbHeaderProgress.setVisibility(View.VISIBLE);
+                    //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
+                }
+            }) {
+
+                @Override
+                protected JSONObject getParams() {
+                    try {
+                        // new
+
+                        JSONObject addObj = new JSONObject();
+                        try {
+                            addObj.put("C", "surat");
+                            addObj.put("CR","india");
+                            addObj.put("Id", "null");
+                            addObj.put("L1", "Nana vArachha");
+                            addObj.put("S", "Gujarat");
+                            addObj.put("T", "Home");
+
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
+                        JSONArray jsonArray = new JSONArray();
+
+                        jsonArray.put(addObj);
+                        JSONObject params = new JSONObject();
+                        params.put("addresses", jsonArray);
+                        params.put("UserId",userId);
+                        System.out.println("jsonString: "+params.toString());
+
+                        Log.e("TEST","JSON String :"+params.toString());
+
+//                        JSONObject params = new JSONObject();
+//                        JSONArray jsonArray=new JSONArray();
+//
+//
+//
+//                        //for(int i=0; i < jsonArray.length(); i++) {
+//                            JSONObject addObj= jsonArray.getJSONObject(0);
+//                            addObj.put("C", cityName);
+//                            addObj.put("CR",cityCountry);
+//                            addObj.put("Id", "null");
+//                            addObj.put("L1", address);
+//                            addObj.put("S", cityState);
+//                            addObj.put("T", addType);
+//                            jsonArray.put(addObj);
+//                     //   }
+//
+//
+//                        params.put("addresses",jsonArray);
+//                        params.put("UserId",userId);
+                        return params;
+                    } catch (JSONException ex) {
+                        DataGlobal.SaveLog(TAG, ex);
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onCreateFinished(CustomAuthRequest request) {
+                    int socketTimeout = 300000;//0 seconds - change to what you want
+                    RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    request.customRequest.setRetryPolicy(policy);
+                    App.getInstance().addToRequestQueue(request);
+                }
+            };
+    }
+
+    private void seachCity(final String cName) {
+            // pbHeaderProgress.setVisibility(View.VISIBLE);
+            Log.e("TEST","Search City :"+cName);
+            // list.clear();
+            request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SEARCHCITY_USER, null,0,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (App.getInstance().authorizeSimple(response)) {
+                                String strResponse = response.toString();
+                                Log.e("TEST","Search City Response :"+response.toString());
+
+                                RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
+                                recycler_add_type.setLayoutManager(recyce);
+
+                                if(strResponse != null) {
+                                    //lanList.clear();
+                                    try {
+                                        JSONObject object = new JSONObject(strResponse);
+                                        String msgType = object.getString("MessageType");
+                                        if(msgType.equalsIgnoreCase("success"))
+                                        {
+                                            bt_save_address.setVisibility(View.VISIBLE);
+                                        }
+//                                        JSONObject obj = object.getJSONObject("obj");
+                                        JSONArray addOBJ = object.getJSONArray("obj");
+                                        for (int i = 0; i < addOBJ.length(); i++) {
+                                            CommonModel cm= new CommonModel();
+                                            JSONObject ob = addOBJ.getJSONObject(i);
+                                            cm.cN = ob.getString("N");
+                                            cm.cState = ob.getString("S");
+                                            cm.cCountry = ob.getString("CR");
+                                            cm.cSC = ob.getString("SC");
+                                            cm.cCRC = ob.getString("CRC");
+
+                                            cityList.add(cm);
+                                        }
+                                        CityAdapter cityadaper = new CityAdapter(SettingEdit.this,cityList);
+                                        recycler_add_type.setAdapter(cityadaper);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }else {
+//                                pbHeaderProgress.setVisibility(View.VISIBLE);
+                                //SnakebarCustom.danger(mContext, View , "Unable to fetch contact: " + "No data found", 5000);
+                            }
+                        }
+
+                    }, new Response.ErrorListener()
+            {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //pbHeaderProgress.setVisibility(View.VISIBLE);
+                    //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
+                }
+            }) {
+
+                @Override
+                protected JSONObject getParams() {
+                    try {
+                        JSONObject params = new JSONObject();
+                        params.put("city",cName);
+                        params.put("country","IN");
+
+                        return params;
+                    } catch (JSONException ex) {
+                        DataGlobal.SaveLog(TAG, ex);
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onCreateFinished(CustomAuthRequest request) {
+                    int socketTimeout = 300000;//0 seconds - change to what you want
+                    RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    request.customRequest.setRetryPolicy(policy);
+                    App.getInstance().addToRequestQueue(request);
+                }
+            };
+    }
+
+    private void showAdrressType(final View v) {
+        final String[] addType = new String[]{
+                "Home","Work","Other"
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setSingleChoiceItems(addType, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((EditText) v).setText(addType[i]);
+               // emailList.get(i).emailType = emailType[i];
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
     private void showEmailCustomDialog() {
 
             final Dialog dialog = new Dialog(this);
@@ -135,34 +426,15 @@ public class SettingEdit extends AppCompatActivity {
             dialog.setContentView(R.layout.email_dialog_event);
             dialog.setCancelable(true);
 
-            final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-            final EditText edt_email = dialog.findViewById(R.id.edt_email);
-            final EditText edt_emailType = dialog.findViewById(R.id.edt_emailType);
-            edt_emailtwo = dialog.findViewById(R.id.edt_emailtwo);
-            final EditText edt_emailTypetwo = dialog.findViewById(R.id.edt_emailTypetwo);
-           bt_save = dialog.findViewById(R.id.bt_save);
+            recycler_view_email = dialog.findViewById(R.id.recycler_view_email);
+            bt_save = dialog.findViewById(R.id.bt_save);
 
-            edt_email.setText(pe);
-            edt_emailType.setText(peType);
-            edt_email.setFocusable(false);
-            edt_email.setClickable(false);
+           RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
+           recycler_view_email.setLayoutManager(recyce);
 
-            edt_emailtwo.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        emailAdapterDialogList = new EmailDailogeAdapter(SettingEdit.this,emailList);
+        recycler_view_email.setAdapter(emailAdapterDialogList);
 
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Is_Valid_Email(edt_emailtwo);
-                }
-            });
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
             lp.copyFrom(dialog.getWindow().getAttributes());
             lp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -171,7 +443,14 @@ public class SettingEdit extends AppCompatActivity {
             ((TextView) dialog.findViewById(R.id.txt_addNew)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((LinearLayout) dialog.findViewById(R.id.lin_emailBox)).setVisibility(View.VISIBLE);
+                    EmailModel em = new EmailModel();
+
+                    em.recordId = null;
+                    em.emailAddress = "";
+                    em.emailType = "Office";
+                    emailList.add(em);
+                    emailAdapterDialogList.notifyItemInserted(emailList.size()-1);
+                    // ((LinearLayout) dialog.findViewById(R.id.lin_emailBox)).setVisibility(View.VISIBLE);
                 }
             });
             ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
@@ -181,54 +460,35 @@ public class SettingEdit extends AppCompatActivity {
                 }
             });
 
-           bt_save.setOnClickListener(new View.OnClickListener() {
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
-                public void onClick(View v) {
-                    if(edt_emailtwo.getText().toString().isEmpty()) {
-                        edt_emailtwo.requestFocus();
-                        edt_emailtwo.setError("Enter Email!");
-                    }else {
-                        if (edt_emailtwo.getText().toString().trim().matches(emailPattern)) {
-                            addEmail(edt_email.getText(),edt_emailType.getText(),edt_emailtwo.getText(),edt_emailTypetwo.getText());
-                            dialog.dismiss();
-                        } else {
-                            edt_emailtwo.requestFocus();
-                            edt_emailtwo.setError("Invalid email address!");
-                        }
+                public void onDismiss(DialogInterface dialog) {
+                    for (int i = 0; i < emailList.size(); i++) {
+                       // Log.e("TEST", "Email = "+emailList.get(i).emailAddress + " | "+emailList.get(i).emailType);
                     }
                 }
             });
-            edt_emailTypetwo.setOnClickListener(new View.OnClickListener() {
+
+           bt_save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showEmailTupe(v);
+                            addEmail(emailList);
+                            dialog.dismiss();
                 }
             });
             dialog.show();
             dialog.getWindow().setAttributes(lp);
     }
 
-    private void Is_Valid_Email(EditText edt) {
-        if (edt.getText().toString() == null) {
-            edt.setError("Invalid Email Address");
-            valid_email = null;
-        } else if (isEmailValid(edt.getText().toString()) == false) {
-            edt.setError("Invalid Email Address");
-            valid_email = null;
-        } else {
-            valid_email = edt.getText().toString();
+    public void enableSaveBottn(boolean flage){
+        if(flage == true){
             bt_save.setVisibility(View.VISIBLE);
         }
     }
 
-    private boolean isEmailValid(CharSequence email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email)
-                .matches();
-    }
-
-    private void addEmail(final Editable EdtOne, final Editable EdtTypeOne, final Editable EdtTwo, final Editable EdtTypeTwo) {
+    private void addEmail(final ArrayList<EmailModel> getemailList) {
            // pbHeaderProgress.setVisibility(View.VISIBLE);
-            Log.e("TEST","Save Email Data");
+            Log.e("TEST","Save Email Data :");
             // list.clear();
             request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SAVEMAIL_USER, null,0,
                     new Response.Listener<JSONObject>() {
@@ -245,6 +505,8 @@ public class SettingEdit extends AppCompatActivity {
                                         String msgType = object.getString("MessageType");
                                         if(msgType.equalsIgnoreCase("success"));
                                         toastIconSuccess("email");
+                                       // getUserData();
+                                        emailadapter.notifyDataSetChanged();
                                         JSONObject obj = object.getJSONObject("obj");
 
                                     } catch (JSONException e) {
@@ -274,19 +536,30 @@ public class SettingEdit extends AppCompatActivity {
                         JSONObject params = new JSONObject();
                         JSONArray jsonArray=new JSONArray();
 
-                        JSONObject email1Object=new JSONObject();
+                      /*JSONObject email1Object=new JSONObject();
                         email1Object.put("T",EdtTypeOne);
                         email1Object.put("E",EdtOne);
 
                         JSONObject email2Object=new JSONObject();
                         email2Object.put("T",EdtTypeTwo);
-                        email2Object.put("E",EdtTwo);
+                        email2Object.put("E",EdtTwo);*/
 
-                        jsonArray.put(email1Object);
-                        jsonArray.put(email2Object);
+                        for (int i = 0; i < getemailList.size(); i++) {
+                            JSONObject email2Object=new JSONObject();
+
+                            String tmpId = "null";
+                            if (getemailList.get(i).recordId != null)
+                                tmpId = getemailList.get(i).recordId;
+
+                            email2Object.put("E", getemailList.get(i).emailAddress);
+                            email2Object.put("Id",getemailList.get(i).recordId);
+                            email2Object.put("T", getemailList.get(i).emailType);
+                            jsonArray.put(email2Object);
+                        }
+
+                        //jsonArray.put(email2Object);
                         params.put("emails",jsonArray);
                         params.put("UserId",userId);
-
                         return params;
                     } catch (JSONException ex) {
                         DataGlobal.SaveLog(TAG, ex);
@@ -304,7 +577,7 @@ public class SettingEdit extends AppCompatActivity {
             };
      }
 
-    private void showEmailTupe(final View v) {
+    public void showEmailTupe(final View v, final int position) {
         final String[] emailType = new String[]{
             "Mobile","Office","Home","Main","Work Fax","Home Fax","other"
         };
@@ -313,6 +586,7 @@ public class SettingEdit extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ((EditText) v).setText(emailType[i]);
+                emailList.get(position).emailType = emailType[i];
                 dialogInterface.dismiss();
             }
         });
@@ -325,19 +599,74 @@ public class SettingEdit extends AppCompatActivity {
         dialog.setContentView(R.layout.laguage_dialog_event);
         dialog.setCancelable(true);
         recycler_view = dialog.findViewById(R.id.recycler_view);
+
+        recycler_view_lang_dbox = dialog.findViewById(R.id.recycler_view_lang_dbox);
         bt_save = dialog.findViewById(R.id.bt_save);
         bt_true = dialog.findViewById(R.id.bt_true);
         edt_lang = dialog.findViewById(R.id.edt_lang);
         tag_group = dialog.findViewById(R.id.tag_group);
-
+        LinearLayout linDailogLag =  dialog.findViewById(R.id.dailog_rel_lang);
 
         RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
         recycler_view.setLayoutManager(recyce);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
+        recycler_view_lang_dbox.setLayoutManager(gridLayoutManager);
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        List<String> lang = new ArrayList<>();
+        listAdapter1 = new LanguageListAdapter(SettingEdit.this,profileLangList,true);
+        recycler_view_lang_dbox.setAdapter(listAdapter1);
+       /* for (int i = 0; i < arr.length(); i++) {
+            try {
+                JSONObject arrObj = arr.getJSONObject(i);
+                CommonModel cm = new CommonModel();
+                cm.lId = arrObj.getString("Id");
+                cm.lName = arrObj.getString("N");
+
+                String getname = cm.lName;
+
+                lang.add(getname);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        setTag(lang);*/
+
+
+
+        /*for (int i = 0; i < arr.length(); i++) {
+            try {
+                JSONObject arrObj = arr.getJSONObject(i);
+
+                CommonModel cm = new CommonModel();
+                cm.lId = arrObj.getString("Id");
+                cm.lName = arrObj.getString("N");
+
+                String getname = cm.lName;
+                TextView rowTextView = new TextView(SettingEdit.this);
+                rowTextView.setText(getname);
+
+                allLangList.add(getname);
+                rowTextView.setBackground(getApplicationContext().getDrawable(R.drawable.shape_rounded_orange));
+                rowTextView.setPadding(25,15,25,15);
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(10,0,0,0);
+                rowTextView.setLayoutParams(params);
+
+                rowTextView.setTextColor(Color.parseColor("#f2f4f7"));
+                linDailogLag.addView(rowTextView);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }*/
 
         edt_lang.addTextChangedListener(new TextWatcher() {
             long lastChange=0;
@@ -378,42 +707,33 @@ public class SettingEdit extends AppCompatActivity {
         ((Button) dialog.findViewById(R.id.bt_save)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TEST","List :"+allLangList);
-                //aaa
-                for (int i = 0; i < allLangList.size(); i++) {
-                    Log.e("TEST","SAVE :"+allLangList.get(i).toString());
-                }
-
-                getSaveLanguage(allLangList);
+                getSaveLanguage(profileLangList);
                 dialog.dismiss();
             }
         });
         bt_true.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TEST","Add Language");
                 String getText = edt_lang.getText().toString();
                 if(getText.length() > 0){
                     List<String> items = new ArrayList<>();
                     items.add(getText);
-                    Log.e("TEST","Get Tag Name :"+edt_lang);
-                    setTag(items);
+                    //setTag(items);
                     edt_lang.setText("");
                 }else {
                     edt_lang.setFocusable(true);
                 }
 
-
-                //getLanName();
             }
         });
         dialog.show();
         dialog.getWindow().setAttributes(lp);
     }
 
-    private void getSaveLanguage(final List<String> allLangList) {
+    private void getSaveLanguage(final List<CommonModel> allLangList) {
             // pbHeaderProgress.setVisibility(View.VISIBLE);
-
+            Log.e("TEST","Language allLangList :"+allLangList.toString());
+            Log.e("TEST","Language lanList :"+lanList.toString());
             // list.clear();
             request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SAVE_LANGUAGE_USER, null,0,
                     new Response.Listener<JSONObject>() {
@@ -430,11 +750,11 @@ public class SettingEdit extends AppCompatActivity {
                                         if(msgType.equalsIgnoreCase("success"));
                                         toastIconSuccess("Language");
 
+                                        getUserData();
+
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-
-
                                 }
                             }else {
 //                                pbHeaderProgress.setVisibility(View.VISIBLE);
@@ -453,13 +773,31 @@ public class SettingEdit extends AppCompatActivity {
 
                 @Override
                 protected JSONObject getParams() {
+
                     try {
                         JSONObject params = new JSONObject();
                         JSONArray jsonArray=new JSONArray();
+
+                       /* for (int i = 0; i < getemailList.size(); i++) {
+                            JSONObject email2Object=new JSONObject();
+
+                            String tmpId = "null";
+                            if (getemailList.get(i).recordId != null)
+                                tmpId = getemailList.get(i).recordId;
+
+                            email2Object.put("E", getemailList.get(i).emailAddress);
+                            email2Object.put("Id",getemailList.get(i).recordId);
+                            email2Object.put("T", getemailList.get(i).emailType);
+                            jsonArray.put(email2Object);
+                        }
+                        */
+                        //allLangList.add(lanList);
+
                         for (int i = 0; i < allLangList.size(); i++) {
+
                             JSONObject jsonObject=new JSONObject();
                             jsonObject.put("id",null);
-                            jsonObject.put("N",allLangList.get(i));
+                            jsonObject.put("N",allLangList.get(i).lName);
                             jsonArray.put(jsonObject);
                         }
                         params.put("languages",jsonArray);
@@ -492,6 +830,8 @@ public class SettingEdit extends AppCompatActivity {
             ((TextView) custom_view.findViewById(R.id.message)).setText("Language(s) Saved Successfully!");
         }else if(msgText.equalsIgnoreCase("email")){
             ((TextView) custom_view.findViewById(R.id.message)).setText("Email(s) Saved Successfully!");
+        }else if(msgText.equalsIgnoreCase("address")){
+            ((TextView) custom_view.findViewById(R.id.message)).setText("Address(s) Saved Successfully!");
         }
 
         ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_done);
@@ -501,15 +841,22 @@ public class SettingEdit extends AppCompatActivity {
         toast.show();
     }
 
-    private void setTag(final List<String> items) {
+   /* private void setTag(final List<String> items) {
+        Log.e("TEST","Get Name :"+items.toString());
+        items.clear();
         for (int i = 0; i < items.size(); i++) {
+            Log.e("TEST","Item Size :"+items.size());
             final String tagName = items.get(i);
             final Chip chip = new Chip(SettingEdit.this);
             int paddingDp = (int) TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 10,
                     getResources().getDisplayMetrics()
             );
-            chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+           // chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+            chip.setPadding(25,15,25,15);
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(SettingEdit.this, R.color.appColore)));
+            chip.setTextColor(Color.parseColor("#fafbfc"));
+            //chip.setBackground(getApplicationContext().getDrawable(R.drawable.shape_rounded_orange));
             chip.setText(tagName);
             chip.setCloseIconResource(R.drawable.ic_close);
             chip.setCloseIconEnabled(true);
@@ -518,13 +865,15 @@ public class SettingEdit extends AppCompatActivity {
                 public void onClick(View v) {
                     items.remove(tagName);
                     tag_group.removeView(chip);
+                    bt_save.setVisibility(View.VISIBLE);
                 }
             });
+            //allLangList.addAll(items);
             Log.e("TEST","Get Lang Name :"+tag_group);
-            allLangList.add(tagName);
+            profileLangList.add(tagName);
             tag_group.addView(chip);
         }
-    }
+    }*/
 
     private void seachLanguage(final String lagText) {
            // pbHeaderProgress.setVisibility(View.VISIBLE);
@@ -545,15 +894,16 @@ public class SettingEdit extends AppCompatActivity {
                                         if(msgType.equalsIgnoreCase("success"))
                                         {
                                             bt_save.setVisibility(View.VISIBLE);
-                                            bt_true.setVisibility(View.VISIBLE);
+                                           // bt_true.setVisibility(View.VISIBLE);
                                         }
 //                                        JSONObject obj = object.getJSONObject("obj");
-                                        JSONArray arr = object.getJSONArray("obj");
+                                        arr = object.getJSONArray("obj");
                                         for (int i = 0; i < arr.length(); i++) {
                                             CommonModel cm= new CommonModel();
                                             JSONObject ob = arr.getJSONObject(i);
                                             cm.lId =ob.getString("PId");
                                             cm.lName = ob.getString("N");
+                                            cm.languageId = ob.getString("Id");
 
                                             lanList.add(cm);
                                         }
@@ -563,7 +913,6 @@ public class SettingEdit extends AppCompatActivity {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-
 
                                 }
                             }else {
@@ -618,6 +967,8 @@ public class SettingEdit extends AppCompatActivity {
                             Log.e("TEST","Get User Data Response :"+response.toString());
                             if(strResponse != null) {
                                 pbHeaderProgress.setVisibility(View.GONE);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
+                                recycler_view_lang.setLayoutManager(gridLayoutManager);
                                 lanList.clear();
                                 try {
 
@@ -626,7 +977,7 @@ public class SettingEdit extends AppCompatActivity {
                                     if(msgType.equalsIgnoreCase("success"));
                                     JSONObject obj = object.getJSONObject("obj");
 
-                                    JSONArray arr = obj.getJSONArray("Ls");
+                                    arr = obj.getJSONArray("Ls");
                                     String userId = obj.getString("Id");
                                     String userURl = obj.getString("I");
                                     String un = obj.getString("UN");
@@ -649,43 +1000,47 @@ public class SettingEdit extends AppCompatActivity {
                                         ((TextView) findViewById(R.id.search_image_text)).setText(firstLater);
                                     }
 
-                                    ArrayList<EmailModel> emailList = new ArrayList<>();
+                                    emailList = new ArrayList<>();
                                     JSONArray arrEs = obj.getJSONArray("Es");
                                     for (int i = 0; i < arrEs.length(); i++) {
                                         JSONObject objEs = arrEs.getJSONObject(i);
                                         EmailModel em = new EmailModel();
                                         pe = objEs.getString("E");
                                         peType = objEs.getString("T");
+                                        String id = objEs.getString("Id");
                                         em.emailAddress = pe;
                                         em.emailType = peType;
-                                        Log.e("TEST","Type :"+peType);
-                                        Log.e("TEST","Email :"+pe);
+                                        em.recordId = id;
                                         emailList.add(em);
                                     }
-                                    EmailListAdapter emailadapter = new EmailListAdapter(getApplicationContext(),emailList);
+                                    emailadapter = new EmailListAdapter(getApplicationContext(),emailList);
                                     recycler_view_email.setAdapter(emailadapter);
 
-                                    LinearLayout lLayout = (LinearLayout) findViewById(R.id.rel_lang);
+                                    profileLangList = new ArrayList<>();
+                                   // LinearLayout lLayout = (LinearLayout) findViewById(R.id.rel_lang);
+                                   // lLayout.removeAllViews();
                                     for (int i = 0; i < arr.length(); i++) {
                                         JSONObject arrObj = arr.getJSONObject(i);
                                         CommonModel cm = new CommonModel();
                                         cm.lId = arrObj.getString("Id");
                                         cm.lName = arrObj.getString("N");
-                                        Log.e("TEST","Get user Name :"+cm.lName);
-                                        Log.e("TEST","Get user Id :"+cm.lId);
+                                        profileLangList.add(cm);
                                         String getname = cm.lName;
-                                        TextView rowTextView = new TextView(SettingEdit.this);
-                                        rowTextView.setText(getname+i);
-                                        rowTextView.setBackground(getApplicationContext().getDrawable(R.drawable.shape_rounded_orange));
-                                        rowTextView.setPadding(10,10,10,10);
+                                       // TextView rowTextView = new TextView(SettingEdit.this);
+                                        //rowTextView.setText(getname);
+                                      //  rowTextView.setBackground(getApplicationContext().getDrawable(R.drawable.shape_rounded_orange));
+                                      //  rowTextView.setPadding(25,15,25,15);
 
-                                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                        params.setMargins(10,0,0,0);
-                                        rowTextView.setLayoutParams(params);
-
-                                        rowTextView.setTextColor(Color.parseColor("#f2f4f7"));
-                                        lLayout.addView(rowTextView);
+                                     //   LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                      //  params.setMargins(10,0,0,0);
+                                     //   rowTextView.setLayoutParams(params);
+//
+                                       // rowTextView.setTextColor(Color.parseColor("#f2f4f7"));
+                                       // lLayout.addView(rowTextView);
                                     }
+
+                                    listAdapter = new LanguageListAdapter(SettingEdit.this,profileLangList,false);
+                                    recycler_view_lang.setAdapter(listAdapter);
 
                                     //rowTextView.setText(getname);
 
@@ -750,11 +1105,24 @@ public class SettingEdit extends AppCompatActivity {
     }
 
     public void getLanName(String lan){
-        Log.e("TEST","Language Name :"+lan);
-        List<String> items = new ArrayList<>();
-        items.add(lan);
-        setTag(items);
+            CommonModel cm = new CommonModel();
+            cm.lName = lan;
+            profileLangList.add(cm);
+
+        listAdapter1.notifyDataSetChanged();
         recycler_view.setVisibility(View.GONE);
         edt_lang.setText("");
+    }
+
+    public void setCityName(String cn, String cs, String cc, String city){
+        cityName = cn;
+        cityState = cs;
+        cityCountry = cc;
+        Log.e("TEST","CN :"+cn);
+        Log.e("TEST","cs :"+cs);
+        Log.e("TEST","cc :"+cc);
+        Log.e("TEST","city :"+city);
+        edt_city.setText(city);
+        recycler_add_type.setVisibility(View.GONE);
     }
 }

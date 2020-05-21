@@ -140,6 +140,7 @@
     <color name="colorAccent">#FFFFFF</color>
     <color name="colorAccenttext">@color/material_ecbblue_500</color>
     <color name="from">#000000</color>
+    <color name="appColore">#7986CB</color>
     <color name="subject">#111111</color>
     <color name="timestamp">#4285f4</color>
     <color name="message">#7a7a7a</color>

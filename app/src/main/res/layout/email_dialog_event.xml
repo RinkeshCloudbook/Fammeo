@@ -49,101 +49,24 @@
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.cardview.widget.CardView
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:id="@+id/card_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_medium"
-        android:layout_marginRight="@dimen/spacing_medium"
-        android:padding="@dimen/dimen_7dp"
-        app:cardCornerRadius="@dimen/dimen_5dp"
-        app:cardElevation="2dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen_7dp"
-            android:paddingLeft="@dimen/spacing_middle"
-            android:paddingRight="@dimen/spacing_middle">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:padding="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_5dp"
-                android:layout_marginLeft="@dimen/dimen_5dp"
-                android:layout_marginRight="@dimen/dimen_5dp">
-                <LinearLayout
+                android:layout_marginBottom="@dimen/dimen_5dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_mlarge"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_medium"
-                            android:text="Email"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/grey_60" />
-                        <EditText
-                            android:id="@+id/edt_email"
-                            style="@style/EditText.Flat.Grey"
-                            android:background="@drawable/round_rect_grey_border"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/spacing_xmlarge"
-                            android:minHeight="@dimen/spacing_xmlarge"
-                            android:inputType="textEmailAddress"
-                            android:editable="false"
-                            android:paddingLeft="@dimen/spacing_middle"
-                            android:paddingRight="@dimen/spacing_middle" />
-                    </LinearLayout>
-                    <View
-                        android:layout_width="@dimen/spacing_middle"
-                        android:layout_height="0dp" />
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_medium"
-                            android:text="Type"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/grey_60" />
-                        <EditText
-                            android:id="@+id/edt_emailType"
-                            style="@style/EditText.Flat.Grey"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/spacing_xmlarge"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_rect_grey_border"
-                            android:drawableEnd="@drawable/ic_arrow_drop_black"
-                            android:drawableRight="@drawable/ic_arrow_drop_black"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:minHeight="@dimen/spacing_xmlarge"
-                            android:paddingLeft="@dimen/spacing_middle"
-                            android:paddingRight="@dimen/spacing_middle"
-                            android:text="Office"
-                            />
-                    </LinearLayout>
-
-                </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical" />
                 <LinearLayout
-                    android:id="@+id/lin_emailBox"
                     android:visibility="gone"
+                    android:id="@+id/lin_emailBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_mlarge"
@@ -179,8 +102,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -191,7 +113,7 @@
                         <EditText
                             android:id="@+id/edt_emailTypetwo"
                             style="@style/EditText.Flat.Grey"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="@dimen/spacing_xmlarge"
                             android:layout_weight="1"
                             android:background="@drawable/round_rect_grey_border"
@@ -220,6 +142,4 @@
                 android:gravity="end"/>
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
 
-</LinearLayout>
