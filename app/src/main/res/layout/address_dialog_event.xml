@@ -8,7 +8,8 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/themecolor">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,8 +51,14 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_address_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
     <LinearLayout
+        android:id="@+id/lin_emailbox"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -135,7 +142,7 @@
             <EditText
                 android:id="@+id/edt_city"
                 style="@style/EditText.Flat.Grey"
-                android:background="@drawable/round_rect_grey_border"
+                android:background="@null"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spacing_xmlarge"
                 android:minHeight="@dimen/spacing_xmlarge"
@@ -149,7 +156,7 @@
                 android:id="@+id/bt_true"
                 android:layout_width="@dimen/dimen_35dp"
                 android:layout_height="40dp"
-                android:background="@drawable/imagebutton_green_bg"
+                android:background="@drawable/imagebutton_add_dialog_bg"
                 android:clickable="true"
                 android:tint="@color/grey_3"
                 android:src="@drawable/arrow_down"
@@ -183,7 +190,7 @@
         android:padding="@dimen/dimen_7dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="@dimen/dimen_14sp"
-        android:textColor="@color/blue_500"
+        android:textColor="@color/themecolor"
         android:gravity="end"/>
 
 </LinearLayout>

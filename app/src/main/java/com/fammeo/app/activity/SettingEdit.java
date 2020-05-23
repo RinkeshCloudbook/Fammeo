@@ -35,6 +35,8 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fammeo.app.R;
+import com.fammeo.app.adapter.AddressAdapter;
+import com.fammeo.app.adapter.fammeoAdapter.AddressDailogeAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.CityAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.EmailDailogeAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.EmailListAdapter;
@@ -70,9 +72,11 @@ public class SettingEdit extends AppCompatActivity {
     public CustomAuthRequest request;
     private String userId;
     ArrayList<CommonModel> lanList = new ArrayList<>();
-    ArrayList<CommonModel> cityList = new ArrayList<>();
+    ArrayList<CommonModel> mAddressList = new ArrayList<>();
+    List<String> mCityList = new ArrayList<>();
     ArrayList<EmailModel> emailList;
-    RecyclerView recycler_view,recycler_view_email,recycler_view_lang,recycler_add_type,recycler_view_lang_dbox;
+    RecyclerView recycler_view,recycler_view_email,recycler_view_lang,
+            recycler_add_type,recycler_view_lang_dbox,recycler_view_address,recycler_address_list;
     private Button bt_save,bt_save_address;
     ImageButton bt_true;
     EditText edt_lang,edt_city;
@@ -81,6 +85,8 @@ public class SettingEdit extends AppCompatActivity {
     LinearLayout pbHeaderProgress;
     String pe,peType,cityName,cityState,cityCountry;
     JSONArray arr;
+    AddressDailogeAdapter addsDaiAdapter;
+    AddressAdapter addsAdapter;
     LanguageListAdapter listAdapter,listAdapter1;
     ArrayList<String> lanListName = new ArrayList<>();
     List<CommonModel> profileLangList;
@@ -95,6 +101,7 @@ public class SettingEdit extends AppCompatActivity {
         pbHeaderProgress = findViewById(R.id.pbHeaderProgress);
 
         recycler_view_email = findViewById(R.id.recycler_view_email);
+        recycler_view_address = findViewById(R.id.recycler_view_address);
         recycler_view_lang = findViewById(R.id.recycler_view_lang);
         sp = getSharedPreferences("uId", MODE_PRIVATE);
         userId = sp.getString("u","");
@@ -107,6 +114,8 @@ public class SettingEdit extends AppCompatActivity {
 
         RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
         recycler_view_email.setLayoutManager(recyce);
+        RecyclerView.LayoutManager addsrecy = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
+        recycler_view_address.setLayoutManager(addsrecy);
 
         Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -123,7 +132,6 @@ public class SettingEdit extends AppCompatActivity {
         ((ImageButton) findViewById(R.id.img_edt_address)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 addressCustomDialog();
             }
         });
@@ -148,6 +156,10 @@ public class SettingEdit extends AppCompatActivity {
         edt_city = dialog.findViewById(R.id.edt_city);
         bt_save_address = dialog.findViewById(R.id.bt_save_address);
         recycler_add_type = dialog.findViewById(R.id.recycler_add_type);
+        recycler_address_list = dialog.findViewById(R.id.recycler_address_list);
+
+        RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
+        recycler_address_list.setLayoutManager(recyce);
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
@@ -161,7 +173,14 @@ public class SettingEdit extends AppCompatActivity {
             }
         });
 
-        edt_city.addTextChangedListener(new TextWatcher() {
+        //addsAdapter = new AddressAdapter(SettingEdit.this,cityList);
+        //recycler_view_address.setAdapter(addsAdapter);
+
+        //  OLD CODE
+        addsDaiAdapter = new AddressDailogeAdapter(SettingEdit.this, mAddressList);
+        recycler_address_list.setAdapter(addsDaiAdapter);
+
+        /*edt_city.addTextChangedListener(new TextWatcher() {
             long lastChange=0;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -189,6 +208,23 @@ public class SettingEdit extends AppCompatActivity {
                     recycler_view.setVisibility(View.GONE);
                 }
             }
+        });*/
+
+        ((TextView) dialog.findViewById(R.id.txt_addNew)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonModel cm = new CommonModel();
+
+                cm.recordId = null;
+                cm.cType = "Office";
+                cm.cAddress = "";
+                cm.cN = "";
+                cm.cState = "";
+                cm.cCountry = "";
+                mAddressList.add(cm);
+                addsDaiAdapter.notifyItemInserted(emailList.size()-1);
+              // ((LinearLayout) dialog.findViewById(R.id.lin_emailBox)).setVisibility(View.VISIBLE);
+            }
         });
 
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
@@ -200,10 +236,9 @@ public class SettingEdit extends AppCompatActivity {
         ((Button) dialog.findViewById(R.id.bt_save_address)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TEST","Address Type :"+edt_addressType.getText().toString());
-                Log.e("TEST","Address  :"+edt_address.getText().toString());
-                Log.e("TEST","Address City :"+edt_city.getText().toString());
-                saveAddress(cityName,cityCountry,edt_address.getText().toString(),cityState,edt_addressType.getText());
+
+                //saveAddress(cityName,cityCountry,edt_address.getText().toString(),cityState,edt_addressType.getText());
+                saveAddress(mAddressList);
                 dialog.dismiss();
             }
         });
@@ -212,7 +247,87 @@ public class SettingEdit extends AppCompatActivity {
         dialog.getWindow().setAttributes(lp);
     }
 
-    private void saveAddress(final String cityName, final String cityCountry, final String address, final String cityState, final Editable addType) {
+    private void saveAddress(final ArrayList<CommonModel> cityList) {
+        request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SAVE_ADDRESS_USER, null,0,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (App.getInstance().authorizeSimple(response)) {
+                            String strResponse = response.toString();
+                            Log.e("TEST","Save Address Response :"+response.toString());
+                            if(strResponse != null) {
+                                pbHeaderProgress.setVisibility(View.GONE);
+                                lanList.clear();
+                                try {
+                                    JSONObject object = new JSONObject(strResponse);
+                                    String msgType = object.getString("MessageType");
+                                    if(msgType.equalsIgnoreCase("success"));
+                                    toastIconSuccess("address");
+                                    // getUserData();
+                                    //  JSONObject obj = object.getJSONObject("obj");
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Log.e("TEST","Get JSONException :"+e);
+                                }
+                            }
+                        }else {
+
+                        }
+                    }
+
+                }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //pbHeaderProgress.setVisibility(View.VISIBLE);
+                //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
+            }
+        }) {
+
+            @Override
+            protected JSONObject getParams() {
+                try {
+                    JSONObject params = new JSONObject();
+                    JSONArray jsonArray=new JSONArray();
+
+
+                    for (int i = 0; i < cityList.size(); i++) {
+                        JSONObject addObj=new JSONObject();
+
+                        String tmpId = "null";
+                        if (cityList.get(i).recordId != null)
+                            tmpId = cityList.get(i).recordId;
+
+                            addObj.put("C", cityList.get(i).cN);
+                            addObj.put("CR",cityList.get(i).cCountry);
+                            addObj.put("Id", cityList.get(i).recordId);
+                            addObj.put("L1", cityList.get(i).cAddress);
+                            addObj.put("S", cityList.get(i).cState);
+                            addObj.put("T", cityList.get(i).cType);
+                            jsonArray.put(addObj);
+
+                            params.put("addresses",jsonArray);
+                            params.put("UserId",userId);
+                    }
+                    return params;
+                } catch (JSONException ex) {
+                    DataGlobal.SaveLog(TAG, ex);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onCreateFinished(CustomAuthRequest request) {
+                int socketTimeout = 300000;//0 seconds - change to what you want
+                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                request.customRequest.setRetryPolicy(policy);
+                App.getInstance().addToRequestQueue(request);
+            }
+        };
+    }
+
+    private void saveAddresss(final String cityName, final String cityCountry, final String address, final String cityState, final Editable addType) {
 
             Log.e("TEST","Save Address :");
             // list.clear();
@@ -256,53 +371,24 @@ public class SettingEdit extends AppCompatActivity {
 
                 @Override
                 protected JSONObject getParams() {
-                    try {
-                        // new
+                try {
+                    JSONObject params = new JSONObject();
+                    JSONArray jsonArray=new JSONArray();
 
-                        JSONObject addObj = new JSONObject();
-                        try {
-                            addObj.put("C", "surat");
-                            addObj.put("CR","india");
-                            addObj.put("Id", "null");
-                            addObj.put("L1", "Nana vArachha");
-                            addObj.put("S", "Gujarat");
-                            addObj.put("T", "Home");
+                    JSONObject addObj=new JSONObject();
 
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
+                    addObj.put("C", cityName);
+                    addObj.put("CR",cityCountry);
+                    addObj.put("Id", null);
+                    addObj.put("L1", address);
+                    addObj.put("S", cityState);
+                    addObj.put("T", addType);
+                    jsonArray.put(addObj);
 
-                        JSONArray jsonArray = new JSONArray();
+                    params.put("addresses",jsonArray);
+                    params.put("UserId",userId);
 
-                        jsonArray.put(addObj);
-                        JSONObject params = new JSONObject();
-                        params.put("addresses", jsonArray);
-                        params.put("UserId",userId);
-                        System.out.println("jsonString: "+params.toString());
-
-                        Log.e("TEST","JSON String :"+params.toString());
-
-//                        JSONObject params = new JSONObject();
-//                        JSONArray jsonArray=new JSONArray();
-//
-//
-//
-//                        //for(int i=0; i < jsonArray.length(); i++) {
-//                            JSONObject addObj= jsonArray.getJSONObject(0);
-//                            addObj.put("C", cityName);
-//                            addObj.put("CR",cityCountry);
-//                            addObj.put("Id", "null");
-//                            addObj.put("L1", address);
-//                            addObj.put("S", cityState);
-//                            addObj.put("T", addType);
-//                            jsonArray.put(addObj);
-//                     //   }
-//
-//
-//                        params.put("addresses",jsonArray);
-//                        params.put("UserId",userId);
-                        return params;
+                    return params;
                     } catch (JSONException ex) {
                         DataGlobal.SaveLog(TAG, ex);
                         return null;
@@ -354,10 +440,17 @@ public class SettingEdit extends AppCompatActivity {
                                             cm.cSC = ob.getString("SC");
                                             cm.cCRC = ob.getString("CRC");
 
-                                            cityList.add(cm);
+                                            String name = cm.cN+", "+cm.cState + ", "+cm.cCountry;
+                                            mCityList.add(name);
+
+                                            mAddressList.add(cm);
                                         }
-                                        CityAdapter cityadaper = new CityAdapter(SettingEdit.this,cityList);
-                                        recycler_add_type.setAdapter(cityadaper);
+
+                                        //addsDaiAdapter = new AddressDailogeAdapter(SettingEdit.this, mAddressList);
+                                        //recycler_address_list.setAdapter(addsDaiAdapter);
+
+                                        //CityAdapter cityadaper = new CityAdapter(SettingEdit.this, mAddressList);
+                                      //  recycler_add_type.setAdapter(cityadaper);
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -403,7 +496,7 @@ public class SettingEdit extends AppCompatActivity {
             };
     }
 
-    private void showAdrressType(final View v) {
+    public void showAdrressType(final View v) {
         final String[] addType = new String[]{
                 "Home","Work","Other"
         };
@@ -432,8 +525,8 @@ public class SettingEdit extends AppCompatActivity {
            RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
            recycler_view_email.setLayoutManager(recyce);
 
-        emailAdapterDialogList = new EmailDailogeAdapter(SettingEdit.this,emailList);
-        recycler_view_email.setAdapter(emailAdapterDialogList);
+            emailAdapterDialogList = new EmailDailogeAdapter(SettingEdit.this,emailList);
+            recycler_view_email.setAdapter(emailAdapterDialogList);
 
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
             lp.copyFrom(dialog.getWindow().getAttributes());
@@ -974,86 +1067,101 @@ public class SettingEdit extends AppCompatActivity {
 
                                     JSONObject object = new JSONObject(strResponse);
                                     String msgType = object.getString("MessageType");
-                                    if(msgType.equalsIgnoreCase("success"));
-                                    JSONObject obj = object.getJSONObject("obj");
+                                if(msgType.equalsIgnoreCase("success"));
 
-                                    arr = obj.getJSONArray("Ls");
-                                    String userId = obj.getString("Id");
-                                    String userURl = obj.getString("I");
-                                    String un = obj.getString("UN");
-                                    String fullName = obj.getString("FN")+" "+obj.getString("LN");
+                                        JSONObject obj = object.getJSONObject("obj");
 
-                                    ((TextView) findViewById(R.id.txt_name)).setText(fullName);
-                                    ((TextView) findViewById(R.id.txt_uname)).setText("@"+un);
-                                    Log.e("TEST","Image URL :"+App.getInstance().GetUrl());
-                                    if(userURl != null){
-                                        Glide.with(getApplicationContext()).load(DataText.GetImagePath(App.getInstance().GetUrl()))
-                                                .thumbnail(0.5f)
-                                                .transition(withCrossFade())
-                                                .apply(RequestOptions.circleCropTransform())
-                                                .into(((CircularImageView) findViewById(R.id.search_image)));
-                                    }else {
-                                        String firstLater = fullName.substring(0,1).toUpperCase();
-                                        Log.e("TEST","Get Image Url NULL:");
-                                        ((CircularImageView) findViewById(R.id.search_image)).setImageResource(R.drawable.bg_search_circle);
-                                        ((CircularImageView) findViewById(R.id.search_image)).setColorFilter(null);
-                                        ((TextView) findViewById(R.id.search_image_text)).setText(firstLater);
+                                        arr = obj.getJSONArray("Ls");
+                                        String userId = obj.getString("Id");
+                                        String userURl = obj.getString("I");
+                                        String un = obj.getString("UN");
+                                        String fullName = obj.getString("FN") + " " + obj.getString("LN");
+                                        Log.e("TEST", "Full Name :" + fullName);
+                                        ((TextView) findViewById(R.id.txt_name)).setText(fullName);
+                                        ((TextView) findViewById(R.id.txt_uname)).setText("@" + un);
+                                        Log.e("TEST", "Image URL :" + App.getInstance().GetUrl());
+                                        if (userURl != null) {
+                                            Glide.with(getApplicationContext()).load(DataText.GetImagePath(userURl))
+                                                    .thumbnail(0.5f)
+                                                    .transition(withCrossFade())
+                                                    .apply(RequestOptions.circleCropTransform())
+                                                    .into(((CircularImageView) findViewById(R.id.search_image)));
+                                        } else {
+                                            String firstLater = fullName.substring(0, 1).toUpperCase();
+                                            Log.e("TEST", "Get Image Url NULL:");
+                                            ((CircularImageView) findViewById(R.id.search_image)).setImageResource(R.drawable.bg_search_circle);
+                                            ((CircularImageView) findViewById(R.id.search_image)).setColorFilter(null);
+                                            ((TextView) findViewById(R.id.search_image_text)).setText(firstLater);
+                                        }
+
+                                        emailList = new ArrayList<>();
+                                        JSONArray arrEs = obj.getJSONArray("Es");
+                                        for (int i = 0; i < arrEs.length(); i++) {
+                                            JSONObject objEs = arrEs.getJSONObject(i);
+                                            EmailModel em = new EmailModel();
+                                            pe = objEs.getString("E");
+                                            peType = objEs.getString("T");
+                                            String id = objEs.getString("Id");
+                                            em.emailAddress = pe;
+                                            em.emailType = peType;
+                                            em.recordId = id;
+                                            emailList.add(em);
+                                        }
+                                        emailadapter = new EmailListAdapter(getApplicationContext(), emailList);
+                                        recycler_view_email.setAdapter(emailadapter);
+
+                                        JSONArray arrAdds = obj.getJSONArray("Adds");
+                                    for (int j = 0; j < arrAdds.length(); j++) {
+                                        JSONObject addsObj = arrAdds.getJSONObject(j);
+                                        String fullAddress = addsObj.getString("C")+addsObj.getString("S")+addsObj.getString("CR");
+                                        CommonModel am= new CommonModel();
+
+                                        am.cType = addsObj.getString("T");
+                                        am.cAddress = addsObj.getString("L1");
+                                        am.cN = addsObj.getString("C");
+                                        am.cState = addsObj.getString("S");
+                                        am.cCountry = addsObj.getString("CR");
+                                        am.fullAddress = fullAddress;
+
+                                        mAddressList.add(am);
                                     }
+                                    addsAdapter = new AddressAdapter(SettingEdit.this, mAddressList);
+                                    recycler_view_address.setAdapter(addsAdapter);
 
-                                    emailList = new ArrayList<>();
-                                    JSONArray arrEs = obj.getJSONArray("Es");
-                                    for (int i = 0; i < arrEs.length(); i++) {
-                                        JSONObject objEs = arrEs.getJSONObject(i);
-                                        EmailModel em = new EmailModel();
-                                        pe = objEs.getString("E");
-                                        peType = objEs.getString("T");
-                                        String id = objEs.getString("Id");
-                                        em.emailAddress = pe;
-                                        em.emailType = peType;
-                                        em.recordId = id;
-                                        emailList.add(em);
-                                    }
-                                    emailadapter = new EmailListAdapter(getApplicationContext(),emailList);
-                                    recycler_view_email.setAdapter(emailadapter);
 
-                                    profileLangList = new ArrayList<>();
-                                   // LinearLayout lLayout = (LinearLayout) findViewById(R.id.rel_lang);
-                                   // lLayout.removeAllViews();
-                                    for (int i = 0; i < arr.length(); i++) {
-                                        JSONObject arrObj = arr.getJSONObject(i);
-                                        CommonModel cm = new CommonModel();
-                                        cm.lId = arrObj.getString("Id");
-                                        cm.lName = arrObj.getString("N");
-                                        profileLangList.add(cm);
-                                        String getname = cm.lName;
-                                       // TextView rowTextView = new TextView(SettingEdit.this);
-                                        //rowTextView.setText(getname);
-                                      //  rowTextView.setBackground(getApplicationContext().getDrawable(R.drawable.shape_rounded_orange));
-                                      //  rowTextView.setPadding(25,15,25,15);
+                                        profileLangList = new ArrayList<>();
+                                        // LinearLayout lLayout = (LinearLayout) findViewById(R.id.rel_lang);
+                                        // lLayout.removeAllViews();
+                                        for (int i = 0; i < arr.length(); i++) {
+                                            JSONObject arrObj = arr.getJSONObject(i);
+                                            CommonModel cm = new CommonModel();
+                                            cm.lId = arrObj.getString("Id");
+                                            cm.lName = arrObj.getString("N");
+                                            profileLangList.add(cm);
+                                            String getname = cm.lName;
+                                            // TextView rowTextView = new TextView(SettingEdit.this);
+                                            //rowTextView.setText(getname);
+                                            //  rowTextView.setBackground(getApplicationContext().getDrawable(R.drawable.shape_rounded_orange));
+                                            //  rowTextView.setPadding(25,15,25,15);
 
-                                     //   LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                      //  params.setMargins(10,0,0,0);
-                                     //   rowTextView.setLayoutParams(params);
+                                            //   LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                            //  params.setMargins(10,0,0,0);
+                                            //   rowTextView.setLayoutParams(params);
 //
-                                       // rowTextView.setTextColor(Color.parseColor("#f2f4f7"));
-                                       // lLayout.addView(rowTextView);
-                                    }
+                                            // rowTextView.setTextColor(Color.parseColor("#f2f4f7"));
+                                            // lLayout.addView(rowTextView);
+                                        }
 
-                                    listAdapter = new LanguageListAdapter(SettingEdit.this,profileLangList,false);
-                                    recycler_view_lang.setAdapter(listAdapter);
+                                        listAdapter = new LanguageListAdapter(SettingEdit.this, profileLangList, false);
+                                        recycler_view_lang.setAdapter(listAdapter);
 
-                                    //rowTextView.setText(getname);
+                                        //rowTextView.setText(getname);
 
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
-
                             }
-                        }else {
-                             //  pbHeaderProgress.setVisibility(View.VISIBLE);
-                            //SnakebarCustom.danger(mContext, View , "Unable to fetch contact: " + "No data found", 5000);
                         }
                     }
 
@@ -1061,7 +1169,7 @@ public class SettingEdit extends AppCompatActivity {
         {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //pbHeaderProgress.setVisibility(View.VISIBLE);
+                pbHeaderProgress.setVisibility(View.VISIBLE);
                 //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
             }
         }) {
@@ -1118,10 +1226,6 @@ public class SettingEdit extends AppCompatActivity {
         cityName = cn;
         cityState = cs;
         cityCountry = cc;
-        Log.e("TEST","CN :"+cn);
-        Log.e("TEST","cs :"+cs);
-        Log.e("TEST","cc :"+cc);
-        Log.e("TEST","city :"+city);
         edt_city.setText(city);
         recycler_add_type.setVisibility(View.GONE);
     }

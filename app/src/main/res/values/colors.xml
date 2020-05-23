@@ -318,6 +318,7 @@
     <color name="overlay_light_90">#E6FFFFFF</color>
 
 
+    <color name="themecolor">#7367f0</color>
     <color name="persian_green_primary">#0DAC8F</color>
     <color name="persian_green_dark">#0A927A</color>
     <color name="persian_green_accent">#0A927A</color>

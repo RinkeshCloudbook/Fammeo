@@ -45,7 +45,6 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
             holder.delete_lag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("TEST","Delete Lang :");
                     allLangList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, allLangList.size());

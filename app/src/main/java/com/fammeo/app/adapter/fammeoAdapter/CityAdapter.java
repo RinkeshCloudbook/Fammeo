@@ -41,7 +41,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
         final String cn = cityList.get(i).cN;
         final String cs = cityList.get(i).cState;
         final String cc = cityList.get(i).cCountry;
-                holder.fra_city.setOnClickListener(new View.OnClickListener() {
+        holder.fra_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 context.setCityName(cn,cs,cc,city);

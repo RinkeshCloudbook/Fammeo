@@ -1,79 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:ads="http://schemas.android.com/tools"
     android:background="@android:color/white"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="?attr/actionBarSize"
+        android:background="#7367f0"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:contentInsetStartWithNavigation="0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false">
-
-            <ImageView
-                android:id="@+id/image_header"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/edit_profile_cover"
-                app:layout_collapseMode="parallax" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:contentInsetStartWithNavigation="0dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/lin_dir"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                android:background="@color/main_color_500"
-                app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
-                app:theme="@style/AppTheme.Title">
-
-                <ImageView
-                    android:id="@+id/img_back"
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_back_arrow" />
-
-                <TextView
-                    android:id="@+id/txt_selectDirName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:text="Create User"
-                    android:paddingLeft="@dimen/dimen_12dp"
-                    android:singleLine="true"
-                    android:textColor="#FFFFFF"
-                    android:textSize="@dimen/dimen_18dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_content"
@@ -89,8 +31,74 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/dimen_20dp">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#7367f0"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_mlarge">
+
+                <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fillAfter="false"
+                        android:fillEnabled="false">
+
+                        <com.fammeo.app.view.siv.CircularImageView
+                            android:id="@+id/search_image"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:scaleType="fitXY"
+                            />
+
+                        <TextView
+                            android:id="@+id/search_image_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/icon_star" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/txt_name"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="@dimen/dimen_14sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="@color/grey_3"
+                        />
+
+                    <TextView
+                        android:id="@+id/txt_uname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="@color/grey_3"
+                        android:textSize="@dimen/dimen_14sp" />
+                </LinearLayout>
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_marginTop="@dimen/dimen_10dp"
@@ -117,6 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="About"
+                        android:textSize="@dimen/dimen_17sp"
                         android:padding="@dimen/dimen_7dp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textColor="@color/grey_90"
@@ -125,10 +134,9 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:padding="@dimen/dimen_7dp"
                         android:background="@drawable/shape_circle_themcolor"
                         android:clickable="true"
+                        android:padding="@dimen/dimen_7dp"
 
                         app:srcCompat="@drawable/ic_create" />
                 </LinearLayout>
@@ -147,31 +155,42 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_80dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal"
                     android:padding="@dimen/dimen_7dp"
                     android:paddingLeft="@dimen/spacing_middle"
                     android:paddingRight="@dimen/spacing_middle">
-                    <TextView
-                        android:layout_gravity="center"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Address"
-                        android:padding="@dimen/dimen_7dp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textColor="@color/grey_90"
-                        android:layout_weight="1"/>
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Address"
+                            android:padding="@dimen/dimen_7dp"
+                            android:textSize="@dimen/dimen_17sp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                            android:textColor="@color/grey_90"
+                            />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scrollbars="vertical" />
+                    </LinearLayout>
+
 
                     <ImageButton
                         android:id="@+id/img_edt_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:padding="@dimen/dimen_7dp"
                         android:background="@drawable/shape_circle_themcolor"
                         android:clickable="true"
-
                         app:srcCompat="@drawable/ic_create" />
                 </LinearLayout>
 
@@ -206,6 +225,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Email"
+                            android:textSize="@dimen/dimen_17sp"
                             android:padding="@dimen/dimen_7dp"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                             android:textColor="@color/grey_90"
@@ -280,6 +300,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Phone"
+                        android:textSize="@dimen/dimen_17sp"
                         android:padding="@dimen/dimen_7dp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textColor="@color/grey_90"
@@ -288,7 +309,6 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:padding="@dimen/dimen_7dp"
                         android:background="@drawable/shape_circle_themcolor"
                         android:clickable="true"
@@ -326,6 +346,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Languages"
+                            android:textSize="@dimen/dimen_17sp"
                             android:padding="@dimen/dimen_7dp"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                             android:textColor="@color/grey_90"
@@ -389,6 +410,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Hobbies"
+                        android:textSize="@dimen/dimen_17sp"
                         android:padding="@dimen/dimen_7dp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textColor="@color/grey_90"
@@ -397,7 +419,6 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:padding="@dimen/dimen_7dp"
                         android:background="@drawable/shape_circle_themcolor"
                         android:clickable="true"
@@ -422,74 +443,7 @@
         app:civ_shadow_radius="0"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|center" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
 
-        app:layout_anchorGravity="bottom|left"
-        app:layout_anchor="@id/app_bar_layout">
-        <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="@dimen/dimen_20dp">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fillAfter="false"
-                android:fillEnabled="false">
-
-                <com.fammeo.app.view.siv.CircularImageView
-                    android:id="@+id/search_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:scaleType="fitXY"
-                    />
-
-                <TextView
-                    android:id="@+id/search_image_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/icon_star" />
-
-            </RelativeLayout>
-
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/txt_name"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:layout_marginLeft="@dimen/dimen_7dp"
-                android:textSize="@dimen/dimen_14sp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textColor="@color/grey_3"
-                />
-            <TextView
-                android:id="@+id/txt_uname"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:layout_marginLeft="@dimen/dimen_7dp"
-                android:textSize="@dimen/dimen_14sp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textColor="@color/grey_90"
-                />
-        </LinearLayout>
-    </LinearLayout>
 
     <LinearLayout
         android:layout_gravity="center"
@@ -516,4 +470,4 @@
             android:textSize="@dimen/dimen_16dp"
             />
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

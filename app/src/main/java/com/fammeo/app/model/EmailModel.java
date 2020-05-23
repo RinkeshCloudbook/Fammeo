@@ -5,4 +5,5 @@ public class EmailModel {
     public String recordId = null;
     public String emailAddress;
     public String emailType;
+
 }
