@@ -102,7 +102,7 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
         if (user != null && userj != null) {
             App.getInstance().logUser();
             Log.w(TAG, "onCreate: "+userj.FN );
-            Log.e("TEST","Get Email Id :"+userj.Email);
+
             welcomeText.setText("Welcome " + userj.FN + "!");
             Crashlytics.log("User: "+userj.FN );
         }

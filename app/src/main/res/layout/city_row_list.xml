@@ -39,6 +39,7 @@
                 style="@style/CardTitle"
                 android:textSize="@dimen/msg_text_primary"/>
             <TextView
+                android:visibility="gone"
                 android:id="@+id/txt_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,6 +49,7 @@
                 style="@style/CardTitle"
                 android:textSize="@dimen/msg_text_primary"/>
             <TextView
+                android:visibility="gone"
                 android:id="@+id/txt_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

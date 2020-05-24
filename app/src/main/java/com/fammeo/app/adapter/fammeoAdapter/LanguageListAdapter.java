@@ -38,7 +38,6 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Log.e("TEST","List Adapter Name :"+allLangList.get(position).lName);
         holder.txt_langname.setText(allLangList.get(position).lName);
         if(flag == true){
             holder.delete_lag.setVisibility(View.VISIBLE);
@@ -52,7 +51,6 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
                 }
             });
         }
-
     }
 
     @Override

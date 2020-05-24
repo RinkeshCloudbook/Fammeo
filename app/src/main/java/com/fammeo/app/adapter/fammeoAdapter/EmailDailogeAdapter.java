@@ -56,10 +56,8 @@ public class EmailDailogeAdapter extends RecyclerView.Adapter<EmailDailogeAdapte
 
             @Override
             public void afterTextChanged(Editable s) {
-                Log.e("TEST","Adapter Email :"+s.toString());
                 String em = s.toString();
                 if(em.equals("")){
-                    Log.e("TEST","Condition Check");
                     holder.edt_emailType.setText("");
                 }
                 Is_Valid_Email(holder.edt_email);
@@ -68,7 +66,6 @@ public class EmailDailogeAdapter extends RecyclerView.Adapter<EmailDailogeAdapte
         holder.edt_emailType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TEST","Click Email type");
                 //showEmailType(v);
                 context.showEmailTupe(v, i);
             }
@@ -76,7 +73,6 @@ public class EmailDailogeAdapter extends RecyclerView.Adapter<EmailDailogeAdapte
         holder.img_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TEST","Delete Image");
                 emailList.remove(i);
                 notifyItemRemoved(i);
                 notifyItemRangeChanged(i, emailList.size());
@@ -94,7 +90,6 @@ public class EmailDailogeAdapter extends RecyclerView.Adapter<EmailDailogeAdapte
             valid_email = null;
         } else {
             valid_email = edt.getText().toString();
-            Log.e("TEST","valid Email :"+valid_email);
           //  Log.e("TEST","Valid type :"+valid_email);
             //bt_save.setVisibility(View.VISIBLE);
             context.enableSaveBottn(true);

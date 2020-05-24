@@ -1,5 +1,7 @@
 package com.fammeo.app.adapter.fammeoAdapter;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.common.PassDataInterface;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.ArrayList;
@@ -18,10 +21,12 @@ import java.util.ArrayList;
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     SettingEdit context;
     ArrayList<CommonModel> cityList;
+    PassDataInterface dataInterface;
 
-    public CityAdapter(SettingEdit settingEdit, ArrayList<CommonModel> cityList) {
+    public CityAdapter(SettingEdit settingEdit, ArrayList<CommonModel> cityList,PassDataInterface dataInterface) {
         this.context = settingEdit;
         this.cityList = cityList;
+        this.dataInterface = dataInterface;
     }
 
     @NonNull
@@ -34,19 +39,8 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int i) {
-        holder.txt_city.setText(cityList.get(i).cN+", ");
-        holder.txt_state.setText(cityList.get(i).cState+", ");
-        holder.txt_country.setText(cityList.get(i).cCountry);
-        final String city = cityList.get(i).cN +", "+cityList.get(i).cState+", "+cityList.get(i).cCountry;
-        final String cn = cityList.get(i).cN;
-        final String cs = cityList.get(i).cState;
-        final String cc = cityList.get(i).cCountry;
-        holder.fra_city.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.setCityName(cn,cs,cc,city);
-            }
-        });
+        holder.txt_city.setText( cityList.get(i).cN+", "+ cityList.get(i).cState+", "+ cityList.get(i).cCountry);
+
     }
 
     @Override
@@ -60,9 +54,22 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_city = itemView.findViewById(R.id.txt_city);
-            txt_state = itemView.findViewById(R.id.txt_state);
-            txt_country = itemView.findViewById(R.id.txt_country);
+            //txt_state = itemView.findViewById(R.id.txt_state);
+            //txt_country = itemView.findViewById(R.id.txt_country);
             fra_city = itemView.findViewById(R.id.fra_city);
+            fra_city.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dataInterface.CityData(cityList.get(getAdapterPosition()));
+                /*Intent intent = new Intent(context,AddressDailogeAdapter.class);
+                intent.putExtra("C",cityList.get(i));
+                context.startActivity(intent);*/
+                    //context.setCityName(cityList.get(i));
+               /* if (context instanceof AddressDailogeAdapter)
+                    ((DocumentInside)context).getDirInside();
+            ((AddressDailogeAdapter) context).getEditTextValue();*/
+                }
+            });
         }
     }
 }

@@ -37,11 +37,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.fammeo.app.R;
 import com.fammeo.app.adapter.AddressAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.AddressDailogeAdapter;
-import com.fammeo.app.adapter.fammeoAdapter.CityAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.EmailDailogeAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.EmailListAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.LanguageAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.LanguageListAdapter;
+import com.fammeo.app.adapter.fammeoAdapter.PhoneAdapter;
+import com.fammeo.app.adapter.fammeoAdapter.PhoneAdapterDialogList;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataGlobal;
 import com.fammeo.app.common.DataText;
@@ -63,6 +64,7 @@ import static com.fammeo.app.constants.Constants.METHOD_GET_PUBLIC_LANGUAGE_USER
 import static com.fammeo.app.constants.Constants.METHOD_GET_SAVEMAIL_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SAVE_ADDRESS_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SAVE_LANGUAGE_USER;
+import static com.fammeo.app.constants.Constants.METHOD_GET_SAVE_PHONE_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SEARCHCITY_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_USERDATA_USER;
 
@@ -76,10 +78,11 @@ public class SettingEdit extends AppCompatActivity {
     List<String> mCityList = new ArrayList<>();
     ArrayList<EmailModel> emailList;
     RecyclerView recycler_view,recycler_view_email,recycler_view_lang,
-            recycler_add_type,recycler_view_lang_dbox,recycler_view_address,recycler_address_list;
+            recycler_add_type,recycler_view_lang_dbox,recycler_view_address
+            ,recycler_address_list,recycler_view_phone,recycler_view_dailouge_phone;
     private Button bt_save,bt_save_address;
     ImageButton bt_true;
-    EditText edt_lang,edt_city;
+    private EditText edt_lang,edt_city,edt_cCode,edt_phone, edt_type;
     List<String> allLangList = new ArrayList<String>();
     ChipGroup tag_group;
     LinearLayout pbHeaderProgress;
@@ -88,11 +91,14 @@ public class SettingEdit extends AppCompatActivity {
     AddressDailogeAdapter addsDaiAdapter;
     AddressAdapter addsAdapter;
     LanguageListAdapter listAdapter,listAdapter1;
+    PhoneAdapter phoneAdapter;
     ArrayList<String> lanListName = new ArrayList<>();
+    ArrayList<CommonModel> phoneList = new ArrayList<>();
     List<CommonModel> profileLangList;
     private EmailListAdapter emailadapter = null;
     private EmailDailogeAdapter emailAdapterDialogList = null;
-
+    PhoneAdapterDialogList phoneAdapterDailouge;
+    int phoneLenght;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,19 +109,22 @@ public class SettingEdit extends AppCompatActivity {
         recycler_view_email = findViewById(R.id.recycler_view_email);
         recycler_view_address = findViewById(R.id.recycler_view_address);
         recycler_view_lang = findViewById(R.id.recycler_view_lang);
+        recycler_view_phone = findViewById(R.id.recycler_view_phone);
         sp = getSharedPreferences("uId", MODE_PRIVATE);
         userId = sp.getString("u","");
         String un = sp.getString("un","");
-        Log.e("TEST","SP Get User Id :"+userId);
+
         if(userId.equals("") || userId.length() > 0){
             userId = App.getInstance().getUserId();
-            Log.e("TEST","App User Id :"+userId);
         }
 
         RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
         recycler_view_email.setLayoutManager(recyce);
         RecyclerView.LayoutManager addsrecy = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
         recycler_view_address.setLayoutManager(addsrecy);
+        RecyclerView.LayoutManager phonerecy = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
+        recycler_view_phone.setLayoutManager(phonerecy);
+
 
         Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -142,9 +151,130 @@ public class SettingEdit extends AppCompatActivity {
                 showEmailCustomDialog();
             }
         });
+        ((ImageButton) findViewById(R.id.img_btn_phone)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPhoneCustomDialog(phoneLenght);
+            }
+        });
+        ((ImageButton) findViewById(R.id.img_btn_about)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAboutCustomDialog();
+            }
+        });
         getUserData();
     }
 
+    private void showAboutCustomDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.about_dialog_event);
+        dialog.setCancelable(true);
+
+        EditText edt_fname = dialog.findViewById(R.id.edt_fname);
+        EditText edt_lname = dialog.findViewById(R.id.edt_lname);
+        EditText edt_gender = dialog.findViewById(R.id.edt_gender);
+        EditText edt_title = dialog.findViewById(R.id.edt_title);
+        EditText edt_description = dialog.findViewById(R.id.edt_description);
+        EditText edt_youtube = dialog.findViewById(R.id.edt_youtube);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        saveAbouts(edt_fname.getText(),edt_lname.getText(),edt_gender.getText(),edt_title.getText(),edt_description.getText(),edt_youtube.getText());
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    private void saveAbouts(Editable fname, Editable lname, Editable gender, Editable title, Editable dec, Editable youlink) {
+
+            request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SAVE_ADDRESS_USER, null,0,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (App.getInstance().authorizeSimple(response)) {
+                                String strResponse = response.toString();
+                                Log.e("TEST","Save Address Response :"+response.toString());
+                                if(strResponse != null) {
+                                    pbHeaderProgress.setVisibility(View.GONE);
+                                    lanList.clear();
+                                    try {
+                                        JSONObject object = new JSONObject(strResponse);
+                                        String msgType = object.getString("MessageType");
+                                        if(msgType.equalsIgnoreCase("success"));
+                                        toastIconSuccess("address");
+                                        // getUserData();
+                                        //  JSONObject obj = object.getJSONObject("obj");
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Log.e("TEST","Get JSONException :"+e);
+                                    }
+                                }
+                            }else {
+
+                            }
+                        }
+
+                    }, new Response.ErrorListener()
+            {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //pbHeaderProgress.setVisibility(View.VISIBLE);
+                    //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
+                }
+            }) {
+
+                @Override
+                protected JSONObject getParams() {
+                    try {
+                        JSONObject params = new JSONObject();
+                        JSONArray jsonArray=new JSONArray();
+
+
+                        for (int i = 0; i < phoneList.size(); i++) {
+                            //JSONObject addObj=new JSONObject();
+
+                            //String tmpId = "null";
+                            //if (cityList.get(i).recordId != null)
+                            //    tmpId = cityList.get(i).recordId;
+
+                           // addObj.put("C", cityList.get(i).cN);
+                           // addObj.put("CR",cityList.get(i).cCountry);
+                           // addObj.put("Id", cityList.get(i).recordId);
+                           // addObj.put("L1", cityList.get(i).cAddress);
+                           // addObj.put("S", cityList.get(i).cState);
+                           // addObj.put("T", cityList.get(i).cType);
+                           // jsonArray.put(addObj);
+
+                            params.put("addresses",jsonArray);
+                            params.put("UserId",userId);
+                        }
+                        return params;
+                    } catch (JSONException ex) {
+                        DataGlobal.SaveLog(TAG, ex);
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onCreateFinished(CustomAuthRequest request) {
+                    int socketTimeout = 300000;//0 seconds - change to what you want
+                    RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    request.customRequest.setRetryPolicy(policy);
+                    App.getInstance().addToRequestQueue(request);
+                }
+            };
+    }
+
+    public void updateList(ArrayList<CommonModel> updatedAddressList){
+//        mAddressList.clear();
+        mAddressList=updatedAddressList;
+
+    }
     private void addressCustomDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -222,7 +352,7 @@ public class SettingEdit extends AppCompatActivity {
                 cm.cState = "";
                 cm.cCountry = "";
                 mAddressList.add(cm);
-                addsDaiAdapter.notifyItemInserted(emailList.size()-1);
+                addsDaiAdapter.notifyItemInserted(emailList.size());
               // ((LinearLayout) dialog.findViewById(R.id.lin_emailBox)).setVisibility(View.VISIBLE);
             }
         });
@@ -573,6 +703,181 @@ public class SettingEdit extends AppCompatActivity {
             dialog.getWindow().setAttributes(lp);
     }
 
+    private void showPhoneCustomDialog(int phoneLenght){
+
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.phone_dialog_event);
+        dialog.setCancelable(true);
+
+        edt_cCode = dialog.findViewById(R.id.edt_cCode);
+        edt_phone = dialog.findViewById(R.id.edt_phone);
+        edt_type = dialog.findViewById(R.id.edt_type);
+        recycler_view_dailouge_phone = dialog.findViewById(R.id.recycler_view_dailouge_phone);
+
+        edt_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               ShowPhoneType(v);
+            }
+        });
+
+        if(phoneLenght == 0){
+            ((LinearLayout) dialog.findViewById(R.id.lin_phone)).setVisibility(View.VISIBLE);
+        }else {
+            ((LinearLayout) dialog.findViewById(R.id.lin_rv_phone)).setVisibility(View.VISIBLE);
+            ((LinearLayout) dialog.findViewById(R.id.lin_phone)).setVisibility(View.GONE);
+        }
+
+        RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL,false);
+        recycler_view_dailouge_phone.setLayoutManager(recyce);
+
+        phoneAdapterDailouge = new PhoneAdapterDialogList(SettingEdit.this,phoneList);
+        recycler_view_dailouge_phone.setAdapter(phoneAdapterDailouge);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        ((ImageButton) dialog.findViewById(R.id.bt_phone_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        ((TextView) dialog.findViewById(R.id.txt_phone_addNew)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonModel em = new CommonModel();
+
+                em.recordId = null;
+                em.phcCode = "91";
+                em.phcType = "Office";
+                em.phNumber = "";
+                phoneList.add(em);
+                phoneAdapterDailouge.notifyItemInserted(phoneList.size()-1);
+            }
+        });
+
+        ((Button) dialog.findViewById(R.id.bt_phone_save)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //addEmail(emailList);
+               /* CommonModel cm = new CommonModel();
+                cm.phcCode = edt_cCode.getText().toString();
+                cm.phcType = edt_type.getText().toString();
+                cm.phNumber = edt_phone.getText().toString();
+                phoneList.add(cm);*/
+                savePhoneNumber(phoneList);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    private void savePhoneNumber(final ArrayList<CommonModel> phoneList) {
+            // pbHeaderProgress.setVisibility(View.VISIBLE);
+            Log.e("TEST","Save Phone Data :");
+            // list.clear();
+            request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SAVE_PHONE_USER, null,0,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (App.getInstance().authorizeSimple(response)) {
+                                String strResponse = response.toString();
+                                Log.e("TEST","Save Phone Response :"+response.toString());
+                                if(strResponse != null) {
+                                    pbHeaderProgress.setVisibility(View.GONE);
+                                    lanList.clear();
+                                    try {
+                                        JSONObject object = new JSONObject(strResponse);
+                                        String msgType = object.getString("MessageType");
+                                        if(msgType.equalsIgnoreCase("success")){
+                                            toastIconSuccess("phone");
+                                        }
+
+                                        // getUserData();
+                                        phoneAdapter.notifyDataSetChanged();
+                                       // JSONObject obj = object.getJSONObject("obj");
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            }else {
+                                //  pbHeaderProgress.setVisibility(View.VISIBLE);
+                                //SnakebarCustom.danger(mContext, View , "Unable to fetch contact: " + "No data found", 5000);
+                            }
+                        }
+
+                    }, new Response.ErrorListener()
+            {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //pbHeaderProgress.setVisibility(View.VISIBLE);
+                    //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
+                }
+            }) {
+
+                @Override
+                protected JSONObject getParams() {
+                    try {
+                        JSONObject params = new JSONObject();
+                        JSONArray jsonArray=new JSONArray();
+
+                        for (int i = 0; i < phoneList.size(); i++) {
+                            JSONObject phoneObject=new JSONObject();
+
+                            String tmpId = null;
+                            if (phoneList.get(i).recordId != null)
+                                tmpId = phoneList.get(i).recordId;
+
+                            phoneObject.put("T", phoneList.get(i).phcType);
+                            phoneObject.put("Id",tmpId);
+                            phoneObject.put("Ph",phoneList.get(i).phNumber);
+                            phoneObject.put("CC", 91);
+                            jsonArray.put(phoneObject);
+                        }
+
+                        params.put("phones",jsonArray);
+                        params.put("UserId",userId);
+                        Log.e("TEST","Phone Param :"+params);
+                        return params;
+                    } catch (JSONException ex) {
+                        DataGlobal.SaveLog(TAG, ex);
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onCreateFinished(CustomAuthRequest request) {
+                    int socketTimeout = 300000;//0 seconds - change to what you want
+                    RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    request.customRequest.setRetryPolicy(policy);
+                    App.getInstance().addToRequestQueue(request);
+                }
+            };
+    }
+
+    public void ShowPhoneType(final View v) {
+        final String[] emailType = new String[]{
+                "Mobile","Office","Home","Main","Work Fax","Home Fax","other"
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setSingleChoiceItems(emailType, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((EditText) v).setText(emailType[i]);
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
     public void enableSaveBottn(boolean flage){
         if(flage == true){
             bt_save.setVisibility(View.VISIBLE);
@@ -825,8 +1130,6 @@ public class SettingEdit extends AppCompatActivity {
 
     private void getSaveLanguage(final List<CommonModel> allLangList) {
             // pbHeaderProgress.setVisibility(View.VISIBLE);
-            Log.e("TEST","Language allLangList :"+allLangList.toString());
-            Log.e("TEST","Language lanList :"+lanList.toString());
             // list.clear();
             request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SAVE_LANGUAGE_USER, null,0,
                     new Response.Listener<JSONObject>() {
@@ -925,6 +1228,8 @@ public class SettingEdit extends AppCompatActivity {
             ((TextView) custom_view.findViewById(R.id.message)).setText("Email(s) Saved Successfully!");
         }else if(msgText.equalsIgnoreCase("address")){
             ((TextView) custom_view.findViewById(R.id.message)).setText("Address(s) Saved Successfully!");
+        }else if(msgText.equalsIgnoreCase("phone")){
+            ((TextView) custom_view.findViewById(R.id.message)).setText("Phone(s) Saved Successfully!");
         }
 
         ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_done);
@@ -1076,10 +1381,8 @@ public class SettingEdit extends AppCompatActivity {
                                         String userURl = obj.getString("I");
                                         String un = obj.getString("UN");
                                         String fullName = obj.getString("FN") + " " + obj.getString("LN");
-                                        Log.e("TEST", "Full Name :" + fullName);
                                         ((TextView) findViewById(R.id.txt_name)).setText(fullName);
                                         ((TextView) findViewById(R.id.txt_uname)).setText("@" + un);
-                                        Log.e("TEST", "Image URL :" + App.getInstance().GetUrl());
                                         if (userURl != null) {
                                             Glide.with(getApplicationContext()).load(DataText.GetImagePath(userURl))
                                                     .thumbnail(0.5f)
@@ -1128,6 +1431,22 @@ public class SettingEdit extends AppCompatActivity {
                                     addsAdapter = new AddressAdapter(SettingEdit.this, mAddressList);
                                     recycler_view_address.setAdapter(addsAdapter);
 
+                                    JSONArray phoneAdds = obj.getJSONArray("PHs");
+                                    Log.e("TEST","Phone Lenght :"+phoneAdds.length());
+                                    phoneLenght = phoneAdds.length();
+                                    for (int k = 0; k < phoneAdds.length(); k++) {
+                                        JSONObject phoneObj = phoneAdds.getJSONObject(k);
+                                        CommonModel am= new CommonModel();
+                                        am.phNumber = phoneObj.getString("Ph");
+                                        am.phcType = phoneObj.getString("T");
+                                        am.phcCode = phoneObj.getString("CC");
+                                        Log.e("TEST","Number :"+am.phNumber);
+                                        Log.e("TEST","TYPE :"+am.phcType);
+                                        Log.e("TEST","Code :"+am.phcCode);
+                                        phoneList.add(am);
+                                    }
+                                    phoneAdapter = new PhoneAdapter(SettingEdit.this, phoneList);
+                                    recycler_view_phone.setAdapter(phoneAdapter);
 
                                         profileLangList = new ArrayList<>();
                                         // LinearLayout lLayout = (LinearLayout) findViewById(R.id.rel_lang);
@@ -1222,11 +1541,11 @@ public class SettingEdit extends AppCompatActivity {
         edt_lang.setText("");
     }
 
-    public void setCityName(String cn, String cs, String cc, String city){
-        cityName = cn;
+    public void setCityName(String cityName){
+       /* cityName = cn;
         cityState = cs;
-        cityCountry = cc;
-        edt_city.setText(city);
+        cityCountry = cc;*/
+        edt_city.setText(cityName);
         recycler_add_type.setVisibility(View.GONE);
     }
 }

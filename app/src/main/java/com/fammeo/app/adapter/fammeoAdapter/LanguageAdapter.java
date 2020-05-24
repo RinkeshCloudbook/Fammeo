@@ -38,16 +38,10 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int i) {
-        Log.e("TEST","Adapter Name :"+lagText.get(i).lName);
         holder.card_title.setText(lagText.get(i).lName);
         holder.card_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String getName = lagText.get(i).lName;
-                String lId = lagText.get(i).lId;
-                Log.e("TEST","Selected Name :"+lagText.get(i).lName);
-
                // if(context instanceof SettingEdit)
                 context.getLanName(lagText.get(i).lName);
             }

@@ -15,4 +15,8 @@ public class CommonModel {
     public  String cAddress;
     public String fullAddress;
 
+    public String phcCode;
+    public String phNumber;
+    public String phcType;
+
 }

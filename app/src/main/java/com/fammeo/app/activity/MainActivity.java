@@ -65,6 +65,7 @@ import com.fammeo.app.fragment.NoCompanyFragment;
 import com.fammeo.app.fragment.NotificationFragment;
 import com.fammeo.app.fragment.ProjectFragment;
 import com.fammeo.app.fragment.Search;
+import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.model.DummyModel;
 import com.fammeo.app.model.SearchUserModel;
 import com.fammeo.app.util.CustomAuthRequest;
@@ -504,6 +505,11 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
 //                    if(current == 1){
 //
 //                    }
+
+        }
+
+        @Override
+        public void CityData(CommonModel cityName) {
 
         }
     }

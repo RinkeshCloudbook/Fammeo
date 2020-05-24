@@ -44,6 +44,7 @@ import com.fammeo.app.common.DataGlobal;
 import com.fammeo.app.common.DataText;
 import com.fammeo.app.common.PassDataInterface;
 import com.fammeo.app.common.SnakebarCustom;
+import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.model.SearchUserModel;
 import com.fammeo.app.util.CustomAuthRequest;
 
@@ -303,6 +304,11 @@ public void setListener(PassDataInterface passDataInterface){
     @Override
     public void userData(String fullName, String FN, String LN, String email, String imgUrl) {
         passDataInterface.userData(fullName,FN,LN,email,imgUrl);
+    }
+
+    @Override
+    public void CityData(CommonModel cityName) {
+
     }
 
 
