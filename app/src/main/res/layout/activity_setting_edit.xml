@@ -114,22 +114,57 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_80dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal"
                     android:padding="@dimen/dimen_7dp"
                     android:paddingLeft="@dimen/spacing_middle"
                     android:paddingRight="@dimen/spacing_middle">
-                    <TextView
-                        android:layout_gravity="center"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="About"
-                        android:textSize="@dimen/dimen_17sp"
-                        android:padding="@dimen/dimen_7dp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textColor="@color/grey_90"
-                        android:layout_weight="1"/>
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        >
+                        <TextView
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="About"
+                            android:textSize="@dimen/dimen_17sp"
+                            android:padding="@dimen/dimen_7dp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                            android:textColor="@color/grey_90"
+                            />
+                        <TextView
+                            android:id="@+id/txt_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text=""
+                            android:layout_marginLeft="@dimen/dimen_10dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/grey_60" />
+                        <TextView
+                            android:id="@+id/txt_dec"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text=""
+                            android:layout_marginLeft="@dimen/dimen_10dp"
+                            style="@style/EditText.Flat.Grey"
+                            android:textColor="@color/grey_60" />
+                        <TextView
+                            android:id="@+id/txt_link"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text=""
+                            android:layout_marginLeft="@dimen/dimen_10dp"
+                            style="@style/EditText.Flat.Grey"
+                            android:textColor="@color/grey_60" />
+                    </LinearLayout>
+
 
                     <ImageButton
                         android:id="@+id/img_btn_about"

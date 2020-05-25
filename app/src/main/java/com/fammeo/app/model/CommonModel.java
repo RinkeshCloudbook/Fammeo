@@ -19,4 +19,8 @@ public class CommonModel {
     public String phNumber;
     public String phcType;
 
+    public String abtTitle;
+    public String abtDec;
+    public String abtVideo;
+
 }

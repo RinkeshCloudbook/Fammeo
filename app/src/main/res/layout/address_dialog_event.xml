@@ -9,8 +9,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".06"
+        android:layout_height="wrap_content"
         android:background="@color/themecolor">
 
         <LinearLayout
@@ -51,58 +50,61 @@
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_address_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".84"
-        android:scrollbars="vertical" />
-
-    <LinearLayout
-        android:id="@+id/lin_emailbox"
-        android:visibility="gone"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="@dimen/dimen_15dp"
-        android:layout_marginBottom="@dimen/dimen_5dp">
-
+        android:scrollbars="vertical"
+        />
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_medium"
-                android:text="Home"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_60" />
-            <EditText
-                android:id="@+id/edt_addressType"
-                style="@style/EditText.Flat.Grey"
-                android:layout_width="100dp"
-                android:layout_height="@dimen/spacing_xmlarge"
-                android:layout_weight="1"
-                android:background="@drawable/round_rect_grey_border"
-                android:drawableEnd="@drawable/ic_arrow_drop_black"
-                android:drawableRight="@drawable/ic_arrow_drop_black"
-                android:editable="false"
-                android:focusable="false"
-                android:minHeight="@dimen/spacing_xmlarge"
-                android:paddingLeft="@dimen/spacing_middle"
-                android:paddingRight="@dimen/spacing_middle"
-                android:text="Office"
-                />
-        </LinearLayout>
-
-        <LinearLayout
+            android:id="@+id/lin_emailbox"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_middle"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_15dp"
+            android:layout_marginBottom="@dimen/dimen_5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:text="Home"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/grey_60" />
+                <EditText
+                    android:id="@+id/edt_addressType"
+                    style="@style/EditText.Flat.Grey"
+                    android:layout_width="100dp"
+                    android:layout_height="@dimen/spacing_xmlarge"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_rect_grey_border"
+                    android:drawableEnd="@drawable/ic_arrow_drop_black"
+                    android:drawableRight="@drawable/ic_arrow_drop_black"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:minHeight="@dimen/spacing_xmlarge"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle"
+                    android:text="Office"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_middle"
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -123,75 +125,78 @@
                     android:paddingRight="@dimen/spacing_middle" />
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/dimen_10dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_medium"
-                android:text="City"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_60" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/round_rect_grey_border"
-                android:gravity="center">
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/dimen_10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:text="City"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/grey_60" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/round_rect_grey_border"
+                    android:gravity="center">
 
-            <EditText
-                android:id="@+id/edt_city"
-                style="@style/EditText.Flat.Grey"
-                android:background="@null"
+                    <EditText
+                        android:id="@+id/edt_city"
+                        style="@style/EditText.Flat.Grey"
+                        android:background="@null"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_xmlarge"
+                        android:minHeight="@dimen/spacing_xmlarge"
+                        android:inputType="text"
+                        android:hint="Search Location"
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle"
+                        android:layout_weight="1"/>
+
+                    <ImageButton
+                        android:id="@+id/bt_true"
+                        android:layout_width="@dimen/dimen_35dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/imagebutton_add_dialog_bg"
+                        android:clickable="true"
+                        android:tint="@color/grey_3"
+                        android:src="@drawable/arrow_down"
+                        />
+                    <ImageButton
+                        android:id="@+id/bt_cancel"
+                        android:layout_width="@dimen/dimen_35dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/imagebutton_green_bg"
+                        android:clickable="true"
+                        android:tint="@color/grey_3"
+                        android:src="@drawable/ic_close"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_add_type"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/spacing_xmlarge"
-                android:minHeight="@dimen/spacing_xmlarge"
-                android:inputType="text"
-                android:hint="Search Location"
-                android:paddingLeft="@dimen/spacing_middle"
-                android:paddingRight="@dimen/spacing_middle"
-                android:layout_weight="1"/>
-
-            <ImageButton
-                android:id="@+id/bt_true"
-                android:layout_width="@dimen/dimen_35dp"
-                android:layout_height="40dp"
-                android:background="@drawable/imagebutton_add_dialog_bg"
-                android:clickable="true"
-                android:tint="@color/grey_3"
-                android:src="@drawable/arrow_down"
-                />
-                <ImageButton
-                    android:id="@+id/bt_cancel"
-                    android:layout_width="@dimen/dimen_35dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/imagebutton_green_bg"
-                    android:clickable="true"
-                    android:tint="@color/grey_3"
-                    android:src="@drawable/ic_close"
-                    />
-
+                android:layout_height="200dp"
+                android:scrollbars="vertical" />
         </LinearLayout>
-        </LinearLayout>
-
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_add_type"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scrollbars="vertical" />
     </LinearLayout>
+
+
     <TextView
         android:id="@+id/txt_addNew"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".1"
+        android:layout_height="wrap_content"
         android:text="Add New"
         android:padding="@dimen/dimen_7dp"
+        android:layout_weight="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="@dimen/dimen_14sp"
         android:textColor="@color/themecolor"

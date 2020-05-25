@@ -1,5 +1,7 @@
 package com.fammeo.app.adapter.fammeoAdapter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +41,7 @@ public class AddressDailogeAdapter extends RecyclerView.Adapter<AddressDailogeAd
     SettingEdit contex;
     ArrayList<CommonModel> mAddressList;
     private ArrayList<CommonModel> mCityList = new ArrayList<>();
+    public static ArrayList<CommonModel> tempAddType;
     String getName;
     int cityPos=0;
 
@@ -90,18 +93,18 @@ public class AddressDailogeAdapter extends RecyclerView.Adapter<AddressDailogeAd
                     mAddressList.get(i).cAddress=holder.edt_address.getText().toString();
             }
         });
-holder.edt_city.addTextChangedListener(new TextWatcher() {
-    long lastChange=0;
+    holder.edt_city.addTextChangedListener(new TextWatcher() {
+        long lastChange=0;
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    }
+        }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-    }
+        }
 
     @Override
     public void afterTextChanged(Editable s) {
@@ -120,8 +123,9 @@ holder.edt_city.addTextChangedListener(new TextWatcher() {
         holder.edt_addressType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contex.showAdrressType(v);
-                mAddressList.get(i).cType=holder.edt_addressType.getText().toString();
+                //contex.showAdrressType(v);
+//                mAddressList.get(i).cType=holder.edt_addressType.getText().toString();
+                showAdrressType(v,i);
             }
         });
         }
@@ -140,7 +144,6 @@ holder.edt_city.addTextChangedListener(new TextWatcher() {
         return mAddressList.size();
     }
 
-
     @Override
     public void userData(String fullName, String FN, String LN, String email, String imgUrl) {
 
@@ -148,7 +151,6 @@ holder.edt_city.addTextChangedListener(new TextWatcher() {
 
     @Override
     public void CityData(final CommonModel cityName) {
-        Log.e("TEST","Adapter City Name :"+cityName);
 //                getName = cityName;
         cityName.cType=mAddressList.get(cityPos).cType;
         cityName.cAddress=mAddressList.get(cityPos).cAddress;
@@ -280,5 +282,22 @@ holder.edt_city.addTextChangedListener(new TextWatcher() {
                 App.getInstance().addToRequestQueue(request);
             }
         };
+    }
+
+    public void showAdrressType(final View v, final int j) {
+        final String[] addType = new String[]{
+                "Home", "Work", "Other"
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(contex);
+        builder.setSingleChoiceItems(addType, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((EditText) v).setText(addType[i]);
+                // emailList.get(i).emailType = emailType[i];
+                mAddressList.get(j).cType = addType[i];
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
     }
 }
