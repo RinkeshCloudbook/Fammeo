@@ -44,7 +44,6 @@ public class EditProfile extends AppCompatActivity {
         String userId = sp.getString("u","");
         String un = sp.getString("un","");
         Log.e("TEST","Get User Id :"+userId);
-        FirebaseCrashlytics.getInstance().log("Higgs-Boson detected! Bailing out");
         Log.e("TEST","Full Name :"+App.getInstance().getFullname());
         Log.e("TEST","FN :"+App.getInstance().getFirstName());
         Log.e("TEST","LN :"+App.getInstance().getLastName());
