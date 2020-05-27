@@ -27,6 +27,7 @@ public class EmailDailogeAdapter extends RecyclerView.Adapter<EmailDailogeAdapte
     SettingEdit context;
     ArrayList<EmailModel> emailList;
     String valid_email;
+    boolean img;
     public EmailDailogeAdapter(SettingEdit applicationContext, ArrayList<EmailModel> emailList) {
         this.context = applicationContext;
         this.emailList = emailList;
@@ -70,15 +71,21 @@ public class EmailDailogeAdapter extends RecyclerView.Adapter<EmailDailogeAdapte
                 context.showEmailTupe(v, i);
             }
         });
-        holder.img_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                emailList.remove(i);
-                notifyItemRemoved(i);
-                notifyItemRangeChanged(i, emailList.size());
-                context.enableSaveBottn(true);
-            }
-        });
+        if(img == true){
+            holder.img_delete.setVisibility(View.VISIBLE);
+            holder.img_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    emailList.remove(i);
+                    notifyItemRemoved(i);
+                    notifyItemRangeChanged(i, emailList.size());
+                    context.enableSaveBottn(true);
+                }
+            });
+        }else {
+            holder.img_delete.setVisibility(View.GONE);
+        }
+
     }
 
     private void Is_Valid_Email(EditText edt) {
@@ -117,6 +124,11 @@ public class EmailDailogeAdapter extends RecyclerView.Adapter<EmailDailogeAdapte
             edt_emailType = itemView.findViewById(R.id.edt_emailType);
             img_delete = itemView.findViewById(R.id.img_delete);
         }
+    }
+    public void imgShowEmail(boolean getimg){
+        Log.e("TEST","Image Show :"+getimg);
+        img = getimg;
+        notifyDataSetChanged();
     }
 }
 

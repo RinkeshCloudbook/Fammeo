@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import com.crashlytics.android.Crashlytics;
 import com.fammeo.app.constants.Constants;
 import com.google.android.gms.common.SignInButton;
 
@@ -41,7 +42,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -295,15 +295,15 @@ public class LoginActivity extends ActivityBase {
                             hidepDialog();
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseCrashlytics.getInstance().log("signInWithCredential:success");
+                            Crashlytics.log("signInWithCredential:success");
                             App.getInstance().FirebaseAnalyticsLog("Login");
                             FirebaseUser user = mAuth.getCurrentUser();
                             getFirebaseAuthToken(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            FirebaseCrashlytics.getInstance().log("signInWithCredential:failure1");
-                            FirebaseCrashlytics.getInstance().recordException(task.getException());
+                            Crashlytics.log("signInWithCredential:failure1");
+                            Crashlytics.logException(task.getException());
                             SnakebarCustom.danger(LoginActivity.this, mView, getText(R.string.error_signin).toString(), 1000);
                             updateUI(null);
 
@@ -502,7 +502,7 @@ public class LoginActivity extends ActivityBase {
                             } catch (JSONException ex) {
                                 ex.printStackTrace();
                                 _loginButton.setEnabled(true);
-                                FirebaseCrashlytics.getInstance().recordException(ex);
+                                Crashlytics.logException(ex);
                                 SnakebarCustom.danger(LoginActivity.this, mView, getText(R.string.error_signin).toString(), 1000);
                                 hidepDialog();
                             }

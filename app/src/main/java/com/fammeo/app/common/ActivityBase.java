@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import com.fammeo.app.BuildConfig;
+
+import com.crashlytics.android.BuildConfig;
+import com.crashlytics.android.Crashlytics;
 import com.fammeo.app.R;
 import com.fammeo.app.activity.OfflineActivity;
 import com.fammeo.app.activity.UpdateActivity;
@@ -28,7 +30,6 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -133,7 +134,7 @@ public class ActivityBase extends AppCompatActivity implements Constants {
                     }
                     catch (IntentSender.SendIntentException ex)
                     {
-                        FirebaseCrashlytics.getInstance().recordException(ex);
+                        Crashlytics.logException(ex);
                     }
                 }
             }

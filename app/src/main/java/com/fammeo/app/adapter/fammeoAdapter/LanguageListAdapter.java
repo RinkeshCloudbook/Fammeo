@@ -12,17 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
+import com.fammeo.app.activity.EditActivity.EditLanguage;
 import com.fammeo.app.activity.SettingEdit;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.List;
 
 public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapter.ViewHolder> {
-    SettingEdit context;
+    EditLanguage context;
     List<CommonModel> allLangList;
     boolean flag = true;
 
-    public LanguageListAdapter(SettingEdit settingEdit, List<CommonModel> allLangList,boolean flag) {
+    public LanguageListAdapter(EditLanguage settingEdit, List<CommonModel> allLangList, boolean flag) {
         this.context = settingEdit;
         this.allLangList = allLangList;
         this.flag = flag;

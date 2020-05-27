@@ -33,6 +33,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.fammeo.app.R;
 import com.fammeo.app.activity.CompanyFilterActivity;
 import com.fammeo.app.activity.MainActivity;
@@ -166,7 +168,7 @@ public class NotificationFragment extends BaseExampleFragment
 			mToolbar.setNavigationContentDescription("Projects");
 			((MainActivity) CurrentActivity).setSupportActionBar(mToolbar);
 		}
-		//Answers.getInstance().logCustom(new CustomEvent("Notification"));
+		Answers.getInstance().logCustom(new CustomEvent("Notification"));
 		final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
 
 		mlinearLayoutManager = new LinearLayoutManager(CurrentActivity);

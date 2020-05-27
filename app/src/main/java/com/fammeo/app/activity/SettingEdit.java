@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -35,15 +37,24 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fammeo.app.R;
+import com.fammeo.app.activity.EditActivity.AboutDetails;
+import com.fammeo.app.activity.EditActivity.EditAddress;
+import com.fammeo.app.activity.EditActivity.EditHobbies;
+import com.fammeo.app.activity.EditActivity.EditLanguage;
+import com.fammeo.app.activity.EditActivity.EditPhone;
 import com.fammeo.app.adapter.AddressAdapter;
+import com.fammeo.app.adapter.HobbyAdapter;
+import com.fammeo.app.adapter.LanuageSettingAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.AddressDailogeAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.EmailDailogeAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.EmailListAdapter;
+import com.fammeo.app.adapter.fammeoAdapter.HobbyAdapterSetting;
 import com.fammeo.app.adapter.fammeoAdapter.LanguageAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.LanguageListAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.PhoneAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.PhoneAdapterDialogList;
 import com.fammeo.app.app.App;
+import com.fammeo.app.common.CommomInterface;
 import com.fammeo.app.common.DataGlobal;
 import com.fammeo.app.common.DataText;
 import com.fammeo.app.model.CommonModel;
@@ -56,6 +67,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +81,7 @@ import static com.fammeo.app.constants.Constants.METHOD_GET_SAVE_PHONE_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SEARCHCITY_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_USERDATA_USER;
 
-public class SettingEdit extends AppCompatActivity {
+public class SettingEdit extends AppCompatActivity{
     private static final String TAG = SettingEdit.class.getSimpleName();
     SharedPreferences sp;
     public CustomAuthRequest request;
@@ -79,28 +91,28 @@ public class SettingEdit extends AppCompatActivity {
     List<String> mCityList = new ArrayList<>();
     ArrayList<EmailModel> emailList;
     RecyclerView recycler_view, recycler_view_email, recycler_view_lang,
-            recycler_add_type, recycler_view_lang_dbox, recycler_view_address, recycler_address_list, recycler_view_phone, recycler_view_dailouge_phone;
+            recycler_add_type, recycler_view_lang_dbox, recycler_view_address, recycler_address_list, recycler_view_phone, recycler_view_dailouge_phone,recycler_view_hb;
     private Button bt_save, bt_save_address;
     ImageButton bt_true;
     private EditText edt_lang, edt_city, edt_cCode, edt_phone, edt_type;
-    List<String> allLangList = new ArrayList<String>();
     ChipGroup tag_group;
     LinearLayout pbHeaderProgress;
-    String pe, peType, cityName, cityState, cityCountry;
+    String pe, peType;
     JSONArray arr;
     AddressDailogeAdapter addsDaiAdapter;
     AddressAdapter addsAdapter;
     LanguageListAdapter listAdapter, listAdapter1;
     PhoneAdapter phoneAdapter;
-    ArrayList<String> lanListName = new ArrayList<>();
     ArrayList<CommonModel> phoneList = new ArrayList<>();
     List<CommonModel> profileLangList;
+    List<CommonModel> hobbyList = new ArrayList<>();
     private EmailListAdapter emailadapter = null;
     private EmailDailogeAdapter emailAdapterDialogList = null;
     PhoneAdapterDialogList phoneAdapterDailouge;
     TextView txt_title,txt_dec,txt_link;
     int phoneLenght;
     String email_id,getLink,getDec,getTitle;
+    boolean flage = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +126,13 @@ public class SettingEdit extends AppCompatActivity {
         txt_link = findViewById(R.id.txt_link);
         txt_title = findViewById(R.id.txt_title);
         txt_dec = findViewById(R.id.txt_dec);
+        recycler_view_hb = findViewById(R.id.recycler_view_hb);
+
+        Bundle getbundle = getIntent().getExtras();
+        if(getbundle != null){
+            getUserData();
+        }
+
         sp = getSharedPreferences("uId", MODE_PRIVATE);
         userId = sp.getString("u", "");
         String un = sp.getString("un", "");
@@ -122,12 +141,18 @@ public class SettingEdit extends AppCompatActivity {
             userId = App.getInstance().getUserId();
         }
 
-        RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
+        setRecleyViewManager(recycler_view_email);
+        setRecleyViewManager(recycler_view_address);
+        setRecleyViewManager(recycler_view_phone);
+        setRecleyViewManager(recycler_view_hb);
+        /*RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
         recycler_view_email.setLayoutManager(recyce);
         RecyclerView.LayoutManager addsrecy = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
         recycler_view_address.setLayoutManager(addsrecy);
         RecyclerView.LayoutManager phonerecy = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
-        recycler_view_phone.setLayoutManager(phonerecy);
+        recycler_view_phone.setLayoutManager(phonerecy);*/
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
+        recycler_view_hb.setLayoutManager(gridLayoutManager);
 
 
         Toolbar mToolbar = findViewById(R.id.toolbar);
@@ -145,28 +170,102 @@ public class SettingEdit extends AppCompatActivity {
         ((ImageButton) findViewById(R.id.img_edt_address)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addressCustomDialog();
+                //addressCustomDialog();
+                /*Intent intent = new Intent(getApplicationContext(), EditAddress.class);
+                startActivity(intent);*/
+                addsAdapter.getShowImage(flage);
+                if(flage == true){
+                    flage = false;
+                }else if(flage == false){
+                    flage = true;
+                }
+
             }
         });
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((ImageButton) findViewById(R.id.imgbtn_email)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showEmailCustomDialog();
+                //showEmailCustomDialog();
+                /*Intent intent = new Intent(getApplicationContext(),EditEmail.class);
+                startActivity(intent);*/
+
+                emailadapter.getShowImage(flage);
+                if(flage == true){
+                    flage = false;
+                }else if(flage == false){
+                    flage = true;
+                }
             }
         });
         ((ImageButton) findViewById(R.id.img_btn_phone)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPhoneCustomDialog(phoneLenght);
+               // showPhoneCustomDialog(phoneLenght);
+                phoneAdapter.getShowImage(flage);
+                if(flage == true){
+                    flage = false;
+                }else if(flage == false){
+                    flage = true;
+                }
             }
         });
+
         ((ImageButton) findViewById(R.id.img_btn_about)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAboutCustomDialog();
+                //showAboutCustomDialog();
+                Intent intent = new Intent(getApplicationContext(), AboutDetails.class);
+
+                intent.putExtra("T",getTitle);
+                intent.putExtra("D",getDec);
+                intent.putExtra("L",getLink);
+                startActivity(intent);
             }
         });
+        ((ImageButton) findViewById(R.id.imgbt_lang)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //showAboutCustomDialog();
+                ArrayList<String> LangList = new ArrayList<String>();
+                Intent intent = new Intent(getApplicationContext(), EditLanguage.class);
+                intent.putExtra("list", (Serializable) profileLangList);
+                startActivity(intent);
+            }
+        });
+
+        ((ImageButton) findViewById(R.id.img_edit_hobbies)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("TEST","Hlist :"+hobbyList.size());
+                Intent intent = new Intent(getApplicationContext(), EditHobbies.class);
+                intent.putExtra("Hlist", (Serializable) hobbyList);
+                startActivity(intent);
+            }
+        });
+
+        ((TextView) findViewById(R.id.txt_addNewAddress)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),EditAddress.class);
+                startActivity(intent);
+            }
+        });
+        ((TextView) findViewById(R.id.txt_addNewEmail)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),EditEmail.class);
+                startActivity(intent);
+            }
+        });
+        ((TextView) findViewById(R.id.txt_addNewPhone)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EditPhone.class);
+                startActivity(intent);
+            }
+        });
+
         getUserData();
     }
 
@@ -212,7 +311,10 @@ public class SettingEdit extends AppCompatActivity {
         dialog.show();
         dialog.getWindow().setAttributes(lp);
     }
-
+private void setRecleyViewManager(RecyclerView recycler_view){
+    RecyclerView.LayoutManager addsrecy = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
+    recycler_view.setLayoutManager(addsrecy);
+}
     private void saveAbouts(final Editable fname, final Editable lname, final Editable gender, final Editable title, final Editable dec, final Editable youlink) {
 
         request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SAVE_ABOUT_USER, null, 0,
@@ -1052,8 +1154,8 @@ public class SettingEdit extends AppCompatActivity {
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
         List<String> lang = new ArrayList<>();
-        listAdapter1 = new LanguageListAdapter(SettingEdit.this, profileLangList, true);
-        recycler_view_lang_dbox.setAdapter(listAdapter1);
+        /*listAdapter1 = new LanguageListAdapter(SettingEdit.this, profileLangList, true);
+        recycler_view_lang_dbox.setAdapter(listAdapter1);*/
        /* for (int i = 0; i < arr.length(); i++) {
             try {
                 JSONObject arrObj = arr.getJSONObject(i);
@@ -1307,8 +1409,8 @@ public class SettingEdit extends AppCompatActivity {
 
                                         lanList.add(cm);
                                     }
-                                    LanguageAdapter adaper = new LanguageAdapter(SettingEdit.this, lanList);
-                                    recycler_view.setAdapter(adaper);
+                                    /*LanguageAdapter adaper = new LanguageAdapter(SettingEdit.this, lanList);
+                                    recycler_view.setAdapter(adaper);*/
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -1392,7 +1494,6 @@ public class SettingEdit extends AppCompatActivity {
                                                 .into(((CircularImageView) findViewById(R.id.search_image)));
                                     } else {
                                         String firstLater = fullName.substring(0, 1).toUpperCase();
-                                        Log.e("TEST", "Get Image Url NULL:");
                                         ((CircularImageView) findViewById(R.id.search_image)).setImageResource(R.drawable.bg_search_circle);
                                         ((CircularImageView) findViewById(R.id.search_image)).setColorFilter(null);
                                         ((TextView) findViewById(R.id.search_image_text)).setText(firstLater);
@@ -1427,13 +1528,13 @@ public class SettingEdit extends AppCompatActivity {
                                         am.cN = addsObj.getString("C");
                                         am.cState = addsObj.getString("S");
                                         am.cCountry = addsObj.getString("CR");
+                                        am.addsId = addsObj.getString("Id");
                                         am.fullAddress = fullAddress;
 
                                         mAddressList.add(am);
                                     }
                                     addsAdapter = new AddressAdapter(SettingEdit.this, mAddressList);
                                     recycler_view_address.setAdapter(addsAdapter);
-
 
                                     phoneList.clear();
                                     JSONArray phoneAdds = obj.getJSONArray("PHs");
@@ -1444,13 +1545,13 @@ public class SettingEdit extends AppCompatActivity {
                                         am.phNumber = phoneObj.getString("Ph");
                                         am.phcType = phoneObj.getString("T");
                                         am.phcCode = phoneObj.getString("CC");
+                                        am.phId = phoneObj.getString("Id");
                                         phoneList.add(am);
                                     }
                                     phoneAdapter = new PhoneAdapter(SettingEdit.this, phoneList);
                                     recycler_view_phone.setAdapter(phoneAdapter);
 
                                     JSONArray arrAbout = obj.getJSONArray("Bls");
-
 
                                     JSONObject objLin = arrAbout.getJSONObject(0);
                                     getLink = objLin.getString("OV");
@@ -1472,24 +1573,24 @@ public class SettingEdit extends AppCompatActivity {
                                         cm.lName = arrObj.getString("N");
                                         profileLangList.add(cm);
                                         String getname = cm.lName;
-                                        // TextView rowTextView = new TextView(SettingEdit.this);
-                                        //rowTextView.setText(getname);
-                                        //  rowTextView.setBackground(getApplicationContext().getDrawable(R.drawable.shape_rounded_orange));
-                                        //  rowTextView.setPadding(25,15,25,15);
-
-                                        //   LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                        //  params.setMargins(10,0,0,0);
-                                        //   rowTextView.setLayoutParams(params);
-//
-                                        // rowTextView.setTextColor(Color.parseColor("#f2f4f7"));
-                                        // lLayout.addView(rowTextView);
                                     }
 
-                                    listAdapter = new LanguageListAdapter(SettingEdit.this, profileLangList, false);
+                                    LanuageSettingAdapter listAdapter = new LanuageSettingAdapter(SettingEdit.this, profileLangList);
                                     recycler_view_lang.setAdapter(listAdapter);
-
                                     //rowTextView.setText(getname);
+                                    JSONArray arrHobbies = obj.getJSONArray("Hs");
+                                    Log.e("TEST","Hobby :"+arrHobbies.length());
+                                    for (int k = 0; k < arrHobbies.length(); k++) {
+                                        JSONObject arrObj = arrHobbies.getJSONObject(k);
+                                        CommonModel cm = new CommonModel();
+                                        cm.lId = arrObj.getString("Id");
+                                        cm.lName = arrObj.getString("N");
+                                        Log.e("TEST","Hobby :"+cm.lName);
+                                        hobbyList.add(cm);
+                                    }
 
+                                    HobbyAdapterSetting adpeter = new HobbyAdapterSetting(SettingEdit.this, hobbyList);
+                                    recycler_view_hb.setAdapter(adpeter);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -1561,4 +1662,6 @@ public class SettingEdit extends AppCompatActivity {
         edt_city.setText(cityName);
         recycler_add_type.setVisibility(View.GONE);
     }
+
+
 }

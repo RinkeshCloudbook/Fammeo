@@ -27,7 +27,13 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         tools:replace="android:allowBackup,android:icon">
-        <activity android:name=".activity.SettingEdit"></activity>
+        <activity android:name=".activity.EditActivity.EditHobbies"></activity>
+        <activity android:name=".activity.EditActivity.EditLanguage" />
+        <activity android:name=".activity.EditActivity.AboutDetails" />
+        <activity android:name=".activity.EditActivity.EditPhone" />
+        <activity android:name=".activity.EditActivity.EditAddress" />
+        <activity android:name=".activity.EditEmail" />
+        <activity android:name=".activity.SettingEdit" />
         <activity android:name=".activity.EditProfile" />
         <activity android:name=".activity.CreateUser" />
         <activity android:name=".activity.SearchUser" />

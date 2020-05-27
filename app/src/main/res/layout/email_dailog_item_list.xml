@@ -71,11 +71,12 @@
 
     </LinearLayout>
     <ImageButton
+        android:visibility="gone"
         android:layout_marginTop="@dimen/dimen_15dp"
         android:id="@+id/img_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_close_black"
+        android:src="@drawable/ic_create_black"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/dimen_5dp"
         android:background="@color/float_transparent"/>

@@ -47,12 +47,16 @@ public interface Constants {
  public static final String METHOD_SEARCH_NEW_CREATE_USER = API_User_DOMAIN + "api/guser/createuser" + API_FILE_EXTENSION;
  public static final String METHOD_GET_PUBLIC_LANGUAGE_USER = API_User_DOMAIN + "api/user/getpubliclanguages" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SAVE_LANGUAGE_USER = API_User_DOMAIN + "api/user/savelanguages" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_SAVE_HOBBY_USER = API_User_DOMAIN + "api/user/savehobbies" + API_FILE_EXTENSION;
  public static final String METHOD_GET_USERDATA_USER = API_User_DOMAIN + "api/user/getuser" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SAVEMAIL_USER = API_User_DOMAIN + "api/user/saveemails" + API_FILE_EXTENSION;
- public static final String METHOD_GET_SAVE_ADDRESS_USER = API_User_DOMAIN + "api/user/saveaddresses" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_SAVE_ADDRESS_USER = API_User_DOMAIN + "api/user/saveaddress" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SAVE_ABOUT_USER = API_User_DOMAIN + "api/user/changebasicdata" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SAVE_PHONE_USER = API_User_DOMAIN + "api/user/savephones" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SEARCHCITY_USER = API_User_DOMAIN + "api/common/searchcity" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_SAVE_SINGLE_PHONE_USER = API_User_DOMAIN + "api/user/savephone" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_SAVE_SINGLE_EMAIL_USER = API_User_DOMAIN + "api/user/saveemail" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_SEARCH_HOBBIES_USER = API_User_DOMAIN + "api/user/getpublichobbies" + API_FILE_EXTENSION;
 
  public static final String METHOD_NOTIFICATIONS_GET = API_User_DOMAIN + "api/notification/getdata" + API_FILE_EXTENSION;
  public static final String METHOD_NOTIFICATIONS_Remove = API_User_DOMAIN + "api/notification/remove" + API_FILE_EXTENSION;

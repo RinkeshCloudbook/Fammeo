@@ -1,6 +1,8 @@
 package com.fammeo.app.model;
 
-public class CommonModel {
+import java.io.Serializable;
+
+public class CommonModel implements Serializable {
     public  String recordId;
     public  String lId;
     public  String lName;
@@ -13,11 +15,13 @@ public class CommonModel {
     public  String cCRC;
     public  String cType;
     public  String cAddress;
+    public  String addsId;
     public String fullAddress;
 
     public String phcCode;
     public String phNumber;
     public String phcType;
+    public String phId;
 
     public String abtTitle;
     public String abtDec;

@@ -11,6 +11,7 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.crashlytics.android.Crashlytics;
 import com.fammeo.app.BuildConfig;
 import com.fammeo.app.app.ECBAuthToken;
 import com.fammeo.app.fragment.CompanyFragment;
@@ -46,7 +47,6 @@ import com.fammeo.app.view.kbv.KenBurnsView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -58,6 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
+import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends ActivityBase implements GoogleApiClient.ConnectionCallbacks {
     private static String TAG = SplashActivity.class.getSimpleName();
@@ -75,8 +76,7 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-
+        Fabric.with(this, new Crashlytics());
         initClient();
         getWindow().requestFeature(Window.FEATURE_NO_TITLE); //Removing ActionBar
         ActionBar bar = getSupportActionBar();
@@ -104,7 +104,7 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
             Log.w(TAG, "onCreate: "+userj.FN );
 
             welcomeText.setText("Welcome " + userj.FN + "!");
-            FirebaseCrashlytics.getInstance().log("User: "+userj.FN );
+            Crashlytics.log("User: "+userj.FN );
         }
         else
         {
@@ -118,7 +118,7 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
             else
                 Log.w(TAG, "onCreate: "+ userj.FN );
         }
-        FirebaseCrashlytics.getInstance().recordException(new Exception("Upload Log exception"));
+        Crashlytics.logException(new Exception("Upload Log exception"));
         setAnimation();
         ShowResult();
         intentBundle = getIntent().getExtras();

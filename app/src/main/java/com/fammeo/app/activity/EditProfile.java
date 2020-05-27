@@ -22,7 +22,6 @@ import com.fammeo.app.R;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataText;
 import com.fammeo.app.view.siv.CircularImageView;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -44,6 +43,7 @@ public class EditProfile extends AppCompatActivity {
         String userId = sp.getString("u","");
         String un = sp.getString("un","");
         Log.e("TEST","Get User Id :"+userId);
+
         Log.e("TEST","Full Name :"+App.getInstance().getFullname());
         Log.e("TEST","FN :"+App.getInstance().getFirstName());
         Log.e("TEST","LN :"+App.getInstance().getLastName());

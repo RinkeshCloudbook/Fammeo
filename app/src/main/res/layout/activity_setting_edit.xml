@@ -31,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/dimen_15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,21 +160,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/spacing_medium"
-                            android:text=""
+                            android:autoLink="web"
+                            android:linksClickable="true"
                             android:layout_marginLeft="@dimen/dimen_10dp"
                             style="@style/EditText.Flat.Grey"
                             android:textColor="@color/grey_60" />
                     </LinearLayout>
 
-
                     <ImageButton
                         android:id="@+id/img_btn_about"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_circle_themcolor"
+                        android:background="@null"
                         android:clickable="true"
                         android:padding="@dimen/dimen_7dp"
-                        app:srcCompat="@drawable/ic_create" />
+                        app:srcCompat="@drawable/ic_create_black" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -187,210 +188,253 @@
                 android:padding="@dimen/dimen_7dp"
                 app:cardCornerRadius="@dimen/dimen_5dp"
                 app:cardElevation="3dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dimen_7dp"
-                    android:paddingLeft="@dimen/spacing_middle"
-                    android:paddingRight="@dimen/spacing_middle">
+                    android:orientation="vertical"
+                    >
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_gravity="center"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_7dp"
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle">
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Address"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+                            <TextView
+                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Address"
+                                android:padding="@dimen/dimen_7dp"
+                                android:textSize="@dimen/dimen_17sp"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:textColor="@color/grey_90"
+                                />
+
+                        </LinearLayout>
+
+
+                        <ImageButton
+                            android:id="@+id/img_edt_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:padding="@dimen/dimen_7dp"
-                            android:textSize="@dimen/dimen_17sp"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                            android:textColor="@color/grey_90"
-                            />
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view_address"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scrollbars="vertical" />
+                            android:background="@null"
+                            android:clickable="true"
+                            app:srcCompat="@drawable/ic_create_black" />
                     </LinearLayout>
-
-
-                    <ImageButton
-                        android:id="@+id/img_edt_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/dimen_7dp"
-                        android:background="@drawable/shape_circle_themcolor"
-                        android:clickable="true"
-                        app:srcCompat="@drawable/ic_create" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="@dimen/spacing_large"
-                android:background="#F19292"
-                android:padding="@dimen/dimen_7dp"
-                app:cardCornerRadius="@dimen/dimen_5dp"
-                app:cardElevation="3dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dimen_7dp"
-                    android:paddingLeft="@dimen/spacing_middle"
-                    android:paddingRight="@dimen/spacing_middle">
-                    <LinearLayout
-                        android:id="@+id/lin_email"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingRight="@dimen/dimen_5dp"
+                        android:id="@+id/recycler_view_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="vertical" />
+                    <TextView
+                        android:id="@+id/txt_addNewAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Email"
-                            android:textSize="@dimen/dimen_17sp"
-                            android:padding="@dimen/dimen_7dp"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                            android:textColor="@color/grey_90"
-                            />
-                        <TextView
-                            android:visibility="gone"
-                            android:id="@+id/txt_emailtype"
-                            android:layout_gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Email"
-                            android:layout_marginLeft="@dimen/dimen_7dp"
-                            android:textSize="@dimen/dimen_14sp"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                            android:textColor="@color/grey_90"
-                            />
-                        <TextView
-                            android:visibility="gone"
-                            android:id="@+id/txt_email"
-                            android:layout_gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Email"
-                            android:layout_marginLeft="@dimen/dimen_7dp"
-                            android:textSize="@dimen/dimen_14sp"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                            android:textColor="@color/grey_90"
-                            />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view_email"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scrollbars="vertical" />
-
-                    </LinearLayout>
-
-
-                    <ImageButton
-                        android:id="@+id/imgbtn_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
+                        android:text="Add New"
                         android:padding="@dimen/dimen_7dp"
-                        android:background="@drawable/shape_circle_themcolor"
-                        android:clickable="true"
-                        app:srcCompat="@drawable/ic_create" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="@dimen/spacing_large"
-                android:background="#F19292"
-                android:padding="@dimen/dimen_7dp"
-                app:cardCornerRadius="@dimen/dimen_5dp"
-                app:cardElevation="3dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dimen_7dp"
-                    android:paddingLeft="@dimen/spacing_middle"
-                    android:paddingRight="@dimen/spacing_middle">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Phone"
-                            android:textSize="@dimen/dimen_17sp"
-                            android:padding="@dimen/dimen_7dp"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                            android:textColor="@color/grey_90"
-                            />
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view_phone"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scrollbars="vertical" />
-                    </LinearLayout>
-
-
-                    <ImageButton
-                        android:id="@+id/img_btn_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/dimen_7dp"
-                        android:background="@drawable/shape_circle_themcolor"
-                        android:clickable="true"
-
-                        app:srcCompat="@drawable/ic_create" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="@dimen/spacing_large"
-                android:background="#F19292"
-                android:padding="@dimen/dimen_7dp"
-                app:cardCornerRadius="@dimen/dimen_5dp"
-                app:cardElevation="3dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dimen_7dp"
-                    android:paddingLeft="@dimen/spacing_middle"
-                    android:paddingRight="@dimen/spacing_middle">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textSize="@dimen/dimen_14sp"
+                        android:textColor="@color/themecolor"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:background="#F19292"
+                android:padding="@dimen/dimen_7dp"
+                app:cardCornerRadius="@dimen/dimen_5dp"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_7dp"
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle">
+                        <LinearLayout
+                            android:id="@+id/lin_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+                            <TextView
+                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Email"
+                                android:textSize="@dimen/dimen_17sp"
+                                android:padding="@dimen/dimen_7dp"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:textColor="@color/grey_90"
+                                />
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/txt_emailtype"
+                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Email"
+                                android:layout_marginLeft="@dimen/dimen_7dp"
+                                android:textSize="@dimen/dimen_14sp"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:textColor="@color/grey_90"
+                                />
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/txt_email"
+                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Email"
+                                android:layout_marginLeft="@dimen/dimen_7dp"
+                                android:textSize="@dimen/dimen_14sp"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:textColor="@color/grey_90"
+                                />
+
+                        </LinearLayout>
+                        <ImageButton
+                            android:id="@+id/imgbtn_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:padding="@dimen/dimen_7dp"
+                            android:background="@null"
+                            android:clickable="true"
+                            app:srcCompat="@drawable/ic_create_black" />
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingRight="@dimen/dimen_5dp"
+                        android:id="@+id/recycler_view_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="vertical" />
+                    <TextView
+                        android:id="@+id/txt_addNewEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add New"
+                        android:padding="@dimen/dimen_7dp"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textSize="@dimen/dimen_14sp"
+                        android:textColor="@color/themecolor"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:background="#F19292"
+                android:padding="@dimen/dimen_7dp"
+                app:cardCornerRadius="@dimen/dimen_5dp"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_7dp"
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle">
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Phone"
+                                android:textSize="@dimen/dimen_17sp"
+                                android:padding="@dimen/dimen_7dp"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:textColor="@color/grey_90"
+                                />
+                            <ImageButton
+                                android:id="@+id/img_btn_phone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/dimen_7dp"
+                                android:background="@null"
+                                android:clickable="true"
+                                app:srcCompat="@drawable/ic_create_black" />
+                        </LinearLayout>
+                     <androidx.recyclerview.widget.RecyclerView
+                         android:paddingLeft="@dimen/dimen_10dp"
+                         android:paddingRight="@dimen/dimen_5dp"
+                         android:id="@+id/recycler_view_phone"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:scrollbars="vertical" />
+                    <TextView
+                        android:id="@+id/txt_addNewPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add New"
+                        android:padding="@dimen/dimen_7dp"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textSize="@dimen/dimen_14sp"
+                        android:textColor="@color/themecolor"
+                        android:gravity="end"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:background="#F19292"
+                android:padding="@dimen/dimen_7dp"
+                app:cardCornerRadius="@dimen/dimen_5dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_7dp"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
                         <TextView
+                            android:layout_weight="1"
                             android:layout_gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -400,39 +444,22 @@
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                             android:textColor="@color/grey_90"
                             />
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view_lang"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scrollbars="vertical" />
-                        <LinearLayout
-                            android:id="@+id/rel_lang"
-                            android:layout_width="match_parent"
+                        <ImageButton
+                            android:id="@+id/imgbt_lang"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/spacing_small"
-                            android:paddingLeft="@dimen/spacing_xmedium"
-                            android:paddingRight="@dimen/spacing_xmedium"
-                            android:paddingTop="@dimen/spacing_small">
-
-                            <TextView
-                                android:visibility="gone"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="415 Points"
-                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                                android:textColor="@android:color/white" />
-
-                        </LinearLayout>
+                            android:layout_gravity="top"
+                            android:padding="@dimen/dimen_7dp"
+                            android:background="@null"
+                            android:clickable="true"
+                            app:srcCompat="@drawable/ic_create_black" />
                     </LinearLayout>
-                    <ImageButton
-                        android:id="@+id/imgbt_lang"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:padding="@dimen/dimen_7dp"
-                        android:background="@drawable/shape_circle_themcolor"
-                        android:clickable="true"
-                        app:srcCompat="@drawable/ic_create" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_lang"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="vertical" />
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -442,36 +469,50 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_large"
                 android:layout_marginRight="@dimen/spacing_large"
+                android:paddingBottom="@dimen/dimen_10dp"
                 android:background="#F19292"
                 android:padding="@dimen/dimen_7dp"
                 app:cardCornerRadius="@dimen/dimen_5dp"
                 app:cardElevation="3dp">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_80dp"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dimen_7dp"
-                    android:paddingLeft="@dimen/spacing_middle"
-                    android:paddingRight="@dimen/spacing_middle">
-                    <TextView
-                        android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Hobbies"
-                        android:textSize="@dimen/dimen_17sp"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
                         android:padding="@dimen/dimen_7dp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textColor="@color/grey_90"
-                        android:layout_weight="1"/>
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle">
+                        <TextView
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Hobbies"
+                            android:textSize="@dimen/dimen_17sp"
+                            android:padding="@dimen/dimen_7dp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                            android:textColor="@color/grey_90"
+                            android:layout_weight="1"/>
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/dimen_7dp"
-                        android:background="@drawable/shape_circle_themcolor"
-                        android:clickable="true"
-                        app:srcCompat="@drawable/ic_create" />
+                        <ImageButton
+                            android:id="@+id/img_edit_hobbies"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/dimen_7dp"
+                            android:background="@null"
+                            android:clickable="true"
+                            app:srcCompat="@drawable/ic_create_black" />
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_hb"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="vertical" />
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

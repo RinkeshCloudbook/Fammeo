@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
+import com.fammeo.app.activity.EditActivity.EditLanguage;
 import com.fammeo.app.activity.SettingEdit;
 import com.fammeo.app.fragment.FragmentCreate;
 import com.fammeo.app.model.CommonModel;
@@ -19,10 +21,10 @@ import com.fammeo.app.model.CommonModel;
 import java.util.ArrayList;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder> {
-    SettingEdit context;
+    EditLanguage context;
     ArrayList<CommonModel> lagText;
 
-    public LanguageAdapter(SettingEdit applicationContext, ArrayList<CommonModel> lagText) {
+    public LanguageAdapter(EditLanguage applicationContext, ArrayList<CommonModel> lagText) {
         this.context = applicationContext;
         this.lagText = lagText;
         Log.e("TEST","Adapter Size :"+lagText.size());
