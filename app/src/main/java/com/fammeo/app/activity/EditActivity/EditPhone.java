@@ -3,6 +3,8 @@ package com.fammeo.app.activity.EditActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,6 +63,12 @@ public class EditPhone extends AppCompatActivity {
             edt_phone_type.setText(PT);
             edt_phone_code.setText(PC);
         }
+        edt_phone_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEmailType(v);
+            }
+        });
         ((Button) findViewById(R.id.bt_phone_save)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,5 +186,21 @@ public class EditPhone extends AppCompatActivity {
 
         toast.setView(custom_view);
         toast.show();
+    }
+
+    public void showEmailType(final View v) {
+        final String[] emailType = new String[]{
+                "Mobile", "Office", "Home", "Main", "Work Fax", "Home Fax", "other"
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setSingleChoiceItems(emailType, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((EditText) v).setText(emailType[i]);
+                //emailList.get(position).emailType = emailType[i];
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
     }
 }

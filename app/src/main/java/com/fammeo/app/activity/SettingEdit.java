@@ -7,17 +7,26 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -42,6 +51,7 @@ import com.fammeo.app.activity.EditActivity.EditAddress;
 import com.fammeo.app.activity.EditActivity.EditHobbies;
 import com.fammeo.app.activity.EditActivity.EditLanguage;
 import com.fammeo.app.activity.EditActivity.EditPhone;
+import com.fammeo.app.activity.EditActivity.Skills;
 import com.fammeo.app.adapter.AddressAdapter;
 import com.fammeo.app.adapter.HobbyAdapter;
 import com.fammeo.app.adapter.LanuageSettingAdapter;
@@ -53,6 +63,7 @@ import com.fammeo.app.adapter.fammeoAdapter.LanguageAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.LanguageListAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.PhoneAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.PhoneAdapterDialogList;
+import com.fammeo.app.adapter.fammeoAdapter.SkillAdapterSetting;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.CommomInterface;
 import com.fammeo.app.common.DataGlobal;
@@ -60,18 +71,26 @@ import com.fammeo.app.common.DataText;
 import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.model.EmailModel;
 import com.fammeo.app.util.CustomAuthRequest;
+import com.fammeo.app.util.GenericFileProvider;
+import com.fammeo.app.util.RealPathUtil;
 import com.fammeo.app.view.siv.CircularImageView;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import static com.fammeo.app.constants.Constants.METHOD_GET_DELETE_ADDRESS_USER;
+import static com.fammeo.app.constants.Constants.METHOD_GET_DELETE_Email_USER;
+import static com.fammeo.app.constants.Constants.METHOD_GET_DELETE_PHONE_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_PUBLIC_LANGUAGE_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SAVEMAIL_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SAVE_ABOUT_USER;
@@ -80,6 +99,7 @@ import static com.fammeo.app.constants.Constants.METHOD_GET_SAVE_LANGUAGE_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SAVE_PHONE_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_SEARCHCITY_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_USERDATA_USER;
+import static com.fammeo.app.fragment.CompanyProfileFragment.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
 
 public class SettingEdit extends AppCompatActivity{
     private static final String TAG = SettingEdit.class.getSimpleName();
@@ -91,13 +111,15 @@ public class SettingEdit extends AppCompatActivity{
     List<String> mCityList = new ArrayList<>();
     ArrayList<EmailModel> emailList;
     RecyclerView recycler_view, recycler_view_email, recycler_view_lang,
-            recycler_add_type, recycler_view_lang_dbox, recycler_view_address, recycler_address_list, recycler_view_phone, recycler_view_dailouge_phone,recycler_view_hb;
+            recycler_add_type, recycler_view_lang_dbox, recycler_view_address, recycler_address_list, recycler_view_phone,
+            recycler_view_dailouge_phone,recycler_view_hb,recycler_view_sk;
     private Button bt_save, bt_save_address;
     ImageButton bt_true;
     private EditText edt_lang, edt_city, edt_cCode, edt_phone, edt_type;
     ChipGroup tag_group;
     LinearLayout pbHeaderProgress;
     String pe, peType;
+    public String photoFileName = "photo.jpg";
     JSONArray arr;
     AddressDailogeAdapter addsDaiAdapter;
     AddressAdapter addsAdapter;
@@ -106,6 +128,7 @@ public class SettingEdit extends AppCompatActivity{
     ArrayList<CommonModel> phoneList = new ArrayList<>();
     List<CommonModel> profileLangList;
     List<CommonModel> hobbyList = new ArrayList<>();
+    List<CommonModel> skillList = new ArrayList<>();
     private EmailListAdapter emailadapter = null;
     private EmailDailogeAdapter emailAdapterDialogList = null;
     PhoneAdapterDialogList phoneAdapterDailouge;
@@ -113,6 +136,9 @@ public class SettingEdit extends AppCompatActivity{
     int phoneLenght;
     String email_id,getLink,getDec,getTitle;
     boolean flage = true;
+    AlertDialog dialog;
+    File photoFile;
+    public final String APP_TAG = "MyCustomAppContect";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +149,7 @@ public class SettingEdit extends AppCompatActivity{
         recycler_view_address = findViewById(R.id.recycler_view_address);
         recycler_view_lang = findViewById(R.id.recycler_view_lang);
         recycler_view_phone = findViewById(R.id.recycler_view_phone);
+        recycler_view_sk = findViewById(R.id.recycler_view_sk);
         txt_link = findViewById(R.id.txt_link);
         txt_title = findViewById(R.id.txt_title);
         txt_dec = findViewById(R.id.txt_dec);
@@ -145,6 +172,7 @@ public class SettingEdit extends AppCompatActivity{
         setRecleyViewManager(recycler_view_address);
         setRecleyViewManager(recycler_view_phone);
         setRecleyViewManager(recycler_view_hb);
+        setRecleyViewManager(recycler_view_sk);
         /*RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
         recycler_view_email.setLayoutManager(recyce);
         RecyclerView.LayoutManager addsrecy = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
@@ -171,8 +199,7 @@ public class SettingEdit extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 //addressCustomDialog();
-                /*Intent intent = new Intent(getApplicationContext(), EditAddress.class);
-                startActivity(intent);*/
+
                 addsAdapter.getShowImage(flage);
                 if(flage == true){
                     flage = false;
@@ -187,8 +214,6 @@ public class SettingEdit extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 //showEmailCustomDialog();
-                /*Intent intent = new Intent(getApplicationContext(),EditEmail.class);
-                startActivity(intent);*/
 
                 emailadapter.getShowImage(flage);
                 if(flage == true){
@@ -243,6 +268,15 @@ public class SettingEdit extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+        ((ImageButton) findViewById(R.id.img_edit_skills)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("TEST","Click skills:");
+                Intent intent = new Intent(getApplicationContext(), Skills.class);
+                //intent.putExtra("Hlist", (Serializable) hobbyList);
+                startActivity(intent);
+            }
+        });
 
         ((TextView) findViewById(R.id.txt_addNewAddress)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,8 +299,104 @@ public class SettingEdit extends AppCompatActivity{
                 startActivity(intent);
             }
         });
-
+        ((FloatingActionButton) findViewById(R.id.fab_editImage)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("TEST","Edit Image");
+                selectImage();
+            }
+        });
         getUserData();
+    }
+
+    private void selectImage() {
+        dialog = new AlertDialog.Builder(SettingEdit.this).create();
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.custom_alert_dailogbox, null);
+
+        LinearLayout lin_takeGallary = layout.findViewById(R.id.lin_takeGallary);
+        TextView txt_gallary = layout.findViewById(R.id.txt_gallary);
+        Button bt_decline = layout.findViewById(R.id.bt_decline);
+        TextView txt_takepic = layout.findViewById(R.id.txt_takepic);
+
+        dialog.setView(layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        txt_takepic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                     Log.e("TEST","Camera");
+               // cameraIntent();
+
+            }
+        });
+        txt_gallary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Log.e("TEST","Gallary");
+            }
+        });
+        bt_decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+    public void show() {
+        dialog.show();
+    }
+    public void hide() {
+        dialog.dismiss();
+    }
+
+    public void cameraIntent() {
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        photoFileName= Calendar.getInstance().getTimeInMillis()+".jpg";
+        photoFile = getPhotoFileUri(photoFileName);
+        Uri fileProvider = GenericFileProvider.getUriForFile(SettingEdit.this, "com.fammeo.app.util.GenericFileProvider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
+        if (intent.resolveActivity(SettingEdit.this.getPackageManager()) != null) {
+            // Start the image capture intent to take photo
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+
+        }
+    }
+    private File getPhotoFileUri(String photoFileName) {
+        File mediaStorageDir = new File(SettingEdit.this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
+
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.d(APP_TAG, "failed to create directory");
+        }
+        File file = new File(mediaStorageDir.getPath() + File.separator + photoFileName);
+        return file;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        String  Token = App.getInstance().getAccessToken();
+        long ParseACId = App.getInstance().getCurrentACId();
+       // final String parsedurl = App.getInstance().GetCustonDomain(ParseACId,METHOD_UPLOAD_COMPANY_PROFILE);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 111){
+                String realPath= RealPathUtil.getRealPath(SettingEdit.this,data.getData());
+
+                //uploadImage(parsedurl,realPath,Token);
+            }
+            else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
+                String realPath=photoFile.getAbsolutePath();
+                //uploadImage(parsedurl,realPath,Token);
+            }
+        }
     }
 
     private void showAboutCustomDialog() {
@@ -311,7 +441,7 @@ public class SettingEdit extends AppCompatActivity{
         dialog.show();
         dialog.getWindow().setAttributes(lp);
     }
-private void setRecleyViewManager(RecyclerView recycler_view){
+    private void setRecleyViewManager(RecyclerView recycler_view){
     RecyclerView.LayoutManager addsrecy = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
     recycler_view.setLayoutManager(addsrecy);
 }
@@ -1369,6 +1499,8 @@ private void setRecleyViewManager(RecyclerView recycler_view){
             ((TextView) custom_view.findViewById(R.id.message)).setText("Phone(s) Saved Successfully!");
         }else if (msgText.equalsIgnoreCase("about")) {
             ((TextView) custom_view.findViewById(R.id.message)).setText("About(s) Saved Successfully!");
+        }else if (msgText.equalsIgnoreCase("addsdlete")) {
+            ((TextView) custom_view.findViewById(R.id.message)).setText("Delete Successfully!");
         }
 
         ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_done);
@@ -1513,7 +1645,7 @@ private void setRecleyViewManager(RecyclerView recycler_view){
                                         em.recordId = id;
                                         emailList.add(em);
                                     }
-                                    emailadapter = new EmailListAdapter(getApplicationContext(), emailList);
+                                    emailadapter = new EmailListAdapter(SettingEdit.this, emailList);
                                     recycler_view_email.setAdapter(emailadapter);
 
                                     mAddressList.clear();
@@ -1579,18 +1711,29 @@ private void setRecleyViewManager(RecyclerView recycler_view){
                                     recycler_view_lang.setAdapter(listAdapter);
                                     //rowTextView.setText(getname);
                                     JSONArray arrHobbies = obj.getJSONArray("Hs");
-                                    Log.e("TEST","Hobby :"+arrHobbies.length());
                                     for (int k = 0; k < arrHobbies.length(); k++) {
                                         JSONObject arrObj = arrHobbies.getJSONObject(k);
                                         CommonModel cm = new CommonModel();
                                         cm.lId = arrObj.getString("Id");
                                         cm.lName = arrObj.getString("N");
-                                        Log.e("TEST","Hobby :"+cm.lName);
                                         hobbyList.add(cm);
                                     }
 
                                     HobbyAdapterSetting adpeter = new HobbyAdapterSetting(SettingEdit.this, hobbyList);
                                     recycler_view_hb.setAdapter(adpeter);
+
+                                    JSONArray arrSkill = obj.getJSONArray("Sks");
+
+                                    for (int k = 0; k < arrSkill.length(); k++) {
+                                        JSONObject arrObj = arrSkill.getJSONObject(k);
+                                        CommonModel cm = new CommonModel();
+                                        cm.lId = arrObj.getString("Id");
+                                        cm.lName = arrObj.getString("N");
+                                        skillList.add(cm);
+                                    }
+
+                                    SkillAdapterSetting skadpeter = new SkillAdapterSetting(SettingEdit.this, skillList);
+                                    recycler_view_sk.setAdapter(skadpeter);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -1663,5 +1806,187 @@ private void setRecleyViewManager(RecyclerView recycler_view){
         recycler_add_type.setVisibility(View.GONE);
     }
 
+    public void deleteAddress(final String addsId){
+        Log.e("TEST","Get Delete Id From Address :"+addsId);
+            // list.clear();
+            request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_DELETE_ADDRESS_USER, null, 0,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (App.getInstance().authorizeSimple(response)) {
+                                String strResponse = response.toString();
+                                Log.e("TEST", "Delete Response :" + response.toString());
+                                if (strResponse != null) {
+                                    lanList.clear();
+                                    try {
+                                        JSONObject object = new JSONObject(strResponse);
+                                        String msgType = object.getString("MessageType");
+                                        if (msgType.equalsIgnoreCase("success")) {
+                                            toastIconSuccess("addsdlete");
+                                           getUserData();
+                                        }
+//
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
 
+                                }
+                            } else {
+//
+                            }
+                        }
+
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //pbHeaderProgress.setVisibility(View.VISIBLE);
+                    //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
+                }
+            }) {
+
+                @Override
+                protected JSONObject getParams() {
+                    try {
+                        JSONObject params = new JSONObject();
+                        params.put("Id", addsId);
+                        params.put("UserId", userId);
+                    Log.e("TEST","Delete Address Param :"+params);
+                        return params;
+                    } catch (JSONException ex) {
+                        DataGlobal.SaveLog(TAG, ex);
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onCreateFinished(CustomAuthRequest request) {
+                    int socketTimeout = 300000;//0 seconds - change to what you want
+                    RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    request.customRequest.setRetryPolicy(policy);
+                    App.getInstance().addToRequestQueue(request);
+                }
+            };
+        }
+
+    public void deleteEmail(final String emailId){
+            Log.e("TEST","Get Delete Id From Email :"+emailId);
+            // list.clear();
+            request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_DELETE_Email_USER, null, 0,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (App.getInstance().authorizeSimple(response)) {
+                                String strResponse = response.toString();
+                                Log.e("TEST", "Delete Response :" + response.toString());
+                                if (strResponse != null) {
+                                    lanList.clear();
+                                    try {
+                                        JSONObject object = new JSONObject(strResponse);
+                                        String msgType = object.getString("MessageType");
+                                        if (msgType.equalsIgnoreCase("success")) {
+                                            toastIconSuccess("addsdlete");
+                                            getUserData();
+                                        }
+//
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else {
+//
+                            }
+                        }
+
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //pbHeaderProgress.setVisibility(View.VISIBLE);
+                    //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
+                }
+            }) {
+
+                @Override
+                protected JSONObject getParams() {
+                    try {
+                        JSONObject params = new JSONObject();
+                        params.put("Id", emailId);
+                        params.put("UserId", userId);
+                        Log.e("TEST","Delete Address Param :"+params);
+                        return params;
+                    } catch (JSONException ex) {
+                        DataGlobal.SaveLog(TAG, ex);
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onCreateFinished(CustomAuthRequest request) {
+                    int socketTimeout = 300000;//0 seconds - change to what you want
+                    RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    request.customRequest.setRetryPolicy(policy);
+                    App.getInstance().addToRequestQueue(request);
+                }
+            };
+        }
+
+    public void deletePhone(final String addsId){
+        Log.e("TEST","Get Phone Id From :"+addsId);
+        // list.clear();
+        request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_DELETE_PHONE_USER, null, 0,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (App.getInstance().authorizeSimple(response)) {
+                            String strResponse = response.toString();
+                            Log.e("TEST", "Delete Phone Response :" + response.toString());
+                            if (strResponse != null) {
+                                lanList.clear();
+                                try {
+                                    JSONObject object = new JSONObject(strResponse);
+                                    String msgType = object.getString("MessageType");
+                                    if (msgType.equalsIgnoreCase("success")) {
+                                        toastIconSuccess("addsdlete");
+                                        getUserData();
+                                    }
+//
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+//
+                        }
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //pbHeaderProgress.setVisibility(View.VISIBLE);
+                //SnakebarCustom.danger(mContext, v, "Unable to fetch Companies: " + error.getMessage(), 5000);
+            }
+        }) {
+
+            @Override
+            protected JSONObject getParams() {
+                try {
+                    JSONObject params = new JSONObject();
+                    params.put("Id", addsId);
+                    params.put("UserId", userId);
+                    Log.e("TEST","Delete Phone Param :"+params);
+                    return params;
+                } catch (JSONException ex) {
+                    DataGlobal.SaveLog(TAG, ex);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onCreateFinished(CustomAuthRequest request) {
+                int socketTimeout = 300000;//0 seconds - change to what you want
+                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                request.customRequest.setRetryPolicy(policy);
+                App.getInstance().addToRequestQueue(request);
+            }
+        };
+    }
 }

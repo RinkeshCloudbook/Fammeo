@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,15 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.EditEmail;
+import com.fammeo.app.activity.SettingEdit;
 import com.fammeo.app.model.EmailModel;
 
 import java.util.ArrayList;
 
 public class EmailListAdapter extends RecyclerView.Adapter<EmailListAdapter.ViewHolder> {
-    Context context;
+    SettingEdit context;
     ArrayList<EmailModel> emailList;
     boolean img;
-    public EmailListAdapter(Context applicationContext, ArrayList<EmailModel> emailList) {
+    public EmailListAdapter(SettingEdit applicationContext, ArrayList<EmailModel> emailList) {
         this.context = applicationContext;
         this.emailList = emailList;
     }
@@ -44,12 +47,28 @@ public class EmailListAdapter extends RecyclerView.Adapter<EmailListAdapter.View
             holder.img_edt_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent emInt = new Intent(context, EditEmail.class);
-                    emInt.putExtra("ET",emailList.get(i).emailType);
-                    emInt.putExtra("EA",emailList.get(i).emailAddress);
-                    emInt.putExtra("eId",emailList.get(i).recordId);
-                    emInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(emInt);
+
+                    PopupMenu popupMenu = new PopupMenu(context, v);
+
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            String itemName = String.valueOf(item.getTitle());
+                            if(itemName.equalsIgnoreCase("Edit")){
+                                Intent emInt = new Intent(context, EditEmail.class);
+                                emInt.putExtra("ET",emailList.get(i).emailType);
+                                emInt.putExtra("EA",emailList.get(i).emailAddress);
+                                emInt.putExtra("eId",emailList.get(i).recordId);
+                                emInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(emInt);
+                            }else {
+                                context.deleteEmail(emailList.get(i).recordId);
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.inflate(R.menu.menu_people_more);
+                    popupMenu.show();
                 }
             });
 

@@ -5,7 +5,7 @@
     android:layout_height="@dimen/dimen_35dp"
     android:background="@drawable/shape_rounded_orange"
     android:layout_marginLeft="@dimen/dimen_5dp"
-    android:layout_marginTop="@dimen/dimen_7dp">
+    android:layout_marginBottom="@dimen/dimen_10dp">
     <LinearLayout
         android:layout_width="75dp"
         android:layout_height="wrap_content"

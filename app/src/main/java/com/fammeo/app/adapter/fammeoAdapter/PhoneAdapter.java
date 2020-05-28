@@ -3,10 +3,12 @@ package com.fammeo.app.adapter.fammeoAdapter;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,12 +48,27 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.ViewHolder> 
             holder.img_edt_phone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, EditPhone.class);
-                    intent.putExtra("PT",phoneList.get(i).phcType);
-                    intent.putExtra("PN",phoneList.get(i).phNumber);
-                    intent.putExtra("PC",phoneList.get(i).phcCode);
-                    intent.putExtra("PId",phoneList.get(i).phId);
-                    context.startActivity(intent);
+
+                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            String itemName = String.valueOf(item.getTitle());
+                            if(itemName.equalsIgnoreCase("Edit")){
+                                Intent intent = new Intent(context, EditPhone.class);
+                                intent.putExtra("PT",phoneList.get(i).phcType);
+                                intent.putExtra("PN",phoneList.get(i).phNumber);
+                                intent.putExtra("PC",phoneList.get(i).phcCode);
+                                intent.putExtra("PId",phoneList.get(i).phId);
+                                context.startActivity(intent);
+                            }else {
+                                context.deletePhone(phoneList.get(i).phId);
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.inflate(R.menu.menu_people_more);
+                    popupMenu.show();
                 }
             });
         }else {

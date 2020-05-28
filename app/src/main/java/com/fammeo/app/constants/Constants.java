@@ -57,6 +57,11 @@ public interface Constants {
  public static final String METHOD_GET_SAVE_SINGLE_PHONE_USER = API_User_DOMAIN + "api/user/savephone" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SAVE_SINGLE_EMAIL_USER = API_User_DOMAIN + "api/user/saveemail" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SEARCH_HOBBIES_USER = API_User_DOMAIN + "api/user/getpublichobbies" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_DELETE_ADDRESS_USER = API_User_DOMAIN + "api/user/deleteaddress" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_DELETE_PHONE_USER = API_User_DOMAIN + "api/user/deletephone" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_DELETE_Email_USER = API_User_DOMAIN + "api/user/deleteemail" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_SKILL_USER = API_User_DOMAIN + "api/user/getpublicskills" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_SKILL_SAVE_USER = API_User_DOMAIN + "api/user/saveskills" + API_FILE_EXTENSION;
 
  public static final String METHOD_NOTIFICATIONS_GET = API_User_DOMAIN + "api/notification/getdata" + API_FILE_EXTENSION;
  public static final String METHOD_NOTIFICATIONS_Remove = API_User_DOMAIN + "api/notification/remove" + API_FILE_EXTENSION;

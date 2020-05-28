@@ -41,5 +41,5 @@
         android:clickable="true"
         android:background="@null"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_create_black" />
+        app:srcCompat="@drawable/ic_more_vert" />
 </LinearLayout>

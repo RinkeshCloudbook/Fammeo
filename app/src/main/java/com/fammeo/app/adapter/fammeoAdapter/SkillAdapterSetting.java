@@ -15,12 +15,12 @@ import com.fammeo.app.model.CommonModel;
 
 import java.util.List;
 
-public class HobbyAdapterSetting extends RecyclerView.Adapter<HobbyAdapterSetting.ViewHolder> {
+public class SkillAdapterSetting extends RecyclerView.Adapter<SkillAdapterSetting.ViewHolder> {
     SettingEdit context;
-    List<CommonModel> hobbyList;
-    public HobbyAdapterSetting(SettingEdit settingEdit, List<CommonModel> hobbyList) {
+    List<CommonModel> skillList;
+    public SkillAdapterSetting(SettingEdit settingEdit, List<CommonModel> skillList) {
         this.context = settingEdit;
-        this.hobbyList = hobbyList;
+        this.skillList = skillList;
     }
 
     @NonNull
@@ -33,14 +33,14 @@ public class HobbyAdapterSetting extends RecyclerView.Adapter<HobbyAdapterSettin
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.txt_langname.setText(hobbyList.get(position).lName);
+        holder.txt_langname.setText(skillList.get(position).lName);
         holder.delete_lag.setVisibility(View.GONE);
         holder.delete_lag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hobbyList.remove(position);
+                skillList.remove(position);
                 notifyItemRemoved(position);
-                notifyItemRangeChanged(position, hobbyList.size());
+                notifyItemRangeChanged(position, skillList.size());
                 context.enableSaveBottn(true);
             }
         });
@@ -48,7 +48,7 @@ public class HobbyAdapterSetting extends RecyclerView.Adapter<HobbyAdapterSettin
 
     @Override
     public int getItemCount() {
-        return hobbyList.size();
+        return skillList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

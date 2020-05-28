@@ -29,23 +29,23 @@ public class HobbyListAdapter extends RecyclerView.Adapter<HobbyListAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.laguage_item_list_design,parent,false);
-        return new HobbyListAdapter.ViewHolder(itemView);
+        return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.txt_langname.setText(hobbyList.get(position).lName);
 
-            holder.delete_lag.setVisibility(View.VISIBLE);
-            holder.delete_lag.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    hobbyList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, hobbyList.size());
-                    context.enableSaveBottn(true);
-                }
-            });
+        holder.delete_lag.setVisibility(View.VISIBLE);
+        holder.delete_lag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hobbyList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, hobbyList.size());
+                context.enableSaveBottn(true);
+            }
+        });
     }
 
     @Override
