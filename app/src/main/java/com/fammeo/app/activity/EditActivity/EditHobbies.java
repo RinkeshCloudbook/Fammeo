@@ -1,6 +1,7 @@
 package com.fammeo.app.activity.EditActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,7 +53,7 @@ public class EditHobbies extends AppCompatActivity {
     public CustomAuthRequest request;
     EditText edt_hobby;
     RecyclerView recycler_view_hobby,recycler_view_hobby_dbox;
-    Button bt_save_hobby;
+    AppCompatButton bt_save_hobby;
     ArrayList<CommonModel> hobbyLang = new ArrayList<>();
     ArrayList<CommonModel> hobbyList = new ArrayList<>();
     String userId;

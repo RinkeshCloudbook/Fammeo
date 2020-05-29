@@ -35,6 +35,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.fammeo.app.R;
 import com.fammeo.app.Retrofit.ContectExample;
 import com.fammeo.app.Retrofit.FileUploadService;
+import com.fammeo.app.Retrofit.ViewProfileBGChangeExample;
 import com.fammeo.app.adapter.BottumListAdapter;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataGlobal;
@@ -255,11 +256,11 @@ public class ContectProfile extends AppCompatActivity {
         okhttp3.RequestBody coid =  okhttp3.RequestBody.create(okhttp3.MediaType.parse("text/plain"), String.valueOf(cd.userId));
 
         FileUploadService apiService = retrofit.create(FileUploadService.class);
-        Call<ContectExample> memberCall = apiService.contectuploadImage(parsedurl,"Bearer "+token,fileToUpload, companyimage,filepath,coid);
-        memberCall.enqueue(new Callback<ContectExample>() {
+        Call<ViewProfileBGChangeExample> memberCall = apiService.contectuploadImage(parsedurl,"Bearer "+token,fileToUpload, companyimage,filepath,coid);
+        memberCall.enqueue(new Callback<ViewProfileBGChangeExample>() {
 
             @Override
-            public void onResponse(Call<ContectExample> call, retrofit2.Response<ContectExample> response) {
+            public void onResponse(Call<ViewProfileBGChangeExample> call, retrofit2.Response<ViewProfileBGChangeExample> response) {
                 if(response.body() != null && response.body().toString().length() > 0){
                     if(response.body().getMessage().equalsIgnoreCase("OK")){
                         pr_imageLoder.setVisibility(View.GONE);
@@ -272,7 +273,7 @@ public class ContectProfile extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<ContectExample> call, Throwable t) {
+            public void onFailure(Call<ViewProfileBGChangeExample> call, Throwable t) {
                 pr_imageLoder.setVisibility(View.VISIBLE);
                 Log.e(">>>", "onFailure: " + t.getMessage());
             }

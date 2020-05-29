@@ -16,7 +16,7 @@ public interface FileUploadService {
                                      @Part("crid") RequestBody crid);
     @Multipart
     @POST
-    Call<ContectExample> contectuploadImage(@Url String url,@Header ("Authorization")String token,@Part MultipartBody.Part fileToUpload, @Part("mode") RequestBody mode, @Part("filepath") RequestBody filepath,
-                                     @Part("coid") RequestBody coid);
+    Call<ViewProfileBGChangeExample> contectuploadImage(@Url String url,@Header ("Authorization")String token,@Part MultipartBody.Part fileToUpload, @Part("mode") RequestBody mode, @Part("filepath") RequestBody filepath,
+                                     @Part("userid") RequestBody coid);
 
 }

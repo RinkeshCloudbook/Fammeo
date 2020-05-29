@@ -37,7 +37,7 @@
                 android:textColor="@android:color/white" />
 
             <Button
-                android:id="@+id/bt_phone_save"
+                android:visibility="gone"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -47,6 +47,14 @@
                 android:text="SAVE"
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:textColor="@android:color/white" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_phone_save"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="SAVE"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:theme="@style/Button.Primary" />
 
         </LinearLayout>
 

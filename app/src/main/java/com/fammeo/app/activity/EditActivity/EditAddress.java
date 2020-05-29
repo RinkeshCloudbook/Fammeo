@@ -1,6 +1,7 @@
 package com.fammeo.app.activity.EditActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -123,7 +124,7 @@ public class EditAddress extends AppCompatActivity {
             }
         });
 
-           ((Button) findViewById(R.id.bt_save_address)).setOnClickListener(new View.OnClickListener() {
+           ((AppCompatButton) findViewById(R.id.bt_save_address)).setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                    saveAddress(edt_addressType.getText(),edt_address.getText(),cName,state,country,id);

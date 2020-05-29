@@ -1,12 +1,16 @@
 package com.fammeo.app.activity;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,9 +18,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -35,6 +41,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +53,8 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.fammeo.app.R;
+import com.fammeo.app.Retrofit.FileUploadService;
+import com.fammeo.app.Retrofit.ViewProfileBGChangeExample;
 import com.fammeo.app.activity.EditActivity.AboutDetails;
 import com.fammeo.app.activity.EditActivity.EditAddress;
 import com.fammeo.app.activity.EditActivity.EditHobbies;
@@ -65,6 +74,7 @@ import com.fammeo.app.adapter.fammeoAdapter.PhoneAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.PhoneAdapterDialogList;
 import com.fammeo.app.adapter.fammeoAdapter.SkillAdapterSetting;
 import com.fammeo.app.app.App;
+import com.fammeo.app.common.AlertDailogBox;
 import com.fammeo.app.common.CommomInterface;
 import com.fammeo.app.common.DataGlobal;
 import com.fammeo.app.common.DataText;
@@ -76,6 +86,7 @@ import com.fammeo.app.util.RealPathUtil;
 import com.fammeo.app.view.siv.CircularImageView;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,8 +97,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.media.MediaRecorder.VideoSource.CAMERA;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import static com.fammeo.app.constants.Constants.METHOD_GET_CHANGE_BG_IMAGE_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_DELETE_ADDRESS_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_DELETE_Email_USER;
 import static com.fammeo.app.constants.Constants.METHOD_GET_DELETE_PHONE_USER;
@@ -134,10 +156,12 @@ public class SettingEdit extends AppCompatActivity{
     PhoneAdapterDialogList phoneAdapterDailouge;
     TextView txt_title,txt_dec,txt_link;
     int phoneLenght;
-    String email_id,getLink,getDec,getTitle;
+    String email_id,getLink,getDec,getTitle,mode;
     boolean flage = true;
-    AlertDialog dialog;
+    AlertDialog dialog,modedialog;
     File photoFile;
+    ImageView bg_image;
+    ProgressBar pr_imageLoder;
     public final String APP_TAG = "MyCustomAppContect";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +178,8 @@ public class SettingEdit extends AppCompatActivity{
         txt_title = findViewById(R.id.txt_title);
         txt_dec = findViewById(R.id.txt_dec);
         recycler_view_hb = findViewById(R.id.recycler_view_hb);
+        bg_image = findViewById(R.id.bg_image);
+        pr_imageLoder = findViewById(R.id.pr_imageLoder);
 
         Bundle getbundle = getIntent().getExtras();
         if(getbundle != null){
@@ -302,11 +328,12 @@ public class SettingEdit extends AppCompatActivity{
         ((FloatingActionButton) findViewById(R.id.fab_editImage)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TEST","Edit Image");
                 selectImage();
             }
         });
         getUserData();
+
+
     }
 
     private void selectImage() {
@@ -314,28 +341,34 @@ public class SettingEdit extends AppCompatActivity{
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = layoutInflater.inflate(R.layout.custom_alert_dailogbox, null);
 
-        LinearLayout lin_takeGallary = layout.findViewById(R.id.lin_takeGallary);
-        TextView txt_gallary = layout.findViewById(R.id.txt_gallary);
         Button bt_decline = layout.findViewById(R.id.bt_decline);
-        TextView txt_takepic = layout.findViewById(R.id.txt_takepic);
+        TextView txt_profile = layout.findViewById(R.id.txt_profile);
+        TextView txt_change_bg = layout.findViewById(R.id.txt_change_bg);
+        TextView txt_setting = layout.findViewById(R.id.txt_setting);
 
         dialog.setView(layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        txt_takepic.setOnClickListener(new View.OnClickListener() {
+        txt_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
-                     Log.e("TEST","Camera");
-               // cameraIntent();
-
+                Log.e("TEST","Change Profile image");
+                mode = "userimage";
+                selectImageMode();
             }
         });
-        txt_gallary.setOnClickListener(new View.OnClickListener() {
+        txt_change_bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
-                Log.e("TEST","Gallary");
+                Log.e("TEST","Background image");
+                mode = "userbgimage";
+                selectImageMode();
+            }
+        });
+        txt_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settingDilougeBox();
             }
         });
         bt_decline.setOnClickListener(new View.OnClickListener() {
@@ -347,6 +380,55 @@ public class SettingEdit extends AppCompatActivity{
 
         dialog.show();
     }
+
+    private void selectImageMode() {
+        modedialog = new AlertDialog.Builder(SettingEdit.this).create();
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.custom_alert_dailogbox_camera, null);
+
+        TextView txt_gallary = layout.findViewById(R.id.txt_gallary);
+        Button bt_decline = layout.findViewById(R.id.bt_decline);
+        TextView txt_takepic = layout.findViewById(R.id.txt_takepic);
+
+
+        txt_takepic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Log.e("TEST","Camera");
+                askForPermission(Manifest.permission.CAMERA,CAMERA);
+            }
+        });
+        txt_gallary.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (ContextCompat.checkSelfPermission(SettingEdit.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(getApplicationContext(),
+                                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+                    }
+                }
+                galleryIntent();
+            }
+        });
+
+        bt_decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modedialog.dismiss();
+            }
+        });
+        modedialog.setView(layout);
+        modedialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        modedialog.show();
+        dialog.dismiss();
+    }
+
     public void show() {
         dialog.show();
     }
@@ -355,7 +437,7 @@ public class SettingEdit extends AppCompatActivity{
     }
 
     public void cameraIntent() {
-
+        Log.e("TEST","Camara mode :"+mode);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         photoFileName= Calendar.getInstance().getTimeInMillis()+".jpg";
         photoFile = getPhotoFileUri(photoFileName);
@@ -365,9 +447,16 @@ public class SettingEdit extends AppCompatActivity{
         if (intent.resolveActivity(SettingEdit.this.getPackageManager()) != null) {
             // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-
         }
     }
+
+    public void galleryIntent() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        startActivityForResult(Intent.createChooser(intent, "Select File"),111);
+    }
+
     private File getPhotoFileUri(String photoFileName) {
         File mediaStorageDir = new File(SettingEdit.this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
 
@@ -384,18 +473,84 @@ public class SettingEdit extends AppCompatActivity{
 
         String  Token = App.getInstance().getAccessToken();
         long ParseACId = App.getInstance().getCurrentACId();
-       // final String parsedurl = App.getInstance().GetCustonDomain(ParseACId,METHOD_UPLOAD_COMPANY_PROFILE);
+
+       final String parsedurl = App.getInstance().GetCustonDomain(ParseACId,METHOD_GET_CHANGE_BG_IMAGE_USER);
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 111){
+                Log.e("TEST","Upload");
                 String realPath= RealPathUtil.getRealPath(SettingEdit.this,data.getData());
-
-                //uploadImage(parsedurl,realPath,Token);
-            }
-            else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
+                uploadImage(parsedurl,realPath,Token,mode);
+            }else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
                 String realPath=photoFile.getAbsolutePath();
-                //uploadImage(parsedurl,realPath,Token);
+                Log.e("TEST","Captur");
+                uploadImage(parsedurl,realPath,Token,mode);
             }
+        }
+    }
+
+    private void uploadImage(String parsedurl, final String realPath, String token,String mode) {
+        Log.e("TEST","Get Mode :"+mode);
+        pr_imageLoder.setVisibility(View.VISIBLE);
+        File N_file = new File(realPath);
+        StringBuilder sb3 = new StringBuilder();
+        // sb3.append(getPackageName());
+        sb3.append(".provider");
+        // image_path = String.valueOf(FileProvider.getUriForFile(this, sb3.toString(), new File(file_name)));
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        final OkHttpClient client = new OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS).writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS).addInterceptor(interceptor).build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(parsedurl+"/").client(client).addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create())).build();
+//        RequestBody open_time = RequestBody.create(MediaType.parse("text/plain"), "pass any data like id,name ");
+        okhttp3.RequestBody requestBodyx = okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/*"), N_file);
+
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", new File(realPath).getName(), requestBodyx);
+        okhttp3.RequestBody companyimage =  okhttp3.RequestBody.create(okhttp3.MediaType.parse("text/plain"), mode);
+        okhttp3.RequestBody filepath =  okhttp3.RequestBody.create(okhttp3.MediaType.parse("text/plain"), "");
+        okhttp3.RequestBody coid =  okhttp3.RequestBody.create(okhttp3.MediaType.parse("text/plain"), userId);
+
+        FileUploadService apiService = retrofit.create(FileUploadService.class);
+
+        Call<ViewProfileBGChangeExample> memberCall = apiService.contectuploadImage(parsedurl,"Bearer "+token,fileToUpload, companyimage,filepath,coid);
+        memberCall.enqueue(new Callback<ViewProfileBGChangeExample>() {
+
+            @Override
+            public void onResponse(Call<ViewProfileBGChangeExample> call, retrofit2.Response<ViewProfileBGChangeExample> response) {
+                if(response.body() != null && response.body().toString().length() > 0){
+
+                    if(response.body().getMessage().equalsIgnoreCase("OK")){
+                        pr_imageLoder.setVisibility(View.GONE);
+                        Glide.with(SettingEdit.this).load(realPath)
+                                .thumbnail(0.5f)
+                                .transition(withCrossFade())
+                                .into(bg_image);
+                        getUserData();
+                        modedialog.dismiss();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ViewProfileBGChangeExample> call, Throwable t) {
+                pr_imageLoder.setVisibility(View.VISIBLE);
+                Log.e(">>>", "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    private void askForPermission(String permission, Integer requestCode) {
+        if (ContextCompat.checkSelfPermission(SettingEdit.this, permission) != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(SettingEdit.this, permission)) {
+                ActivityCompat.requestPermissions(SettingEdit.this, new String[]{permission}, requestCode);
+            } else {
+                ActivityCompat.requestPermissions(SettingEdit.this, new String[]{permission}, requestCode);
+            }
+        } else {
+            cameraIntent();
+           // Toast.makeText(this, "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1686,15 +1841,26 @@ public class SettingEdit extends AppCompatActivity{
                                     JSONArray arrAbout = obj.getJSONArray("Bls");
 
                                     JSONObject objLin = arrAbout.getJSONObject(0);
-                                    getLink = objLin.getString("OV");
-                                    txt_link.setText(getLink);
-                                    JSONObject objDec = arrAbout.getJSONObject(1);
-                                    getDec = objDec.getString("OV");
-                                    txt_dec.setText(getDec);
-                                    JSONObject objAbout = arrAbout.getJSONObject(2);
-                                    getTitle = objAbout.getString("OV");
-                                    txt_title.setText(getTitle);
+                                    String imgLink = objLin.getString("OV");
 
+                                    Glide.with(SettingEdit.this).load(DataText.GetImagePath(imgLink))
+                                            .thumbnail(0.5f)
+                                            .transition(withCrossFade())
+                                            .into(bg_image);
+
+                                    JSONObject objDec = arrAbout.getJSONObject(1);
+                                    getLink = objDec.getString("OV");
+                                    txt_link.setText(getLink);
+                                    //txt_link.setText(getDec);
+
+                                    JSONObject objAbout = arrAbout.getJSONObject(2);
+                                    getDec = objAbout.getString("OV");
+                                    txt_dec.setText(getDec);
+                                    //txt_dec.setText(getTitle);
+
+                                    JSONObject objTitle = arrAbout.getJSONObject(3);
+                                    getTitle = objTitle.getString("OV");
+                                    txt_title.setText(getTitle);
                                     profileLangList = new ArrayList<>();
                                     // LinearLayout lLayout = (LinearLayout) findViewById(R.id.rel_lang);
                                     // lLayout.removeAllViews();
@@ -1734,6 +1900,7 @@ public class SettingEdit extends AppCompatActivity{
 
                                     SkillAdapterSetting skadpeter = new SkillAdapterSetting(SettingEdit.this, skillList);
                                     recycler_view_sk.setAdapter(skadpeter);
+
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -1989,4 +2156,26 @@ public class SettingEdit extends AppCompatActivity{
             }
         };
     }
+
+    private void settingDilougeBox() {
+
+            final Dialog settindialog = new Dialog(this);
+            settindialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+            settindialog.setContentView(R.layout.custom_setting_alert_dailogbox);
+            settindialog.setCancelable(true);
+
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(dialog.getWindow().getAttributes());
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+
+        //modedialog.setView(lp);
+        settindialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        settindialog.show();
+        settindialog.getWindow().setAttributes(lp);
+        dialog.dismiss();
+        }
+
 }

@@ -1,6 +1,7 @@
 package com.fammeo.app.activity.EditActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,7 +50,7 @@ public class EditLanguage extends AppCompatActivity {
     EditText edt_lang;
     RecyclerView recycler_view,recycler_view_lang_dbox;
     public CustomAuthRequest request;
-    Button bt_save;
+    AppCompatButton bt_save;
     String userId;
     ArrayList<CommonModel> lanList;
     ArrayList<CommonModel> searchLang = new ArrayList<>();

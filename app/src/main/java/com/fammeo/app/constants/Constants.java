@@ -18,8 +18,10 @@ public interface Constants {
 
     public static final String BILLING_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCA";
 
- public static final String WEB_SITE = "https://www.easycloudbooks.in/";  //web site url address
- public static final String GooglePath = "https://storage.googleapis.com/ecb-usercontent/";  //web site url address
+ //public static final String WEB_SITE = "https://www.easycloudbooks.in/";  //web site url address
+ public static final String WEB_SITE = "https://www.fammeo.in/";  //web site url address
+ //public static final String GooglePath = "https://storage.googleapis.com/ecb-usercontent/";  //web site url address
+ public static final String GooglePath = "https://storage.googleapis.com/fammeo-usercontent/";  //web site url address
 
     public static final String CLIENT_ID = "1";  // Client ID | For identify the application | Example: 12567
 
@@ -62,6 +64,7 @@ public interface Constants {
  public static final String METHOD_GET_DELETE_Email_USER = API_User_DOMAIN + "api/user/deleteemail" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SKILL_USER = API_User_DOMAIN + "api/user/getpublicskills" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SKILL_SAVE_USER = API_User_DOMAIN + "api/user/saveskills" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_CHANGE_BG_IMAGE_USER = API_User_DOMAIN + "api/file/processrequest" + API_FILE_EXTENSION;
 
  public static final String METHOD_NOTIFICATIONS_GET = API_User_DOMAIN + "api/notification/getdata" + API_FILE_EXTENSION;
  public static final String METHOD_NOTIFICATIONS_Remove = API_User_DOMAIN + "api/notification/remove" + API_FILE_EXTENSION;

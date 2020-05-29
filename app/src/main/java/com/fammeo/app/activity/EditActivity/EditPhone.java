@@ -1,6 +1,7 @@
 package com.fammeo.app.activity.EditActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 
 import android.app.AlertDialog;
@@ -69,7 +70,7 @@ public class EditPhone extends AppCompatActivity {
                 showEmailType(v);
             }
         });
-        ((Button) findViewById(R.id.bt_phone_save)).setOnClickListener(new View.OnClickListener() {
+        ((AppCompatButton) findViewById(R.id.bt_phone_save)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PT = edt_phone_type.getText().toString();

@@ -1,6 +1,7 @@
 package com.fammeo.app.activity.EditActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
@@ -36,7 +37,7 @@ public class AboutDetails extends AppCompatActivity {
 
     EditText edt_fname,edt_lname,edt_gender,edt_title,edt_description,edt_youtube;
     ImageButton bt_close;
-    Button bt_save_about;
+    AppCompatButton bt_save_about;
     String title, dec, link,userId;
     public CustomAuthRequest request;
     LinearLayout pbHeaderProgress;
