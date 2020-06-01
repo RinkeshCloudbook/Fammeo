@@ -24,7 +24,7 @@ import com.fammeo.app.common.DataText;
 import com.fammeo.app.view.siv.CircularImageView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 public class EditProfile extends AppCompatActivity {
     SharedPreferences sp;
@@ -43,6 +43,7 @@ public class EditProfile extends AppCompatActivity {
         sp = getSharedPreferences("uId", MODE_PRIVATE);
         String userId = sp.getString("u","");
         String un = sp.getString("un","");
+        FirebaseCrashlytics.getInstance().log("Higgs-Boson detected! Bailing out");
         Log.e("TEST","Get User Id :"+userId);
 
         Log.e("TEST","Full Name :"+App.getInstance().getFullname());
