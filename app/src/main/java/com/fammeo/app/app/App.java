@@ -23,7 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-import io.fabric.sdk.android.Fabric;
+//import io.fabric.sdk.android.Fabric;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +36,7 @@ import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 import com.fammeo.app.BuildConfig;
 import com.fammeo.app.R;
 import com.fammeo.app.common.DataDateTime;
@@ -53,6 +53,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -67,7 +68,7 @@ public class App extends Application implements Constants{
 
     private FirebaseAnalytics mFirebaseAnalytics;
     public static final String TAG = App.class.getSimpleName();
-    public static final String AppUserPath = "https://www.easycloudbooks.com/user/";
+    public static final String AppUserPath = "https://www.fammeo.in/user/";
 
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
@@ -109,14 +110,19 @@ public class App extends Application implements Constants{
 
          FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null) {
+            FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
             String userid = getUserId();
             Log.e("TEST","USER ID :"+userid);
             if(userid != null)
-                Crashlytics.setUserIdentifier(userid);
+                //Crashlytics.setUserIdentifier(userid);
+            crashlytics.setUserId(userid);
             else
-                Crashlytics.setUserIdentifier("FB-"+user.getUid());
+                /*Crashlytics.setUserIdentifier("FB-"+user.getUid());
             Crashlytics.setUserEmail(user.getEmail());
-            Crashlytics.setUserName(user.getDisplayName());
+            Crashlytics.setUserName(user.getDisplayName());*/
+                crashlytics.setUserId("FB-"+user.getUid());
+            //crashlytics.setUserEmail(user.getEmail());
+            //crashlytics.setUserName(user.getDisplayName());
         }
         else{
 
@@ -128,7 +134,8 @@ public class App extends Application implements Constants{
     public void onCreate() {
 
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+       // Fabric.with(this, new Crashlytics());
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         mInstance = this;
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -247,7 +254,8 @@ public class App extends Application implements Constants{
 
             return jsonParam;
         } catch (Exception ex) {
-            Crashlytics.logException(ex);
+            //Crashlytics.logException(ex);
+            FirebaseCrashlytics.getInstance().recordException(ex);
         }
         return null;
     }
@@ -519,7 +527,8 @@ public class App extends Application implements Constants{
         this.UserId = id;
         this.id = id;
 
-        Crashlytics.setUserIdentifier(String.valueOf(id));
+        //Crashlytics.setUserIdentifier(String.valueOf(id));
+        FirebaseCrashlytics.getInstance().setUserId(String.valueOf(id));
     }
 
     public void setFCMToken(String token) {
@@ -1282,7 +1291,8 @@ private List<ACJM> ACs;
         try {
             this.setACs(ACJM.getJSONList (sharedPref.getString(getString(R.string.settings_account_acs), "[]")));
         } catch (Exception ex) {
-            Crashlytics.logException(ex);
+           // Crashlytics.logException(ex);
+            FirebaseCrashlytics.getInstance().recordException(ex);
             //App.getInstance().FirebaseCrashLog(ex);
             this.setACs(new ArrayList<ACJM>());
         }

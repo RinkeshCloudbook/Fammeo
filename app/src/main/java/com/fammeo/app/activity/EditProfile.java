@@ -22,6 +22,7 @@ import com.fammeo.app.R;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataText;
 import com.fammeo.app.view.siv.CircularImageView;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 

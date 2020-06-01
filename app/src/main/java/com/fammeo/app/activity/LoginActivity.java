@@ -8,7 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
+import com.fammeo.app.BuildConfig;
 import com.fammeo.app.constants.Constants;
 import com.google.android.gms.common.SignInButton;
 
@@ -19,7 +20,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.fammeo.app.BuildConfig;
+//import com.fammeo.app.BuildConfig;
 import com.fammeo.app.R;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.ActivityBase;
@@ -42,6 +43,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -279,7 +281,6 @@ public class LoginActivity extends ActivityBase {
                     }
                 });
     }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
@@ -295,15 +296,18 @@ public class LoginActivity extends ActivityBase {
                             hidepDialog();
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            Crashlytics.log("signInWithCredential:success");
+                           // Crashlytics.log("signInWithCredential:success");
+                            FirebaseCrashlytics.getInstance().log("signInWithCredential:success");
                             App.getInstance().FirebaseAnalyticsLog("Login");
                             FirebaseUser user = mAuth.getCurrentUser();
                             getFirebaseAuthToken(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Crashlytics.log("signInWithCredential:failure1");
-                            Crashlytics.logException(task.getException());
+                           // Crashlytics.log("signInWithCredential:failure1");
+                            //Crashlytics.logException(task.getException());
+                            FirebaseCrashlytics.getInstance().log("signInWithCredential:failure1");
+                            FirebaseCrashlytics.getInstance().recordException(task.getException());
                             SnakebarCustom.danger(LoginActivity.this, mView, getText(R.string.error_signin).toString(), 1000);
                             updateUI(null);
 
@@ -499,10 +503,11 @@ public class LoginActivity extends ActivityBase {
                                         Toast.makeText(getBaseContext(), "Not able To Login", Toast.LENGTH_LONG).show();
                                 }
                                 hidepDialog();
-                            } catch (JSONException ex) {
+                            } catch (Exception ex) {
                                 ex.printStackTrace();
                                 _loginButton.setEnabled(true);
-                                Crashlytics.logException(ex);
+                                //Crashlytics.logException(ex);
+                                FirebaseCrashlytics.getInstance().recordException(ex);
                                 SnakebarCustom.danger(LoginActivity.this, mView, getText(R.string.error_signin).toString(), 1000);
                                 hidepDialog();
                             }

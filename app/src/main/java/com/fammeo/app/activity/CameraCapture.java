@@ -40,6 +40,7 @@ public class CameraCapture extends AppCompatActivity {
 
         textureView = findViewById(R.id.view_finder);
 
+
         if(allPermissionsGranted()){
             startCamera(); //start camera if permission has been granted by user
         } else{

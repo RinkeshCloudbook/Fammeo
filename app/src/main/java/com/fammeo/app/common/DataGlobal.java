@@ -17,7 +17,9 @@ import com.fammeo.app.app.App;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,11 +54,15 @@ public class DataGlobal extends Application {
             }
             String android_id = App.getInstance().getAndroidId();
             LogData.put("android_id", android_id);
-            Crashlytics.log(Log.ERROR, Tag, LogData.toString());
-            Crashlytics.logException(ex);
+            //Crashlytics.log(Log.ERROR, Tag, LogData.toString());
+            //Crashlytics.logException(ex);
+            FirebaseCrashlytics.getInstance().log("E/TAG: "+ LogData.toString());
+            FirebaseCrashlytics.getInstance().recordException(ex);
         } catch (JSONException ex1) {
-            Crashlytics.logException(ex);
-            Crashlytics.logException(ex1);
+            //Crashlytics.logException(ex);
+            //Crashlytics.logException(ex1);
+            FirebaseCrashlytics.getInstance().recordException(ex);
+            FirebaseCrashlytics.getInstance().recordException(ex1);
         }
     }
 

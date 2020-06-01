@@ -31,14 +31,15 @@
             android:textAlignment="center"
             android:text="Staff Login"
             android:textColor="@color/navyblue" />
+
         <com.google.android.gms.common.SignInButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:text="Staff Login"
             android:layout_alignParentTop="true"
             android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
+            android:text="Staff Login"
             android:textSize="18sp" />
 
 

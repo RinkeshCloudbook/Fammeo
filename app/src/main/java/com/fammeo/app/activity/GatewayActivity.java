@@ -25,13 +25,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 import com.fammeo.app.R;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataGlobal;
 import com.fammeo.app.common.SnakebarCustom;
 import com.fammeo.app.common.SweetAlertCustom;
 import com.fammeo.app.util.CustomAuthRequest;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
@@ -576,7 +577,9 @@ public class GatewayActivity extends AppCompatActivity implements PaymentResultW
                                 gateway_method = options.getString("mode");
                             }
                         } catch (JSONException ex) {
-                            Crashlytics.logException(ex);
+                            //Crashlytics.logException(ex);
+                            FirebaseCrashlytics.getInstance().recordException(ex);
+
                         }
                     }
                     String merchantResponse = transactionResponse.getTransactionDetails();
