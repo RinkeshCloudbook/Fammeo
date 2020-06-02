@@ -43,8 +43,11 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.ViewHolder> 
         holder.edt_type.setText(phoneList.get(i).phcType);
         holder.edt_cCode.setText("+"+phoneList.get(i).phcCode);
         holder.edt_phone.setText(phoneList.get(i).phNumber);
-        if(img == true){
+        if(img == false){
             holder.img_edt_phone.setVisibility(View.VISIBLE);
+            if(i == 0){
+                holder.img_edt_phone.setVisibility(View.GONE);
+            }
             holder.img_edt_phone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

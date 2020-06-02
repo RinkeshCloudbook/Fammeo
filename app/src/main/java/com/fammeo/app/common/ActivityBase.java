@@ -13,8 +13,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-//import com.crashlytics.android.BuildConfig;
-//import com.crashlytics.android.Crashlytics;
 import com.fammeo.app.BuildConfig;
 import com.fammeo.app.R;
 import com.fammeo.app.activity.OfflineActivity;
@@ -37,6 +35,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+//import com.crashlytics.android.BuildConfig;
+//import com.crashlytics.android.Crashlytics;
 
 public class ActivityBase extends AppCompatActivity implements Constants {
     public static final String TAG = "ActivityBase";

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -61,6 +62,7 @@ import com.fammeo.app.activity.EditActivity.EditHobbies;
 import com.fammeo.app.activity.EditActivity.EditLanguage;
 import com.fammeo.app.activity.EditActivity.EditPhone;
 import com.fammeo.app.activity.EditActivity.Skills;
+import com.fammeo.app.activity.EditActivity.SocialLink;
 import com.fammeo.app.adapter.AddressAdapter;
 import com.fammeo.app.adapter.HobbyAdapter;
 import com.fammeo.app.adapter.LanuageSettingAdapter;
@@ -130,6 +132,7 @@ public class SettingEdit extends AppCompatActivity{
     private String userId;
     ArrayList<CommonModel> lanList = new ArrayList<>();
     ArrayList<CommonModel> mAddressList = new ArrayList<>();
+    ArrayList<CommonModel> getFieldList = new ArrayList<>();
     List<String> mCityList = new ArrayList<>();
     ArrayList<EmailModel> emailList;
     RecyclerView recycler_view, recycler_view_email, recycler_view_lang,
@@ -157,7 +160,7 @@ public class SettingEdit extends AppCompatActivity{
     TextView txt_title,txt_dec,txt_link;
     int phoneLenght;
     String email_id,getLink,getDec,getTitle,mode;
-    boolean flage = true;
+    boolean flage = false;
     AlertDialog dialog,modedialog;
     File photoFile;
     ImageView bg_image;
@@ -267,7 +270,6 @@ public class SettingEdit extends AppCompatActivity{
             public void onClick(View v) {
                 //showAboutCustomDialog();
                 Intent intent = new Intent(getApplicationContext(), AboutDetails.class);
-
                 intent.putExtra("T",getTitle);
                 intent.putExtra("D",getDec);
                 intent.putExtra("L",getLink);
@@ -303,6 +305,14 @@ public class SettingEdit extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+        ((ImageButton) findViewById(R.id.img_btn_socLink)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SocialLink.class);
+                intent.putExtra("field", (Serializable) getFieldList);
+                startActivity(intent);
+            }
+        });
 
         ((TextView) findViewById(R.id.txt_addNewAddress)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -331,6 +341,7 @@ public class SettingEdit extends AppCompatActivity{
                 selectImage();
             }
         });
+
         getUserData();
 
 
@@ -1748,6 +1759,7 @@ public class SettingEdit extends AppCompatActivity{
         // list.clear();
         request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_USERDATA_USER, null, 0,
                 new Response.Listener<JSONObject>() {
+                    @SuppressLint("RestrictedApi")
                     @Override
                     public void onResponse(JSONObject response) {
                         if (App.getInstance().authorizeSimple(response)) {
@@ -1901,6 +1913,40 @@ public class SettingEdit extends AppCompatActivity{
                                     SkillAdapterSetting skadpeter = new SkillAdapterSetting(SettingEdit.this, skillList);
                                     recycler_view_sk.setAdapter(skadpeter);
 
+                                    JSONArray arrfields = obj.getJSONArray("Fs");
+                                    for (int k = 0; k < arrfields.length(); k++) {
+                                        JSONObject fieldObj = arrfields.getJSONObject(k);
+                                        CommonModel cm = new CommonModel();
+                                        cm.soc_N = fieldObj.getString("N");
+                                        cm.soc_V = fieldObj.getString("V");
+                                        getFieldList.add(cm);
+
+                                        if(cm.soc_N.equalsIgnoreCase("facebook")) {
+                                            if(cm.soc_V.equalsIgnoreCase("")){
+                                                ((FloatingActionButton) findViewById(R.id.flt_fb)).setVisibility(View.GONE);
+                                            }else
+                                            ((FloatingActionButton) findViewById(R.id.flt_fb)).setVisibility(View.VISIBLE);
+                                        }
+                                        if(cm.soc_N.equalsIgnoreCase("twitter")) {
+                                            if(cm.soc_V.equalsIgnoreCase("")){
+                                                ((FloatingActionButton) findViewById(R.id.flt_twitter)).setVisibility(View.GONE);
+                                            }else
+                                            ((FloatingActionButton) findViewById(R.id.flt_twitter)).setVisibility(View.VISIBLE);
+                                        }
+                                        if(cm.soc_N.equalsIgnoreCase("linkedin")) {
+                                            if(cm.soc_V.equalsIgnoreCase("")){
+                                                ((FloatingActionButton) findViewById(R.id.flt_linkdin)).setVisibility(View.GONE);
+                                            }else
+                                            ((FloatingActionButton) findViewById(R.id.flt_linkdin)).setVisibility(View.VISIBLE);
+                                        }
+                                        if(cm.soc_N.equalsIgnoreCase("instagram")) {
+                                            if(cm.soc_V.equalsIgnoreCase("")){
+                                                ((FloatingActionButton) findViewById(R.id.flt_instagram)).setVisibility(View.GONE);
+                                            }else
+                                            ((FloatingActionButton) findViewById(R.id.flt_instagram)).setVisibility(View.VISIBLE);
+                                        }
+                                    }
+
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -1922,19 +1968,21 @@ public class SettingEdit extends AppCompatActivity{
                 try {
                     JSONObject params = new JSONObject();
                     JSONArray jsonArray = new JSONArray();
-                    for (int i = 0; i < 6; i++) {
+
                         //JSONObject jsonObject=new JSONObject();
                         //jsonObject.put("id",null);
                         //jsonObject.put("N",allLangList.get(i));
                         jsonArray.put("email");
+                        jsonArray.put("field");
                         jsonArray.put("phone");
                         jsonArray.put("address");
+                        jsonArray.put("date");
+                        jsonArray.put("setting");
                         jsonArray.put("language");
                         jsonArray.put("hobby");
                         jsonArray.put("skill");
                         jsonArray.put("blob");
-                    }
-                    Log.e("TEST", "Json Array :" + jsonArray);
+
                     params.put("scopes", jsonArray);
                     params.put("UserId", userId);
 

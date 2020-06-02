@@ -65,6 +65,7 @@ public interface Constants {
  public static final String METHOD_GET_SKILL_USER = API_User_DOMAIN + "api/user/getpublicskills" + API_FILE_EXTENSION;
  public static final String METHOD_GET_SKILL_SAVE_USER = API_User_DOMAIN + "api/user/saveskills" + API_FILE_EXTENSION;
  public static final String METHOD_GET_CHANGE_BG_IMAGE_USER = API_User_DOMAIN + "api/file/processrequest" + API_FILE_EXTENSION;
+ public static final String METHOD_GET_SOCIAL_LINK_SAVE_USER = API_User_DOMAIN + "api/user/savefields" + API_FILE_EXTENSION;
 
  public static final String METHOD_NOTIFICATIONS_GET = API_User_DOMAIN + "api/notification/getdata" + API_FILE_EXTENSION;
  public static final String METHOD_NOTIFICATIONS_Remove = API_User_DOMAIN + "api/notification/remove" + API_FILE_EXTENSION;

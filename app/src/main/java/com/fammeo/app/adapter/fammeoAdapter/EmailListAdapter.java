@@ -42,8 +42,11 @@ public class EmailListAdapter extends RecyclerView.Adapter<EmailListAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, final int i) {
         holder.txt_emailtype.setText(emailList.get(i).emailType);
         holder.txt_email.setText(emailList.get(i).emailAddress);
-        if(img == true){
+        if(img == false){
             holder.img_edt_email.setVisibility(View.VISIBLE);
+            if(i == 0){
+                holder.img_edt_email.setVisibility(View.GONE);
+            }
             holder.img_edt_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

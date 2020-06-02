@@ -56,7 +56,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.txt_addstype.setText(mAddressList.get(i).cType);
         holder.txt_address.setText(address);
 
-        if(img == true){
+        if(img == false){
             holder.img_edt_address.setVisibility(View.VISIBLE);
 
             holder.img_edt_address.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +92,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             });
 
         }else{
-            holder.img_edt_address.setVisibility(View.GONE);
+            //holder.img_edt_address.setVisibility(View.GONE);
         }
     }
 

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/themecolor">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/bt_close"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@android:color/white"
+                app:srcCompat="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/dailog_header"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Edit Hobbies"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:visibility="gone"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_xsmall"
+                android:paddingRight="@dimen/spacing_xsmall"
+                android:text="SAVE"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:textColor="@android:color/white" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_save_link"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="SAVE"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:theme="@style/Button.Primary" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_dailog_edit"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_5dp"
+        android:layout_marginLeft="@dimen/dimen_5dp"
+        android:layout_marginRight="@dimen/dimen_5dp">
+
+        <LinearLayout
+        android:id="@+id/lin_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/round_rect_grey_border"
+        android:gravity="center">
+        <ImageButton
+            android:id="@+id/bt_true"
+            android:layout_width="@dimen/dimen_50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/imagebutton_themleft_bg"
+            android:clickable="true"
+            android:tint="@color/grey_3"
+            android:src="@drawable/linkedin"
+            />
+        <EditText
+            android:id="@+id/edt_linkIn"
+            style="@style/EditText.Flat.Grey"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_xmlarge"
+            android:minHeight="@dimen/spacing_xmlarge"
+            android:inputType="text"
+            android:hint="Enter linkin link"
+            android:paddingLeft="@dimen/spacing_middle"
+            android:paddingRight="@dimen/spacing_middle"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+        <LinearLayout
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/round_rect_grey_border"
+        android:gravity="center">
+        <ImageButton
+            android:layout_width="@dimen/dimen_50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/imagebutton_themleft_bg"
+            android:clickable="true"
+            android:tint="@color/grey_3"
+            android:src="@drawable/ic_facebook"
+            />
+        <EditText
+            android:id="@+id/edt_facebook"
+            style="@style/EditText.Flat.Grey"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_xmlarge"
+            android:minHeight="@dimen/spacing_xmlarge"
+            android:inputType="text"
+            android:hint="Enter facebook link"
+            android:paddingLeft="@dimen/spacing_middle"
+            android:paddingRight="@dimen/spacing_middle"
+            android:layout_weight="1"/>
+
+
+
+    </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/round_rect_grey_border"
+            android:gravity="center">
+            <ImageButton
+
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="40dp"
+                android:background="@drawable/imagebutton_themleft_bg"
+                android:clickable="true"
+                android:tint="@color/grey_3"
+                android:src="@drawable/ic_twitter"
+                />
+            <EditText
+                android:id="@+id/edt_twiter"
+                style="@style/EditText.Flat.Grey"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_xmlarge"
+                android:minHeight="@dimen/spacing_xmlarge"
+                android:inputType="text"
+                android:hint="Enter twitter link"
+                android:paddingLeft="@dimen/spacing_middle"
+                android:paddingRight="@dimen/spacing_middle"
+                android:layout_weight="1"/>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/round_rect_grey_border"
+            android:gravity="center">
+            <ImageButton
+
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="40dp"
+                android:background="@drawable/imagebutton_themleft_bg"
+                android:clickable="true"
+                android:tint="@color/grey_3"
+                android:src="@drawable/ic_instagram"
+                />
+            <EditText
+                android:id="@+id/edt_instagram"
+                style="@style/EditText.Flat.Grey"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_xmlarge"
+                android:minHeight="@dimen/spacing_xmlarge"
+                android:inputType="text"
+                android:hint="Enter instagram link"
+                android:paddingLeft="@dimen/spacing_middle"
+                android:paddingRight="@dimen/spacing_middle"
+                android:layout_weight="1"/>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

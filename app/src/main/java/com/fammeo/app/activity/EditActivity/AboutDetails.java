@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -89,9 +91,28 @@ public class AboutDetails extends AppCompatActivity {
                 saveAbouts(title,dec,link,fname,lName,gender);
             }
         });
-
+        ((EditText) findViewById(R.id.edt_gender)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showGenderType(v);
+            }
+        });
     }
-
+    private void showGenderType(final View v) {
+        final String[] code_array = new String[]{
+                "Male", "Female"
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Gender");
+        builder.setSingleChoiceItems(code_array, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((EditText) v).setText(code_array[i]);
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
     private void saveAbouts(final String title, final String dec, final String link, final String fname, final String lName, final String gender) {
         pbHeaderProgress.setVisibility(View.VISIBLE);
             request = new CustomAuthRequest(Request.Method.POST, METHOD_GET_SAVE_ABOUT_USER, null, 0,

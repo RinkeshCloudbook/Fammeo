@@ -23,6 +23,9 @@ public class CommonModel implements Serializable {
     public String phcType;
     public String phId;
 
+    public String soc_N;
+    public String soc_V;
+
     public String abtTitle;
     public String abtDec;
     public String abtVideo;

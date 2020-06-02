@@ -37,6 +37,7 @@
                 android:fitsSystemWindows="true"
                 app:layout_anchor="@+id/app_bar_layout"
                 app:layout_anchorGravity="center"
+                android:scaleType="fitXY"
                 app:layout_collapseMode="parallax" />
             <View
                 android:layout_width="match_parent"
@@ -50,7 +51,7 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -97,6 +98,82 @@
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:id="@+id/card_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            android:background="#F19292"
+            android:padding="@dimen/dimen_7dp"
+            app:cardCornerRadius="@dimen/dimen_5dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_7dp"
+                android:paddingLeft="@dimen/spacing_middle"
+                android:paddingRight="@dimen/spacing_middle">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="About"
+                        android:textSize="@dimen/dimen_17sp"
+                        android:padding="@dimen/dimen_7dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="@color/grey_90"
+                        />
+                    <TextView
+                        android:id="@+id/txt_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_medium"
+                        android:text=""
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/grey_60" />
+                    <TextView
+                        android:id="@+id/txt_dec"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_medium"
+                        android:text=""
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        style="@style/EditText.Flat.Grey"
+                        android:textColor="@color/grey_60" />
+                    <TextView
+                        android:id="@+id/txt_link"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_medium"
+                        android:autoLink="web"
+                        android:linksClickable="true"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        style="@style/EditText.Flat.Grey"
+                        android:textColor="@color/grey_60" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/img_btn_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:padding="@dimen/dimen_7dp"
+                    app:srcCompat="@drawable/ic_create_black" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:id="@+id/card_data"
                 android:layout_width="match_parent"
@@ -120,50 +197,72 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_weight="1"
-                        >
+                        android:layout_weight="1">
                         <TextView
                             android:layout_gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="About"
+                            android:text="Social Links"
                             android:textSize="@dimen/dimen_17sp"
                             android:padding="@dimen/dimen_7dp"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                             android:textColor="@color/grey_90"
                             />
-                        <TextView
-                            android:id="@+id/txt_title"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_medium"
-                            android:text=""
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:textColor="@color/grey_60" />
-                        <TextView
-                            android:id="@+id/txt_dec"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_medium"
-                            android:text=""
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            style="@style/EditText.Flat.Grey"
-                            android:textColor="@color/grey_60" />
-                        <TextView
-                            android:id="@+id/txt_link"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_medium"
-                            android:autoLink="web"
-                            android:linksClickable="true"
-                            android:layout_marginLeft="@dimen/dimen_10dp"
-                            style="@style/EditText.Flat.Grey"
-                            android:textColor="@color/grey_60" />
+                            android:orientation="horizontal">
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/flt_fb"
+                                android:visibility="gone"
+                                android:padding="@dimen/dimen_10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/spacing_middle"
+                                android:clickable="true"
+                                android:tint="@android:color/white"
+                                app:backgroundTint="@color/themecolor"
+                                app:fabSize="mini"
+                                app:srcCompat="@drawable/ic_facebook" />
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/flt_linkdin"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/spacing_middle"
+                                android:clickable="true"
+                                android:tint="@android:color/white"
+                                app:backgroundTint="@color/themecolor"
+                                app:fabSize="mini"
+                                app:srcCompat="@drawable/linkedin" />
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/flt_twitter"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/spacing_middle"
+                                android:clickable="true"
+                                android:tint="@android:color/white"
+                                app:backgroundTint="@color/themecolor"
+                                app:fabSize="mini"
+                                app:srcCompat="@drawable/ic_twitter" />
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/flt_instagram"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/spacing_middle"
+                                android:clickable="true"
+                                android:tint="@android:color/white"
+                                app:backgroundTint="@color/themecolor"
+                                app:fabSize="mini"
+                                app:srcCompat="@drawable/ic_instagram" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                     <ImageButton
-                        android:id="@+id/img_btn_about"
+                        android:id="@+id/img_btn_socLink"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -215,6 +314,7 @@
 
 
                         <ImageButton
+                            android:visibility="gone"
                             android:id="@+id/img_edt_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -310,6 +410,7 @@
 
                         </LinearLayout>
                         <ImageButton
+                            android:visibility="gone"
                             android:id="@+id/imgbtn_email"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -376,6 +477,7 @@
                             android:textColor="@color/grey_90"
                             />
                         <ImageButton
+                            android:visibility="gone"
                             android:id="@+id/img_btn_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -439,6 +541,7 @@
                             android:textColor="@color/grey_90"
                             />
                         <ImageButton
+                            android:visibility="gone"
                             android:id="@+id/imgbt_lang"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

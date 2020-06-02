@@ -2,9 +2,9 @@
     <string name="app_name">Fammeo</string>
     <string name="app_version">5.0.0</string>
     <string name="app_year">2019</string>
-    <string name="app_copyright">www.easycloudbooks.com</string>
-    <string name="app_email">support@easycloudbooks.com</string>
-    <string name="app_site">http://www.easycloudbooks.com</string>
+    <string name="app_copyright">www.fammeo.in</string>
+    <string name="app_email">support@fammeo.in</string>
+    <string name="app_site">http://www.fammeo.in</string>
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
