@@ -104,8 +104,9 @@ public class Skills extends AppCompatActivity {
                         }
                     }, 300);
                     lastChange = System.currentTimeMillis();
-                } else if (s.length() == 0) {
+                } else if (s.length() < 3) {
                     recycler_view_skills.setVisibility(View.GONE);
+                    ((ImageButton) findViewById(R.id.btn_add)).setVisibility(View.GONE);
                 }
             }
         });

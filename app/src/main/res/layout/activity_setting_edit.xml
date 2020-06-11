@@ -68,7 +68,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -149,7 +150,6 @@
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         style="@style/EditText.Flat.Grey"
                         android:textColor="@color/grey_60" />
-
                     <TextView
                         android:id="@+id/txt_link"
                         android:layout_width="match_parent"
@@ -260,12 +260,16 @@
                             <TextView
                                 android:visibility="gone"
                                 android:id="@+id/txt_socContent"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
+                                android:background="@drawable/no_content_bg"
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/dimen_15dp"
+                                android:textColor="#757ff3"
                                 android:textStyle="bold"
+                                android:layout_marginRight="@dimen/dimen_10dp"
+                                android:layout_marginLeft="@dimen/dimen_10dp"
                                 android:padding="@dimen/dimen_10dp"
-                                android:layout_gravity="center"
+                                android:layout_marginBottom="@dimen/dimen_10dp"
                                 />
                         </LinearLayout>
                     </LinearLayout>
@@ -342,12 +346,16 @@
                     <TextView
                         android:visibility="gone"
                         android:id="@+id/txt_addContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/no_content_bg"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/dimen_15dp"
+                        android:textColor="#757ff3"
                         android:textStyle="bold"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
                         android:padding="@dimen/dimen_10dp"
-                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
                         />
 
                     <TextView
@@ -516,6 +524,7 @@
                             android:clickable="true"
                             app:srcCompat="@drawable/ic_create_black" />
                     </LinearLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:paddingLeft="@dimen/dimen_10dp"
                         android:paddingRight="@dimen/dimen_5dp"
@@ -526,12 +535,16 @@
                     <TextView
                         android:visibility="gone"
                         android:id="@+id/txt_phoneContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/no_content_bg"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/dimen_15dp"
+                        android:textColor="#757ff3"
                         android:textStyle="bold"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
                         android:padding="@dimen/dimen_10dp"
-                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
                         />
                     <TextView
                         android:id="@+id/txt_addNewPhone"
@@ -581,7 +594,6 @@
                             android:textColor="@color/grey_90"
                             />
                         <ImageButton
-                            android:visibility="gone"
                             android:id="@+id/imgbt_lang"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -591,15 +603,20 @@
                             android:clickable="true"
                             app:srcCompat="@drawable/ic_create_black" />
                     </LinearLayout>
+
                     <TextView
                         android:visibility="gone"
                         android:id="@+id/txt_langContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/no_content_bg"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/dimen_15dp"
+                        android:textColor="#757ff3"
                         android:textStyle="bold"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
                         android:padding="@dimen/dimen_10dp"
-                        android:layout_gravity="center"
+
                         />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_lang"
@@ -657,12 +674,16 @@
                     <TextView
                         android:visibility="gone"
                         android:id="@+id/txt_hbContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/no_content_bg"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/dimen_15dp"
+                        android:textColor="#757ff3"
                         android:textStyle="bold"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
                         android:padding="@dimen/dimen_10dp"
-                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
                         />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_hb"
@@ -687,7 +708,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dimen_10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -720,12 +742,15 @@
                     <TextView
                         android:visibility="gone"
                         android:id="@+id/txt_skillContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/no_content_bg"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/dimen_15dp"
+                        android:textColor="#757ff3"
                         android:textStyle="bold"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
                         android:padding="@dimen/dimen_10dp"
-                        android:layout_gravity="center"
                         />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_sk"

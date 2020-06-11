@@ -43,6 +43,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -145,7 +146,7 @@ public class SettingEdit extends AppCompatActivity{
     LinearLayout pbHeaderProgress;
     String pe, peType;
     public String photoFileName = "photo.jpg";
-    JSONArray arr;
+    JSONArray arr, arrSetting;
     AddressDailogeAdapter addsDaiAdapter;
     AddressAdapter addsAdapter;
     LanguageListAdapter listAdapter, listAdapter1;
@@ -221,12 +222,12 @@ public class SettingEdit extends AppCompatActivity{
         getSupportActionBar().setTitle("View Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((ImageButton) findViewById(R.id.imgbt_lang)).setOnClickListener(new View.OnClickListener() {
+        /*((ImageButton) findViewById(R.id.imgbt_lang)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCustomDialog();
             }
-        });
+        });*/
         ((ImageButton) findViewById(R.id.img_edt_address)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1778,11 +1779,11 @@ public class SettingEdit extends AppCompatActivity{
                                     if (msgType.equalsIgnoreCase("success")) ;
 
                                     JSONObject obj = object.getJSONObject("obj");
-
+/*------------------------------------------------------------------------------------------------------------------*/
                                     arr = obj.getJSONArray("Ls");
                                     if(arr.length() == 0){
                                         ((TextView) findViewById(R.id.txt_langContent)).setVisibility(View.VISIBLE);
-                                        ((TextView) findViewById(R.id.txt_langContent)).setText("No data found");
+                                        ((TextView) findViewById(R.id.txt_langContent)).setText("No language to show");
                                     }
                                     String userId = obj.getString("Id");
                                     String userURl = obj.getString("I");
@@ -1805,6 +1806,7 @@ public class SettingEdit extends AppCompatActivity{
 
                                     //emailList.clear();
                                     emailList = new ArrayList<>();
+/*------------------------------------------------------------------------------------------------------------------*/
                                     JSONArray arrEs = obj.getJSONArray("Es");
                                     if(arrEs.length() == 0){
                                         ((TextView) findViewById(R.id.txt_emailContent)).setVisibility(View.VISIBLE);
@@ -1825,10 +1827,11 @@ public class SettingEdit extends AppCompatActivity{
                                     recycler_view_email.setAdapter(emailadapter);
 
                                     mAddressList.clear();
+/*------------------------------------------------------------------------------------------------------------------*/
                                     JSONArray arrAdds = obj.getJSONArray("Adds");
                                     if(arrAdds.length() == 0){
                                         ((TextView) findViewById(R.id.txt_addContent)).setVisibility(View.VISIBLE);
-                                        ((TextView) findViewById(R.id.txt_addContent)).setText("No data found");
+                                        ((TextView) findViewById(R.id.txt_addContent)).setText("No Address to show");
                                     }
                                     for (int j = 0; j < arrAdds.length(); j++) {
                                         JSONObject addsObj = arrAdds.getJSONObject(j);
@@ -1847,13 +1850,13 @@ public class SettingEdit extends AppCompatActivity{
                                     }
                                     addsAdapter = new AddressAdapter(SettingEdit.this, mAddressList);
                                     recycler_view_address.setAdapter(addsAdapter);
-
+/*------------------------------------------------------------------------------------------------------------------*/
                                     phoneList.clear();
                                     JSONArray phoneAdds = obj.getJSONArray("PHs");
                                     phoneLenght = phoneAdds.length();
                                     if(phoneAdds.length() == 0){
                                         ((TextView) findViewById(R.id.txt_phoneContent)).setVisibility(View.VISIBLE);
-                                        ((TextView) findViewById(R.id.txt_phoneContent)).setText("No data found");
+                                        ((TextView) findViewById(R.id.txt_phoneContent)).setText("No Phone numbers to show");
                                     }
                                     for (int k = 0; k < phoneAdds.length(); k++) {
                                         JSONObject phoneObj = phoneAdds.getJSONObject(k);
@@ -1866,30 +1869,8 @@ public class SettingEdit extends AppCompatActivity{
                                     }
                                     phoneAdapter = new PhoneAdapter(SettingEdit.this, phoneList);
                                     recycler_view_phone.setAdapter(phoneAdapter);
+/*------------------------------------------------------------------------------------------------------------------*/
 
-                                    JSONArray arrAbout = obj.getJSONArray("Bls");
-
-                                    JSONObject objLin = arrAbout.getJSONObject(0);
-                                    String imgLink = objLin.getString("OV");
-
-                                    Glide.with(SettingEdit.this).load(DataText.GetImagePath(imgLink))
-                                            .thumbnail(0.5f)
-                                            .transition(withCrossFade())
-                                            .into(bg_image);
-
-                                    JSONObject objDec = arrAbout.getJSONObject(1);
-                                    getLink = objDec.getString("OV");
-                                    txt_link.setText(getLink);
-                                    //txt_link.setText(getDec);
-
-                                    JSONObject objAbout = arrAbout.getJSONObject(2);
-                                    getDec = objAbout.getString("OV");
-                                    txt_dec.setText(getDec);
-                                    //txt_dec.setText(getTitle);
-
-                                    JSONObject objTitle = arrAbout.getJSONObject(3);
-                                    getTitle = objTitle.getString("OV");
-                                    txt_title.setText(getTitle);
                                     profileLangList = new ArrayList<>();
                                     // LinearLayout lLayout = (LinearLayout) findViewById(R.id.rel_lang);
                                     // lLayout.removeAllViews();
@@ -1905,10 +1886,11 @@ public class SettingEdit extends AppCompatActivity{
                                     LanuageSettingAdapter listAdapter = new LanuageSettingAdapter(SettingEdit.this, profileLangList);
                                     recycler_view_lang.setAdapter(listAdapter);
                                     //rowTextView.setText(getname);
+/*------------------------------------------------------------------------------------------------------------------*/
                                     JSONArray arrHobbies = obj.getJSONArray("Hs");
                                     if(arrHobbies.length() == 0){
                                         ((TextView) findViewById(R.id.txt_hbContent)).setVisibility(View.VISIBLE);
-                                        ((TextView) findViewById(R.id.txt_hbContent)).setText("No data found");
+                                        ((TextView) findViewById(R.id.txt_hbContent)).setText("No Hobby to show");
                                     }
                                     for (int k = 0; k < arrHobbies.length(); k++) {
 
@@ -1921,11 +1903,14 @@ public class SettingEdit extends AppCompatActivity{
 
                                     HobbyAdapterSetting adpeter = new HobbyAdapterSetting(SettingEdit.this, hobbyList);
                                     recycler_view_hb.setAdapter(adpeter);
-
+/*------------------------------------------------------------------------------------------------------------------*/
+                                    arrSetting = obj.getJSONArray("Ss");
+                                    Log.e("TEST","arrSetting :"+arrSetting.length());
+/*------------------------------------------------------------------------------------------------------------------*/
                                     JSONArray arrSkill = obj.getJSONArray("Sks");
                                     if(arrSkill.length() == 0){
                                         ((TextView) findViewById(R.id.txt_skillContent)).setVisibility(View.VISIBLE);
-                                        ((TextView) findViewById(R.id.txt_skillContent)).setText("No data found");
+                                        ((TextView) findViewById(R.id.txt_skillContent)).setText("No Skill to show");
                                     }
                                     for (int k = 0; k < arrSkill.length(); k++) {
                                         JSONObject arrObj = arrSkill.getJSONObject(k);
@@ -1937,11 +1922,11 @@ public class SettingEdit extends AppCompatActivity{
 
                                     SkillAdapterSetting skadpeter = new SkillAdapterSetting(SettingEdit.this, skillList);
                                     recycler_view_sk.setAdapter(skadpeter);
-
+/*------------------------------------------------------------------------------------------------------------------*/
                                     JSONArray arrfields = obj.getJSONArray("Fs");
                                     if(arrfields.length() == 0){
                                         ((TextView) findViewById(R.id.txt_socContent)).setVisibility(View.VISIBLE);
-                                        ((TextView) findViewById(R.id.txt_socContent)).setText("No data found");
+                                        ((TextView) findViewById(R.id.txt_socContent)).setText("No Social links to show");
                                     }
                                     for (int k = 0; k < arrfields.length(); k++) {
                                         JSONObject fieldObj = arrfields.getJSONObject(k);
@@ -1975,10 +1960,34 @@ public class SettingEdit extends AppCompatActivity{
                                             ((FloatingActionButton) findViewById(R.id.flt_instagram)).setVisibility(View.VISIBLE);
                                         }
                                     }
+                                    JSONArray arrAbout = obj.getJSONArray("Bls");
+
+                                    JSONObject objLin = arrAbout.getJSONObject(0);
+                                    String imgLink = objLin.getString("OV");
+
+                                    Glide.with(SettingEdit.this).load(DataText.GetImagePath(imgLink))
+                                            .thumbnail(0.5f)
+                                            .transition(withCrossFade())
+                                            .into(bg_image);
+
+                                    JSONObject objDec = arrAbout.getJSONObject(1);
+                                    getLink = objDec.getString("OV");
+                                    txt_link.setText(getLink);
+                                    //txt_link.setText(getDec);
+
+                                    JSONObject objAbout = arrAbout.getJSONObject(2);
+                                    getDec = objAbout.getString("OV");
+                                    txt_dec.setText(getDec);
+                                    //txt_dec.setText(getTitle);
+
+                                    JSONObject objTitle = arrAbout.getJSONObject(3);
+                                    getTitle = objTitle.getString("OV");
+                                    txt_title.setText(getTitle);
 
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Log.e("TEST","Get User Exception :"+e);
                                 }
                             }
                         }
@@ -2235,11 +2244,75 @@ public class SettingEdit extends AppCompatActivity{
     }
 
     private void settingDilougeBox() {
+            //arrSetting
+        Log.e("TEST","Setting Request :"+arrSetting.length());
 
             final Dialog settindialog = new Dialog(this);
             settindialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
             settindialog.setContentView(R.layout.custom_setting_alert_dailogbox);
             settindialog.setCancelable(true);
+
+        String getShowFrnd = ((TextView) settindialog.findViewById(R.id.txt_user_ShowFriends1)).getText().toString();
+        String getshowFollowers = ((TextView) settindialog.findViewById(R.id.txt_user_ShowFollowers1)).getText().toString();
+        String getAllowRequest = ((TextView) settindialog.findViewById(R.id.txt_user_AllowFriendRequests1)).getText().toString();
+        String getNewMessage = ((TextView) settindialog.findViewById(R.id.txt_user_Notify_NewMessage1)).getText().toString();
+        String getNewConnection = ((TextView) settindialog.findViewById(R.id.txt_user_Notify_NewConnection1)).getText().toString();
+        String getEmailOff = ((TextView) settindialog.findViewById(R.id.txt_user_EmailOff1)).getText().toString();
+        Log.e("TEST","Get Value :"+getShowFrnd);
+
+        for (int i = 0; i < arrSetting.length(); i++) {
+            try {
+                JSONObject objSetting = arrSetting.getJSONObject(i);
+                String settingN = objSetting.getString("N");
+
+                if(settingN.equalsIgnoreCase(getShowFrnd)){
+                    if(objSetting.getString("IA").equalsIgnoreCase("true")){
+                        ((Switch) settindialog.findViewById(R.id.switch_user_ShowFriends)).setChecked(true);
+                    }else {
+                        ((Switch) settindialog.findViewById(R.id.switch_user_ShowFriends)).setChecked(false);
+                    }
+                }
+                if(settingN.equalsIgnoreCase(getshowFollowers)){
+                    if(objSetting.getString("IA").equalsIgnoreCase("true")){
+                        ((Switch) settindialog.findViewById(R.id.switch_user_ShowFollowers)).setChecked(true);
+                    }else {
+                        ((Switch) settindialog.findViewById(R.id.switch_user_ShowFollowers)).setChecked(false);
+                    }
+                }
+                if(settingN.equalsIgnoreCase(getAllowRequest)){
+                    if(objSetting.getString("IA").equalsIgnoreCase("true")){
+                        ((Switch) settindialog.findViewById(R.id.switch_user_AllowFriendRequests)).setChecked(true);
+                    }else {
+                        ((Switch) settindialog.findViewById(R.id.switch_user_AllowFriendRequests)).setChecked(false);
+                    }
+                }
+                if(settingN.equalsIgnoreCase(getNewMessage)){
+                    if(objSetting.getString("IA").equalsIgnoreCase("true")){
+                        ((Switch) settindialog.findViewById(R.id.switch_user_Notify_NewMessage)).setChecked(true);
+                    }else {
+                        ((Switch) settindialog.findViewById(R.id.switch_user_Notify_NewMessage)).setChecked(false);
+                    }
+                }
+                if(settingN.equalsIgnoreCase(getNewConnection)){
+                    if(objSetting.getString("IA").equalsIgnoreCase("true")){
+                        ((Switch) settindialog.findViewById(R.id.switch_user_Notify_NewConnection)).setChecked(true);
+                    }else {
+                        ((Switch) settindialog.findViewById(R.id.switch_user_Notify_NewConnection)).setChecked(false);
+                    }
+                }
+                if(settingN.equalsIgnoreCase(getEmailOff)){
+                    if(objSetting.getString("IA").equalsIgnoreCase("true")){
+                        ((Switch) settindialog.findViewById(R.id.switch_user_EmailOff)).setChecked(true);
+                    }else {
+                        ((Switch) settindialog.findViewById(R.id.switch_user_EmailOff)).setChecked(false);
+                    }
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
             lp.copyFrom(dialog.getWindow().getAttributes());

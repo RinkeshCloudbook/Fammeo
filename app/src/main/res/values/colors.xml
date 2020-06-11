@@ -190,6 +190,7 @@
 
 
     <color name="app_bg">#0F4671</color>
+    <color name="nocontent_bg">#e3e1fc</color>
     <color name="actionbar_bg">#55ACEE</color>
     <color name="actionbar_top_bg">#1C6399</color>
     <color name="gray">#808285</color>

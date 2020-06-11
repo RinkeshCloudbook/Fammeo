@@ -78,8 +78,8 @@ public class EditLanguage extends AppCompatActivity {
         for (int i = 0; i < langList.size(); i++) {
 
         }*/
-        listAdapter1 = new LanguageListAdapter(EditLanguage.this, lanList, true);
-        recycler_view_lang_dbox.setAdapter(listAdapter1);
+            listAdapter1 = new LanguageListAdapter(EditLanguage.this, lanList, true);
+            recycler_view_lang_dbox.setAdapter(listAdapter1);
 
         edt_lang.addTextChangedListener(new TextWatcher() {
             long lastChange = 0;

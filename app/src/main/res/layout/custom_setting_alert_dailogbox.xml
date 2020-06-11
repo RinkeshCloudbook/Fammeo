@@ -52,6 +52,7 @@
                     android:layout_marginTop="@dimen/dimen_10dp">
 
                     <Switch
+                        android:id="@+id/switch_user_ShowFriends"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -63,6 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/txt_user_ShowFriends"
                             android:padding="@dimen/dimen_7dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -70,6 +72,16 @@
                             android:text="Other users can see Your Friends "
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                             android:textColor="@color/grey_60" />
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/txt_user_ShowFriends1"
+                            android:padding="@dimen/dimen_7dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="user_ShowFriends"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/grey_60" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -79,6 +91,7 @@
                     android:layout_marginTop="@dimen/dimen_10dp">
 
                     <Switch
+                        android:id="@+id/switch_user_ShowFollowers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -90,6 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/txt_user_ShowFollowers"
                             android:padding="@dimen/dimen_7dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -97,6 +111,16 @@
                             android:text="Other users can see who I am following and who follows me "
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                             android:textColor="@color/grey_60" />
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/txt_user_ShowFollowers1"
+                            android:padding="@dimen/dimen_7dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="user_ShowFollowers"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/grey_60" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -106,6 +130,7 @@
                     android:layout_marginTop="@dimen/dimen_10dp">
 
                     <Switch
+                        android:id="@+id/switch_user_AllowFriendRequests"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -117,6 +142,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/txt_user_AllowFriendRequests"
                             android:padding="@dimen/dimen_7dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -124,6 +150,16 @@
                             android:text="Everyone on Fammeo can send me connection requests "
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                             android:textColor="@color/grey_60" />
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/txt_user_AllowFriendRequests1"
+                            android:padding="@dimen/dimen_7dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="user_AllowFriendRequests"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/grey_60" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -133,7 +169,7 @@
                     android:layout_marginTop="@dimen/dimen_10dp">
 
                     <Switch
-                        android:id="@+id/switch1"
+                        android:id="@+id/switch_user_Notify_NewMessage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -145,6 +181,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/txt_user_Notify_NewMessage"
                             android:padding="@dimen/dimen_7dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -152,31 +189,14 @@
                             android:text="Notify me when I have received a new message from my connections "
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                             android:textColor="@color/grey_60" />
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dimen_10dp">
-
-                    <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:layout_gravity="center"
-                        android:switchMinWidth="56dp"
-                        android:textOff="OFF"
-                        android:textOn="ON" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
                         <TextView
+                            android:visibility="gone"
+                            android:id="@+id/txt_user_Notify_NewMessage1"
                             android:padding="@dimen/dimen_7dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/spacing_medium"
-                            android:text="Notify me about connection requests "
+                            android:text="user_Notify_NewMessage"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                             android:textColor="@color/grey_60" />
                     </LinearLayout>
@@ -188,6 +208,46 @@
                     android:layout_marginTop="@dimen/dimen_10dp">
 
                     <Switch
+                        android:id="@+id/switch_user_Notify_NewConnection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:layout_gravity="center"
+                        android:switchMinWidth="56dp"
+                        android:textOff="OFF"
+                        android:textOn="ON" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/txt_user_Notify_NewConnection"
+                            android:padding="@dimen/dimen_7dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="Notify me about connection requests "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/grey_60" />
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/txt_user_Notify_NewConnection1"
+                            android:padding="@dimen/dimen_7dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="user_Notify_NewConnection"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/grey_60" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_10dp">
+
+                    <Switch
+                        android:id="@+id/switch_user_EmailOff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="false"
@@ -199,11 +259,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/txt_user_EmailOff"
                             android:padding="@dimen/dimen_7dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/spacing_medium"
                             android:text="Switch off all emails from Epiloge (except administrative emails) "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/grey_60" />
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/txt_user_EmailOff1"
+                            android:padding="@dimen/dimen_7dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:text="user_EmailOff"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                             android:textColor="@color/grey_60" />
                     </LinearLayout>
