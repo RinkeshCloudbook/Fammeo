@@ -261,4 +261,9 @@ public class SocialLink extends AppCompatActivity {
         toast.setView(custom_view);
         toast.show();
     }
+
+    public void getCodeList(){
+        List<String> cc = new ArrayList<>();
+
+    }
 }

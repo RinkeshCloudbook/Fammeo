@@ -98,16 +98,15 @@
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:id="@+id/card_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
-            android:background="#F19292"
-            android:padding="@dimen/dimen_7dp"
-            app:cardCornerRadius="@dimen/dimen_5dp"
-            app:cardElevation="3dp">
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:background="#F19292"
+                android:padding="@dimen/dimen_7dp"
+                app:cardCornerRadius="@dimen/dimen_5dp"
+                app:cardElevation="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -150,6 +149,7 @@
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         style="@style/EditText.Flat.Grey"
                         android:textColor="@color/grey_60" />
+
                     <TextView
                         android:id="@+id/txt_link"
                         android:layout_width="match_parent"
@@ -257,7 +257,16 @@
                                 app:backgroundTint="@color/themecolor"
                                 app:fabSize="mini"
                                 app:srcCompat="@drawable/ic_instagram" />
-
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/txt_socContent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/dimen_15dp"
+                                android:textStyle="bold"
+                                android:padding="@dimen/dimen_10dp"
+                                android:layout_gravity="center"
+                                />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -330,6 +339,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scrollbars="vertical" />
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/txt_addContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen_15dp"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dimen_10dp"
+                        android:layout_gravity="center"
+                        />
+
                     <TextView
                         android:id="@+id/txt_addNewAddress"
                         android:layout_width="match_parent"
@@ -428,6 +448,16 @@
                         android:layout_height="match_parent"
                         android:scrollbars="vertical" />
                     <TextView
+                        android:visibility="gone"
+                        android:id="@+id/txt_emailContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen_15dp"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dimen_10dp"
+                        android:layout_gravity="center"
+                        />
+                    <TextView
                         android:id="@+id/txt_addNewEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -494,6 +524,16 @@
                         android:layout_height="match_parent"
                         android:scrollbars="vertical" />
                     <TextView
+                        android:visibility="gone"
+                        android:id="@+id/txt_phoneContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen_15dp"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dimen_10dp"
+                        android:layout_gravity="center"
+                        />
+                    <TextView
                         android:id="@+id/txt_addNewPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -551,6 +591,16 @@
                             android:clickable="true"
                             app:srcCompat="@drawable/ic_create_black" />
                     </LinearLayout>
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/txt_langContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen_15dp"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dimen_10dp"
+                        android:layout_gravity="center"
+                        />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_lang"
                         android:layout_width="match_parent"
@@ -566,7 +616,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_large"
                 android:layout_marginRight="@dimen/spacing_large"
-                android:layout_marginBottom="@dimen/dimen_10dp"
                 android:background="#F19292"
                 android:padding="@dimen/dimen_7dp"
                 app:cardCornerRadius="@dimen/dimen_5dp"
@@ -605,6 +654,16 @@
                             android:clickable="true"
                             app:srcCompat="@drawable/ic_create_black" />
                     </LinearLayout>
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/txt_hbContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen_15dp"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dimen_10dp"
+                        android:layout_gravity="center"
+                        />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_hb"
                         android:layout_width="match_parent"
@@ -620,7 +679,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_large"
                 android:layout_marginRight="@dimen/spacing_large"
-                android:paddingBottom="@dimen/dimen_20dp"
+                android:layout_marginBottom="@dimen/dimen_15dp"
                 android:background="#F19292"
                 android:padding="@dimen/dimen_7dp"
                 app:cardCornerRadius="@dimen/dimen_5dp"
@@ -658,6 +717,16 @@
                             android:clickable="true"
                             app:srcCompat="@drawable/ic_create_black" />
                     </LinearLayout>
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/txt_skillContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen_15dp"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dimen_10dp"
+                        android:layout_gravity="center"
+                        />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_sk"
                         android:layout_width="match_parent"

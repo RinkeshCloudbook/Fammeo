@@ -56,6 +56,7 @@ public class Skills extends AppCompatActivity {
     AppCompatButton bt_save_skill;
     String userId;
     SkillsListAdapter lisyAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +73,8 @@ public class Skills extends AppCompatActivity {
 
         RecyclerView.LayoutManager recyce = new LinearLayoutManager(Skills.this, LinearLayoutManager.VERTICAL, false);
         recycler_view_skills.setLayoutManager(recyce);
+
+        skillList = (ArrayList<CommonModel>) getIntent().getSerializableExtra("Slist");
 
         lisyAdapter = new SkillsListAdapter(Skills.this, skillList);
         recycler_view_skills_dbox.setAdapter(lisyAdapter);
@@ -263,7 +266,7 @@ public class Skills extends AppCompatActivity {
                     }
                     params.put("skills", jsonArray);
                     params.put("UserId", userId);
-
+                Log.e("TEST","Skills Param :"+params);
                     return params;
                 } catch (JSONException ex) {
                     DataGlobal.SaveLog(TAG, ex);
@@ -284,7 +287,7 @@ public class Skills extends AppCompatActivity {
     public void getLanName(String lan) {
         CommonModel cm = new CommonModel();
         cm.lName = lan;
-        Log.e("TEST","Get Skill Name :"+cm.lName);
+
         skillList.add(cm);
 
         //listAdapter1.notifyDataSetChanged();

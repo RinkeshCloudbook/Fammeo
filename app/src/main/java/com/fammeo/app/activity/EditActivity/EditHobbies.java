@@ -222,7 +222,7 @@ public class EditHobbies extends AppCompatActivity {
                                 String strResponse = response.toString();
                                 Log.e("TEST", "Search Response :" + response.toString());
                                 if (strResponse != null) {
-                                    //lanList.clear();
+                                    hobbyLang.clear();
                                     try {
                                         JSONObject object = new JSONObject(strResponse);
                                         String msgType = object.getString("MessageType");

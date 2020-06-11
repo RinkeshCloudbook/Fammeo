@@ -201,7 +201,7 @@ public class SettingEdit extends AppCompatActivity{
         setRecleyViewManager(recycler_view_address);
         setRecleyViewManager(recycler_view_phone);
         setRecleyViewManager(recycler_view_hb);
-        setRecleyViewManager(recycler_view_sk);
+        //setRecleyViewManager(recycler_view_sk);
         /*RecyclerView.LayoutManager recyce = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
         recycler_view_email.setLayoutManager(recyce);
         RecyclerView.LayoutManager addsrecy = new LinearLayoutManager(SettingEdit.this, LinearLayoutManager.VERTICAL, false);
@@ -210,6 +210,9 @@ public class SettingEdit extends AppCompatActivity{
         recycler_view_phone.setLayoutManager(phonerecy);*/
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         recycler_view_hb.setLayoutManager(gridLayoutManager);
+
+        GridLayoutManager skillgridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
+        recycler_view_sk.setLayoutManager(skillgridLayoutManager);
 
 
         Toolbar mToolbar = findViewById(R.id.toolbar);
@@ -301,7 +304,7 @@ public class SettingEdit extends AppCompatActivity{
             public void onClick(View v) {
                 Log.e("TEST","Click skills:");
                 Intent intent = new Intent(getApplicationContext(), Skills.class);
-                //intent.putExtra("Hlist", (Serializable) hobbyList);
+                intent.putExtra("Slist", (Serializable) skillList);
                 startActivity(intent);
             }
         });
@@ -363,7 +366,6 @@ public class SettingEdit extends AppCompatActivity{
         txt_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TEST","Change Profile image");
                 mode = "userimage";
                 selectImageMode();
             }
@@ -371,7 +373,6 @@ public class SettingEdit extends AppCompatActivity{
         txt_change_bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TEST","Background image");
                 mode = "userbgimage";
                 selectImageMode();
             }
@@ -1779,6 +1780,10 @@ public class SettingEdit extends AppCompatActivity{
                                     JSONObject obj = object.getJSONObject("obj");
 
                                     arr = obj.getJSONArray("Ls");
+                                    if(arr.length() == 0){
+                                        ((TextView) findViewById(R.id.txt_langContent)).setVisibility(View.VISIBLE);
+                                        ((TextView) findViewById(R.id.txt_langContent)).setText("No data found");
+                                    }
                                     String userId = obj.getString("Id");
                                     String userURl = obj.getString("I");
                                     String un = obj.getString("UN");
@@ -1801,6 +1806,10 @@ public class SettingEdit extends AppCompatActivity{
                                     //emailList.clear();
                                     emailList = new ArrayList<>();
                                     JSONArray arrEs = obj.getJSONArray("Es");
+                                    if(arrEs.length() == 0){
+                                        ((TextView) findViewById(R.id.txt_emailContent)).setVisibility(View.VISIBLE);
+                                        ((TextView) findViewById(R.id.txt_emailContent)).setText("No data found");
+                                    }
                                     for (int i = 0; i < arrEs.length(); i++) {
                                         JSONObject objEs = arrEs.getJSONObject(i);
                                         EmailModel em = new EmailModel();
@@ -1817,6 +1826,10 @@ public class SettingEdit extends AppCompatActivity{
 
                                     mAddressList.clear();
                                     JSONArray arrAdds = obj.getJSONArray("Adds");
+                                    if(arrAdds.length() == 0){
+                                        ((TextView) findViewById(R.id.txt_addContent)).setVisibility(View.VISIBLE);
+                                        ((TextView) findViewById(R.id.txt_addContent)).setText("No data found");
+                                    }
                                     for (int j = 0; j < arrAdds.length(); j++) {
                                         JSONObject addsObj = arrAdds.getJSONObject(j);
                                         String fullAddress = addsObj.getString("C") + addsObj.getString("S") + addsObj.getString("CR");
@@ -1838,6 +1851,10 @@ public class SettingEdit extends AppCompatActivity{
                                     phoneList.clear();
                                     JSONArray phoneAdds = obj.getJSONArray("PHs");
                                     phoneLenght = phoneAdds.length();
+                                    if(phoneAdds.length() == 0){
+                                        ((TextView) findViewById(R.id.txt_phoneContent)).setVisibility(View.VISIBLE);
+                                        ((TextView) findViewById(R.id.txt_phoneContent)).setText("No data found");
+                                    }
                                     for (int k = 0; k < phoneAdds.length(); k++) {
                                         JSONObject phoneObj = phoneAdds.getJSONObject(k);
                                         CommonModel am = new CommonModel();
@@ -1889,7 +1906,12 @@ public class SettingEdit extends AppCompatActivity{
                                     recycler_view_lang.setAdapter(listAdapter);
                                     //rowTextView.setText(getname);
                                     JSONArray arrHobbies = obj.getJSONArray("Hs");
+                                    if(arrHobbies.length() == 0){
+                                        ((TextView) findViewById(R.id.txt_hbContent)).setVisibility(View.VISIBLE);
+                                        ((TextView) findViewById(R.id.txt_hbContent)).setText("No data found");
+                                    }
                                     for (int k = 0; k < arrHobbies.length(); k++) {
+
                                         JSONObject arrObj = arrHobbies.getJSONObject(k);
                                         CommonModel cm = new CommonModel();
                                         cm.lId = arrObj.getString("Id");
@@ -1901,7 +1923,10 @@ public class SettingEdit extends AppCompatActivity{
                                     recycler_view_hb.setAdapter(adpeter);
 
                                     JSONArray arrSkill = obj.getJSONArray("Sks");
-
+                                    if(arrSkill.length() == 0){
+                                        ((TextView) findViewById(R.id.txt_skillContent)).setVisibility(View.VISIBLE);
+                                        ((TextView) findViewById(R.id.txt_skillContent)).setText("No data found");
+                                    }
                                     for (int k = 0; k < arrSkill.length(); k++) {
                                         JSONObject arrObj = arrSkill.getJSONObject(k);
                                         CommonModel cm = new CommonModel();
@@ -1914,6 +1939,10 @@ public class SettingEdit extends AppCompatActivity{
                                     recycler_view_sk.setAdapter(skadpeter);
 
                                     JSONArray arrfields = obj.getJSONArray("Fs");
+                                    if(arrfields.length() == 0){
+                                        ((TextView) findViewById(R.id.txt_socContent)).setVisibility(View.VISIBLE);
+                                        ((TextView) findViewById(R.id.txt_socContent)).setText("No data found");
+                                    }
                                     for (int k = 0; k < arrfields.length(); k++) {
                                         JSONObject fieldObj = arrfields.getJSONObject(k);
                                         CommonModel cm = new CommonModel();
