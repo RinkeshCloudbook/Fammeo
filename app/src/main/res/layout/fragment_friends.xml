@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.FammeoFragment.FriendsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:id="@+id/txt_friendContent"
+        android:layout_width="match_parent"
+        android:background="@drawable/no_content_bg"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/dimen_15dp"
+        android:textColor="#757ff3"
+        android:textStyle="bold"
+        android:text="You have no connections yet "
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:padding="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        />
+
+</FrameLayout>

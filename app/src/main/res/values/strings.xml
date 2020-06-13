@@ -16,7 +16,9 @@
     <string name="searchText">Create Your Personal Profile</string>
     <string name="searchTextSmall">Our platform is open for professional experts and users who
                                 seek services of experts for their business and personal needs</string>
-
+    <string name="educationText">Search or Create your organization</string>
+    <string name="educationTextSmall">Our platform is open for professional experts and users who seek services
+                        of experts for their business and personal needs </string>
     <string name="long_Instructions">
         Username should be within range of 5 to 30 characters
         \n\nSpecial characters are not allowed except "_" only for once
@@ -315,7 +317,5 @@
         <item>260,ZM</item>
         <item>263,ZW</item>
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

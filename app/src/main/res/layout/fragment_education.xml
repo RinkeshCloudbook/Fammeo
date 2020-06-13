@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.FammeoFragment.EducationFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:id="@+id/card_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_large"
+        android:layout_marginRight="@dimen/spacing_large"
+        android:background="#F19292"
+        android:padding="@dimen/dimen_7dp"
+        app:cardCornerRadius="@dimen/dimen_5dp"
+        app:cardElevation="3dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_7dp"
+            android:paddingLeft="@dimen/spacing_middle"
+            android:paddingRight="@dimen/spacing_middle">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Education"
+                    android:textSize="@dimen/dimen_17sp"
+                    android:padding="@dimen/dimen_7dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/grey_90"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_educationContent"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/no_content_bg"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen_15dp"
+                        android:textColor="#757ff3"
+                        android:textStyle="bold"
+                        android:text="No Education to show"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:padding="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/img_edtEducation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:clickable="true"
+                android:padding="@dimen/dimen_7dp"
+                app:srcCompat="@drawable/ic_create_black" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

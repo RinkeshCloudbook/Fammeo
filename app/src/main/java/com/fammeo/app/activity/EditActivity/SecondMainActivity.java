@@ -25,7 +25,11 @@ import com.fammeo.app.R;
 import com.fammeo.app.activity.SettingsActivity;
 import com.fammeo.app.app.App;
 import com.fammeo.app.fragment.CompanyFragment;
+import com.fammeo.app.fragment.FammeoFragment.ConnectionFragment;
 import com.fammeo.app.fragment.FammeoFragment.ConversationsFragment;
+import com.fammeo.app.fragment.FammeoFragment.EducationFragment;
+import com.fammeo.app.fragment.FammeoFragment.FollowersFragment;
+import com.fammeo.app.fragment.FammeoFragment.FollowingFragment;
 import com.fammeo.app.fragment.FinishedProjectFragment;
 import com.fammeo.app.fragment.HomeFragment;
 import com.fammeo.app.fragment.NoCompanyFragment;
@@ -233,9 +237,9 @@ public class SecondMainActivity extends AppCompatActivity implements FragmentDra
                 case "Connections": {
 
                     page = 3;
-                    fragment = new ProjectFragment();
+                    fragment = new ConnectionFragment();
                     doc = "03";
-                    getSupportActionBar().setTitle(title);
+                    getSupportActionBar().setTitle("Connections");
                     action = true;
 
                     break;
@@ -243,9 +247,9 @@ public class SecondMainActivity extends AppCompatActivity implements FragmentDra
                 case "Followers": {
 
                     page = 4;
-                    fragment = new FinishedProjectFragment();
+                    fragment = new FollowersFragment();
                     doc = "04";
-                    getSupportActionBar().setTitle(title);
+                    getSupportActionBar().setTitle("Followers");
                     action = true;
 
                     break;
@@ -253,22 +257,20 @@ public class SecondMainActivity extends AppCompatActivity implements FragmentDra
                 case "Following": {
 
                     page = 5;
-                    fragment = new CompanyFragment();
+                    fragment = new FollowingFragment();
                     doc = "05";
-                    getSupportActionBar().setTitle(title);
+                    getSupportActionBar().setTitle("Following");
                     action = true;
 
                     break;
                 }
                 case "Education":{
                     page = 6;
-                    /*fragment = new DocumentUpload();
-                    doc = "06";
-                    //mToolbar.setTitle(title);
-                    mToolbar.inflateMenu(R.menu.menu_document_upload);
-                    //setSupportActionBar(mToolbar);
-                    getSupportActionBar().setTitle(title);
-                    action = true;*/
+                    fragment = new EducationFragment();
+                    doc = "05";
+                    getSupportActionBar().setTitle("Education");
+                    action = true;
+
 
                     break;
                 }
