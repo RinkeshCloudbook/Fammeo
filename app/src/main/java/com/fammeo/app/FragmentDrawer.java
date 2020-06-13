@@ -45,6 +45,10 @@ public class FragmentDrawer extends Fragment {
         this.drawerListener = listener;
     }
 
+    public void setDrawerListenerSecond(FragmentDrawerListener listener) {
+        this.drawerListener = listener;
+    }
+
 //    public static List<NavDrawerItem> getData() {
 //        List<NavDrawerItem> data = new ArrayList<>();
 //
@@ -64,15 +68,15 @@ public class FragmentDrawer extends Fragment {
         super.onCreate(savedInstanceState);
 
         // drawer labels
-        if(!(App.getInstance().getCurrentACId() > 0))
+        /*if(!(App.getInstance().getCurrentACId() < 0))
         {
             navTitles = getActivity().getResources().getStringArray(R.array.NoCompanynavDrawerItems);
             navIcons = getActivity().getResources().obtainTypedArray(R.array.NoCompanynavDrawerIcons);
-        }else{
+        }else{*/
 
             navTitles = getActivity().getResources().getStringArray(R.array.navDrawerItems);
             navIcons = getActivity().getResources().obtainTypedArray(R.array.navDrawerIcons);
-        }
+        //}
     }
 
     @Override

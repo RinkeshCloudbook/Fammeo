@@ -1,5 +1,6 @@
 package com.fammeo.app.adapter.fammeoAdapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,22 +13,26 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.EditActivity.EditPhone;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.ArrayList;
 
 public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.ViewHolder> {
-    SettingEdit context;
+    VewProfileFragment context;
     ArrayList<CommonModel> phoneList;
     boolean img;
-    public PhoneAdapter(SettingEdit settingEdit, ArrayList<CommonModel> phoneList) {
-        this.context = settingEdit;
+    Context mfragment;
+    public PhoneAdapter(VewProfileFragment fragment, Context mcontext, ArrayList<CommonModel> phoneList) {
+        this.context = fragment;
         this.phoneList = phoneList;
+        this.mfragment= mcontext;
     }
 
     @NonNull
@@ -52,13 +57,13 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
 
-                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    PopupMenu popupMenu = new PopupMenu(mfragment, v);
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             String itemName = String.valueOf(item.getTitle());
                             if(itemName.equalsIgnoreCase("Edit")){
-                                Intent intent = new Intent(context, EditPhone.class);
+                                Intent intent = new Intent(mfragment, EditPhone.class);
                                 intent.putExtra("PT",phoneList.get(i).phcType);
                                 intent.putExtra("PN",phoneList.get(i).phNumber);
                                 intent.putExtra("PC",phoneList.get(i).phcCode);

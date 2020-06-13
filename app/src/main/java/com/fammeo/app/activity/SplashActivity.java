@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 //import com.crashlytics.android.Crashlytics;
 import com.fammeo.app.BuildConfig;
+import com.fammeo.app.activity.EditActivity.SecondMainActivity;
 import com.fammeo.app.app.ECBAuthToken;
 import com.fammeo.app.fragment.CompanyFragment;
 import com.fammeo.app.model.UserSmallJ;
@@ -232,7 +233,7 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
                                             }else
                                             {
                                                 //Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                                                Intent intent = new Intent(SplashActivity.this, SettingEdit.class);
+                                                Intent intent = new Intent(SplashActivity.this, SecondMainActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 finish();
                                                 startActivity(intent);
@@ -244,7 +245,7 @@ public class SplashActivity extends ActivityBase implements GoogleApiClient.Conn
                                                 startActivity(intent);
                                             }else
                                             {
-                                                Intent intent = new Intent(SplashActivity.this, SettingEdit.class);
+                                                Intent intent = new Intent(SplashActivity.this, SecondMainActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 finish();
                                                 startActivity(intent);

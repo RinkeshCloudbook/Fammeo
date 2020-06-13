@@ -208,8 +208,6 @@ public class LoginActivity extends ActivityBase {
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             String RMessage = App.getInstance().SetData(getApplicationContext(), ResultJ);
-            Log.e("TEST","Get RMessage :"+RMessage);
-            Log.e("TEST","Get RMessage :"+App.getInstance().getUserId());
             if (RMessage == "success") {
                 if (user != null) {
                     if(getUserId.equalsIgnoreCase("null")){

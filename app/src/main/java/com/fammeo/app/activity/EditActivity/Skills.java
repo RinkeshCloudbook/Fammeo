@@ -32,6 +32,7 @@ import com.fammeo.app.adapter.fammeoAdapter.SkillAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.SkillsListAdapter;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataGlobal;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.util.CustomAuthRequest;
 
@@ -231,7 +232,7 @@ public class Skills extends AppCompatActivity {
                                     String msgType = object.getString("MessageType");
                                     if (msgType.equalsIgnoreCase("success")) ;
                                     toastIconSuccess();
-                                    Intent intent = new Intent(getApplicationContext(), SettingEdit.class);
+                                    Intent intent = new Intent(getApplicationContext(), VewProfileFragment.class);
                                     startActivity(intent);
                                 } catch (JSONException e) {
                                     e.printStackTrace();

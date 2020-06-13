@@ -34,6 +34,7 @@ import com.fammeo.app.adapter.fammeoAdapter.LanguageAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.LanguageListAdapter;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataGlobal;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.util.CustomAuthRequest;
 
@@ -141,7 +142,7 @@ public class EditHobbies extends AppCompatActivity {
                                         String msgType = object.getString("MessageType");
                                         if (msgType.equalsIgnoreCase("success")) ;
                                         toastIconSuccess("Language");
-                                        Intent intent = new Intent(getApplicationContext(), SettingEdit.class);
+                                        Intent intent = new Intent(getApplicationContext(), VewProfileFragment.class);
                                         startActivity(intent);
                                     } catch (JSONException e) {
                                         e.printStackTrace();

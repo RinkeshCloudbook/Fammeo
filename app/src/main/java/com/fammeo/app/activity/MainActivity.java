@@ -485,11 +485,6 @@ public class MainActivity extends ActivityBase implements  FragmentDrawer.Fragme
             bundleUserData.putString("email", email);
             bundleUserData.putString("imgUrl", imgUrl);
 
-
-            Log.e("TEST","Event :"+fullName);
-            Log.e("TEST","Event :"+FN);
-            Log.e("TEST","Event :"+LN);
-
             int current = viewPager.getCurrentItem() + 1;
             page += 1;
             viewPager.setCurrentItem(page, true);

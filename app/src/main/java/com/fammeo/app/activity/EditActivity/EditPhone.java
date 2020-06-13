@@ -27,6 +27,7 @@ import com.fammeo.app.R;
 import com.fammeo.app.activity.SettingEdit;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataGlobal;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.util.CustomAuthRequest;
 
@@ -112,7 +113,7 @@ public class EditPhone extends AppCompatActivity {
                                         String msgType = object.getString("MessageType");
                                         if (msgType.equalsIgnoreCase("success")) {
                                             toastIconSuccess("phone");
-                                            Intent intent = new Intent(getApplicationContext(), SettingEdit.class);
+                                            Intent intent = new Intent(getApplicationContext(), VewProfileFragment.class);
                                             startActivity(intent);
                                             finish();
                                         }

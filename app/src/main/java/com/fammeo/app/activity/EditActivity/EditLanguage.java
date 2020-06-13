@@ -32,6 +32,7 @@ import com.fammeo.app.adapter.fammeoAdapter.LanguageAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.LanguageListAdapter;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataGlobal;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.util.CustomAuthRequest;
 
@@ -107,7 +108,7 @@ public class EditLanguage extends AppCompatActivity {
                     }, 300);
                     lastChange = System.currentTimeMillis();
                     Log.e("TEST","Search Lenth :"+s.length());
-                } else if (s.length() == 0) {
+                } else if (s.length() < 3) {
                     recycler_view.setVisibility(View.GONE);
                 }
             }
@@ -143,8 +144,8 @@ public class EditLanguage extends AppCompatActivity {
                                         JSONObject object = new JSONObject(strResponse);
                                         String msgType = object.getString("MessageType");
                                         if (msgType.equalsIgnoreCase("success")) ;
-                                        toastIconSuccess("Language");
-                                        Intent intent = new Intent(getApplicationContext(),SettingEdit.class);
+                                        toastIconSuccess();
+                                        Intent intent = new Intent(getApplicationContext(), VewProfileFragment.class);
                                         startActivity(intent);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -225,7 +226,7 @@ public class EditLanguage extends AppCompatActivity {
                             String strResponse = response.toString();
                             Log.e("TEST", "Search Response :" + response.toString());
                             if (strResponse != null) {
-                                //lanList.clear();
+                                searchLang.clear();
                                 try {
                                     JSONObject object = new JSONObject(strResponse);
                                     String msgType = object.getString("MessageType");
@@ -304,7 +305,7 @@ public class EditLanguage extends AppCompatActivity {
             bt_save.setVisibility(View.VISIBLE);
         }
     }
-    private void toastIconSuccess(String msgText) {
+    private void toastIconSuccess() {
         Toast toast = new Toast(getApplicationContext());
         toast.setDuration(Toast.LENGTH_LONG);
 

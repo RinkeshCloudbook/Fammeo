@@ -13,23 +13,28 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.EditEmail;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.EmailModel;
 
 import java.util.ArrayList;
 
 public class EmailListAdapter extends RecyclerView.Adapter<EmailListAdapter.ViewHolder> {
-    SettingEdit context;
+    VewProfileFragment context;
     ArrayList<EmailModel> emailList;
     boolean img;
-    public EmailListAdapter(SettingEdit applicationContext, ArrayList<EmailModel> emailList) {
-        this.context = applicationContext;
+    Context mfragment;
+    public EmailListAdapter(VewProfileFragment fragment, Context mcontext, ArrayList<EmailModel> emailList) {
+        this.context = fragment;
         this.emailList = emailList;
+        this.mfragment =mcontext;
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,14 +56,14 @@ public class EmailListAdapter extends RecyclerView.Adapter<EmailListAdapter.View
                 @Override
                 public void onClick(View v) {
 
-                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    PopupMenu popupMenu = new PopupMenu(mfragment, v);
 
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             String itemName = String.valueOf(item.getTitle());
                             if(itemName.equalsIgnoreCase("Edit")){
-                                Intent emInt = new Intent(context, EditEmail.class);
+                                Intent emInt = new Intent(mfragment, EditEmail.class);
                                 emInt.putExtra("ET",emailList.get(i).emailType);
                                 emInt.putExtra("EA",emailList.get(i).emailAddress);
                                 emInt.putExtra("eId",emailList.get(i).recordId);
@@ -66,6 +71,7 @@ public class EmailListAdapter extends RecyclerView.Adapter<EmailListAdapter.View
                                 context.startActivity(emInt);
                             }else {
                                 context.deleteEmail(emailList.get(i).recordId);
+
                             }
                             return false;
                         }

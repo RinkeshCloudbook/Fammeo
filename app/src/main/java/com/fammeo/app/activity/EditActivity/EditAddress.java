@@ -35,6 +35,7 @@ import com.fammeo.app.app.App;
 import com.fammeo.app.common.CommomInterface;
 import com.fammeo.app.common.DataGlobal;
 import com.fammeo.app.common.PassDataInterface;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.util.CustomAuthRequest;
 
@@ -160,7 +161,7 @@ public class EditAddress extends AppCompatActivity {
                                         handler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Intent intent = new Intent(getApplicationContext(),SettingEdit.class);
+                                                Intent intent = new Intent(getApplicationContext(), VewProfileFragment.class);
                                                 intent.putExtra("R",01);
                                                 startActivity(intent);
                                                 /*phoneList.clear();

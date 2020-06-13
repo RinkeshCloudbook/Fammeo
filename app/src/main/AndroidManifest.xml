@@ -27,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         tools:replace="android:allowBackup,android:icon">
-        <activity android:name=".activity.EditActivity.SocialLink"></activity>
+        <activity android:name=".activity.EditActivity.SecondMainActivity"></activity>
+        <activity android:name=".activity.EditActivity.SocialLink" />
         <activity android:name=".activity.EditActivity.Skills" />
         <activity android:name=".activity.EditActivity.EditHobbies" />
         <activity android:name=".activity.EditActivity.EditLanguage" />

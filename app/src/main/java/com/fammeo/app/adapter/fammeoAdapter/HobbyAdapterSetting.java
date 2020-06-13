@@ -1,5 +1,6 @@
 package com.fammeo.app.adapter.fammeoAdapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.List;
 
 public class HobbyAdapterSetting extends RecyclerView.Adapter<HobbyAdapterSetting.ViewHolder> {
-    SettingEdit context;
+    VewProfileFragment context;
     List<CommonModel> hobbyList;
-    public HobbyAdapterSetting(SettingEdit settingEdit, List<CommonModel> hobbyList) {
-        this.context = settingEdit;
+    Context mfragment;
+    public HobbyAdapterSetting(VewProfileFragment fragment, Context mcontext, List<CommonModel> hobbyList) {
+        this.context = fragment;
         this.hobbyList = hobbyList;
+        this.mfragment = mcontext;
     }
 
     @NonNull
@@ -41,7 +45,7 @@ public class HobbyAdapterSetting extends RecyclerView.Adapter<HobbyAdapterSettin
                 hobbyList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, hobbyList.size());
-                context.enableSaveBottn(true);
+               // context.enableSaveBottn(true);
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.fammeo.app.adapter;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.provider.Contacts;
 import android.util.Log;
@@ -24,22 +25,23 @@ import com.fammeo.app.R;
 import com.fammeo.app.activity.EditActivity.EditAddress;
 import com.fammeo.app.activity.SettingEdit;
 import com.fammeo.app.common.CommomInterface;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
-    SettingEdit context;
+    VewProfileFragment context;
     ArrayList<CommonModel> mAddressList;
     private List<String> mCityList = new ArrayList<>();
     boolean img;
-
-    public AddressAdapter(SettingEdit settingEdit, ArrayList<CommonModel> mAddressList) {
-        this.context = settingEdit;
+    Context mfragment;
+    public AddressAdapter(VewProfileFragment fragment, Context mcontext, ArrayList<CommonModel> mAddressList) {
+        this.context = fragment;
         this.mAddressList = mAddressList;
+        this.mfragment = mcontext;
     }
-
 
     @NonNull
     @Override
@@ -62,13 +64,13 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             holder.img_edt_address.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    PopupMenu popupMenu = new PopupMenu(mfragment, v);
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             String itemName = String.valueOf(item.getTitle());
                             if(itemName.equalsIgnoreCase("Edit")){
-                                Intent intent = new Intent(context, EditAddress.class);
+                                Intent intent = new Intent(mfragment, EditAddress.class);
                                 intent.putExtra("T",mAddressList.get(i).cType);
                                 intent.putExtra("A",mAddressList.get(i).cAddress);
                                 intent.putExtra("C",mAddressList.get(i).cN);

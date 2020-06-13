@@ -1823,7 +1823,7 @@ public class SettingEdit extends AppCompatActivity{
                                         em.recordId = id;
                                         emailList.add(em);
                                     }
-                                    emailadapter = new EmailListAdapter(SettingEdit.this, emailList);
+                                   // emailadapter = new EmailListAdapter(SettingEdit.this, emailList);
                                     recycler_view_email.setAdapter(emailadapter);
 
                                     mAddressList.clear();
@@ -1848,7 +1848,7 @@ public class SettingEdit extends AppCompatActivity{
 
                                         mAddressList.add(am);
                                     }
-                                    addsAdapter = new AddressAdapter(SettingEdit.this, mAddressList);
+                                   // addsAdapter = new AddressAdapter(SettingEdit.this, mAddressList);
                                     recycler_view_address.setAdapter(addsAdapter);
 /*------------------------------------------------------------------------------------------------------------------*/
                                     phoneList.clear();
@@ -1867,7 +1867,7 @@ public class SettingEdit extends AppCompatActivity{
                                         am.phId = phoneObj.getString("Id");
                                         phoneList.add(am);
                                     }
-                                    phoneAdapter = new PhoneAdapter(SettingEdit.this, phoneList);
+                                    //phoneAdapter = new PhoneAdapter(SettingEdit.this, phoneList);
                                     recycler_view_phone.setAdapter(phoneAdapter);
 /*------------------------------------------------------------------------------------------------------------------*/
 
@@ -1883,7 +1883,7 @@ public class SettingEdit extends AppCompatActivity{
                                         String getname = cm.lName;
                                     }
 
-                                    LanuageSettingAdapter listAdapter = new LanuageSettingAdapter(SettingEdit.this, profileLangList);
+                                   // LanuageSettingAdapter listAdapter = new LanuageSettingAdapter(SettingEdit.this, profileLangList);
                                     recycler_view_lang.setAdapter(listAdapter);
                                     //rowTextView.setText(getname);
 /*------------------------------------------------------------------------------------------------------------------*/
@@ -1901,8 +1901,8 @@ public class SettingEdit extends AppCompatActivity{
                                         hobbyList.add(cm);
                                     }
 
-                                    HobbyAdapterSetting adpeter = new HobbyAdapterSetting(SettingEdit.this, hobbyList);
-                                    recycler_view_hb.setAdapter(adpeter);
+                                   // HobbyAdapterSetting adpeter = new HobbyAdapterSetting(SettingEdit.this, hobbyList);
+                                    //recycler_view_hb.setAdapter(adpeter);
 /*------------------------------------------------------------------------------------------------------------------*/
                                     arrSetting = obj.getJSONArray("Ss");
                                     Log.e("TEST","arrSetting :"+arrSetting.length());
@@ -1920,8 +1920,8 @@ public class SettingEdit extends AppCompatActivity{
                                         skillList.add(cm);
                                     }
 
-                                    SkillAdapterSetting skadpeter = new SkillAdapterSetting(SettingEdit.this, skillList);
-                                    recycler_view_sk.setAdapter(skadpeter);
+                                    //SkillAdapterSetting skadpeter = new SkillAdapterSetting(SettingEdit.this, skillList);
+                                   // recycler_view_sk.setAdapter(skadpeter);
 /*------------------------------------------------------------------------------------------------------------------*/
                                     JSONArray arrfields = obj.getJSONArray("Fs");
                                     if(arrfields.length() == 0){

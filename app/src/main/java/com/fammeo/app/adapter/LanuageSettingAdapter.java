@@ -1,5 +1,6 @@
 package com.fammeo.app.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.List;
 
 public class LanuageSettingAdapter extends RecyclerView.Adapter<LanuageSettingAdapter.ViewHolder> {
-    SettingEdit context;
+    VewProfileFragment context;
     List<CommonModel> profileLangList;
-    public LanuageSettingAdapter(SettingEdit settingEdit, List<CommonModel> profileLangList) {
-        this.context = settingEdit;
+    Context mfragment;
+    public LanuageSettingAdapter(VewProfileFragment fragment, Context mcontext, List<CommonModel> profileLangList) {
+        this.context = fragment;
         this.profileLangList = profileLangList;
+        this.mfragment = mcontext;
     }
 
     @NonNull

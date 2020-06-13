@@ -240,10 +240,14 @@
     <string name="page_1">Profile</string>
 
     <string-array name="navDrawerItems">
-        <item>Notification</item>
-        <item>Companies</item>
-        <item>Contact</item>
-        <item>Current Projects</item>
+        <item>View Profile</item>
+        <item>Conversations</item>
+        <item>Connections</item>
+        <item>Followers</item>
+        <item>Following</item>
+        <item>Education</item>
+        <item>Experience</item>
+        <item>Tweets</item>
         <!--<item>Profile</item>-->
         <item>Settings</item>
     </string-array>
@@ -254,6 +258,10 @@
     <string-array name="navDrawerIcons">
         <item>@string/fa_bell</item>
         <item>@string/fa_university</item>
+        <item>@string/fa_suitcase</item>
+        <item>@string/fa_suitcase</item>
+        <item>@string/fa_suitcase</item>
+        <item>@string/fa_suitcase</item>
         <item>@string/fa_suitcase</item>
         <item>@string/fa_suitcase</item>
        <!-- <item>@string/fa_user</item>-->

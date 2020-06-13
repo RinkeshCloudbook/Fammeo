@@ -1,5 +1,6 @@
 package com.fammeo.app.adapter.fammeoAdapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.List;
 
 public class SkillAdapterSetting extends RecyclerView.Adapter<SkillAdapterSetting.ViewHolder> {
-    SettingEdit context;
+    VewProfileFragment context;
     List<CommonModel> skillList;
-    public SkillAdapterSetting(SettingEdit settingEdit, List<CommonModel> skillList) {
-        this.context = settingEdit;
+    Context mfragment;
+    public SkillAdapterSetting(VewProfileFragment fragment, Context mcontext, List<CommonModel> skillList) {
+        this.context = fragment;
         this.skillList = skillList;
+        this.mfragment = mcontext;
     }
 
     @NonNull
@@ -41,7 +45,7 @@ public class SkillAdapterSetting extends RecyclerView.Adapter<SkillAdapterSettin
                 skillList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, skillList.size());
-                context.enableSaveBottn(true);
+               // context.enableSaveBottn(true);
             }
         });
     }
