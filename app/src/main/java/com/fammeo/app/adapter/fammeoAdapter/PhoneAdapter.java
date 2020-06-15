@@ -19,17 +19,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fammeo.app.R;
 import com.fammeo.app.activity.EditActivity.EditPhone;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.fragment.FammeoFragment.AboutFragment;
 import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.ArrayList;
 
 public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.ViewHolder> {
-    VewProfileFragment context;
+    AboutFragment context;
     ArrayList<CommonModel> phoneList;
     boolean img;
     Context mfragment;
-    public PhoneAdapter(VewProfileFragment fragment, Context mcontext, ArrayList<CommonModel> phoneList) {
+    public PhoneAdapter(AboutFragment fragment, Context mcontext, ArrayList<CommonModel> phoneList) {
         this.context = fragment;
         this.phoneList = phoneList;
         this.mfragment= mcontext;

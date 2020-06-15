@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -67,9 +68,14 @@ import com.fammeo.app.adapter.fammeoAdapter.EmailListAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.HobbyAdapterSetting;
 import com.fammeo.app.adapter.fammeoAdapter.PhoneAdapter;
 import com.fammeo.app.adapter.fammeoAdapter.SkillAdapterSetting;
+import com.fammeo.app.adapter.fammeoAdapter.ViewProfilePagerAdapter;
 import com.fammeo.app.app.App;
 import com.fammeo.app.common.DataGlobal;
 import com.fammeo.app.common.DataText;
+import com.fammeo.app.fragment.FammeoFragment.AboutFragment;
+import com.fammeo.app.fragment.FammeoFragment.FriendsFragment;
+import com.fammeo.app.fragment.FammeoFragment.Request_rec_Fragment;
+import com.fammeo.app.fragment.FammeoFragment.Request_sent_Fragment;
 import com.fammeo.app.model.CommonModel;
 import com.fammeo.app.model.EmailModel;
 import com.fammeo.app.util.CustomAuthRequest;
@@ -77,6 +83,7 @@ import com.fammeo.app.util.GenericFileProvider;
 import com.fammeo.app.util.RealPathUtil;
 import com.fammeo.app.view.siv.CircularImageView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
@@ -145,6 +152,9 @@ public class VewProfileFragment extends Fragment {
     File photoFile;
     public String photoFileName = "photo.jpg";
 
+    TabLayout tab_layout;
+    ViewPager view_pager;
+
     public VewProfileFragment() {
         // Required empty public constructor
     }
@@ -168,7 +178,6 @@ public class VewProfileFragment extends Fragment {
         txt_dec = mView.findViewById(R.id.txt_dec);
         txt_link = mView.findViewById(R.id.txt_link);
         pr_imageLoder = mView.findViewById(R.id.pr_imageLoder);
-
 
         setRecleyViewManager(recycler_view_email);
         setRecleyViewManager(recycler_view_address);
@@ -267,9 +276,43 @@ public class VewProfileFragment extends Fragment {
             }
         });
 
+        initComponent();
+
         getUserData();
 
         return mView;
+    }
+
+    private void initComponent() {
+        view_pager = mView.findViewById(R.id.view_pager);
+        tab_layout = mView.findViewById(R.id.tab_layout);
+
+        tab_layout.addTab(tab_layout.newTab().setText("About"));
+        tab_layout.addTab(tab_layout.newTab().setText("Followers"));
+        tab_layout.addTab(tab_layout.newTab().setText("Following"));
+        tab_layout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        ViewProfilePagerAdapter adapter = new ViewProfilePagerAdapter(getActivity(),getFragmentManager(),tab_layout.getTabCount());
+        view_pager.setAdapter(adapter);
+
+        view_pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab_layout));
+        tab_layout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.e("TEST","Selected Tab :"+tab.getPosition());
+                view_pager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     private void selectImage() {
@@ -563,8 +606,8 @@ public class VewProfileFragment extends Fragment {
                                         em.recordId = id;
                                         emailList.add(em);
                                     }
-                                    emailadapter = new EmailListAdapter(VewProfileFragment.this,getContext(), emailList);
-                                    recycler_view_email.setAdapter(emailadapter);
+                                   /* emailadapter = new EmailListAdapter(AboutFragment.this,getContext(), emailList);
+                                    recycler_view_email.setAdapter(emailadapter);*/
 
                                     mAddressList.clear();
                                     /*------------------------------------------------------------------------------------------------------------------*/
@@ -588,8 +631,8 @@ public class VewProfileFragment extends Fragment {
 
                                         mAddressList.add(am);
                                     }
-                                    addsAdapter = new AddressAdapter(VewProfileFragment.this,getContext(), mAddressList);
-                                    recycler_view_address.setAdapter(addsAdapter);
+                                    /*addsAdapter = new AddressAdapter(AboutFragment.this,getContext(), mAddressList);
+                                    recycler_view_address.setAdapter(addsAdapter);*/
                                     /*------------------------------------------------------------------------------------------------------------------*/
                                     phoneList.clear();
                                     JSONArray phoneAdds = obj.getJSONArray("PHs");
@@ -607,8 +650,8 @@ public class VewProfileFragment extends Fragment {
                                         am.phId = phoneObj.getString("Id");
                                         phoneList.add(am);
                                     }
-                                    phoneAdapter = new PhoneAdapter(VewProfileFragment.this,getContext(), phoneList);
-                                    recycler_view_phone.setAdapter(phoneAdapter);
+                                    /*phoneAdapter = new PhoneAdapter(VewProfileFragment.this,getContext(), phoneList);
+                                    recycler_view_phone.setAdapter(phoneAdapter);*/
                                     /*------------------------------------------------------------------------------------------------------------------*/
 
                                     profileLangList = new ArrayList<>();
@@ -623,8 +666,8 @@ public class VewProfileFragment extends Fragment {
                                         String getname = cm.lName;
                                     }
 
-                                    LanuageSettingAdapter listAdapter = new LanuageSettingAdapter(VewProfileFragment.this,getContext(), profileLangList);
-                                    recycler_view_lang.setAdapter(listAdapter);
+                                    /*LanuageSettingAdapter listAdapter = new LanuageSettingAdapter(VewProfileFragment.this,getContext(), profileLangList);
+                                    recycler_view_lang.setAdapter(listAdapter);*/
                                     //rowTextView.setText(getname);
                                     /*------------------------------------------------------------------------------------------------------------------*/
                                     JSONArray arrHobbies = obj.getJSONArray("Hs");
@@ -641,8 +684,8 @@ public class VewProfileFragment extends Fragment {
                                         hobbyList.add(cm);
                                     }
 
-                                    HobbyAdapterSetting adpeter = new HobbyAdapterSetting(VewProfileFragment.this, getContext(), hobbyList);
-                                    recycler_view_hb.setAdapter(adpeter);
+                                    /*HobbyAdapterSetting adpeter = new HobbyAdapterSetting(VewProfileFragment.this, getContext(), hobbyList);
+                                    recycler_view_hb.setAdapter(adpeter);*/
                                     /*------------------------------------------------------------------------------------------------------------------*/
                                     arrSetting = obj.getJSONArray("Ss");
                                     Log.e("TEST","arrSetting :"+arrSetting.length());
@@ -660,8 +703,8 @@ public class VewProfileFragment extends Fragment {
                                         skillList.add(cm);
                                     }
 
-                                    SkillAdapterSetting skadpeter = new SkillAdapterSetting(VewProfileFragment.this, getContext(), skillList);
-                                    recycler_view_sk.setAdapter(skadpeter);
+                                    /*SkillAdapterSetting skadpeter = new SkillAdapterSetting(VewProfileFragment.this, getContext(), skillList);
+                                    recycler_view_sk.setAdapter(skadpeter);*/
                                     /*------------------------------------------------------------------------------------------------------------------*/
                                     JSONArray arrfields = obj.getJSONArray("Fs");
                                     if(arrfields.length() == 0){

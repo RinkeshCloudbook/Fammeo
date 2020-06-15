@@ -25,6 +25,7 @@ import com.fammeo.app.R;
 import com.fammeo.app.activity.EditActivity.EditAddress;
 import com.fammeo.app.activity.SettingEdit;
 import com.fammeo.app.common.CommomInterface;
+import com.fammeo.app.fragment.FammeoFragment.AboutFragment;
 import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
@@ -32,12 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
-    VewProfileFragment context;
+    AboutFragment context;
     ArrayList<CommonModel> mAddressList;
     private List<String> mCityList = new ArrayList<>();
     boolean img;
     Context mfragment;
-    public AddressAdapter(VewProfileFragment fragment, Context mcontext, ArrayList<CommonModel> mAddressList) {
+    public AddressAdapter(AboutFragment fragment, Context mcontext, ArrayList<CommonModel> mAddressList) {
         this.context = fragment;
         this.mAddressList = mAddressList;
         this.mfragment = mcontext;

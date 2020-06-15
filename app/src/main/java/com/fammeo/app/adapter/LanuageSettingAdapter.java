@@ -11,16 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.fragment.FammeoFragment.AboutFragment;
 import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.List;
 
 public class LanuageSettingAdapter extends RecyclerView.Adapter<LanuageSettingAdapter.ViewHolder> {
-    VewProfileFragment context;
+    AboutFragment context;
     List<CommonModel> profileLangList;
     Context mfragment;
-    public LanuageSettingAdapter(VewProfileFragment fragment, Context mcontext, List<CommonModel> profileLangList) {
+    public LanuageSettingAdapter(AboutFragment fragment, Context mcontext, List<CommonModel> profileLangList) {
         this.context = fragment;
         this.profileLangList = profileLangList;
         this.mfragment = mcontext;

@@ -19,22 +19,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fammeo.app.R;
 import com.fammeo.app.activity.EditEmail;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.app.App;
+import com.fammeo.app.fragment.FammeoFragment.AboutFragment;
 import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.EmailModel;
 
 import java.util.ArrayList;
 
 public class EmailListAdapter extends RecyclerView.Adapter<EmailListAdapter.ViewHolder> {
-    VewProfileFragment context;
+    AboutFragment context;
     ArrayList<EmailModel> emailList;
     boolean img;
     Context mfragment;
-    public EmailListAdapter(VewProfileFragment fragment, Context mcontext, ArrayList<EmailModel> emailList) {
+    public EmailListAdapter(AboutFragment fragment, Context mcontext, ArrayList<EmailModel> emailList) {
         this.context = fragment;
         this.emailList = emailList;
         this.mfragment =mcontext;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,13 +46,22 @@ public class EmailListAdapter extends RecyclerView.Adapter<EmailListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int i) {
+
         holder.txt_emailtype.setText(emailList.get(i).emailType);
+        if(holder.txt_emailtype.getText().length() <= 0){
+            holder.txt_emailtype.setText("Office");
+        }
         holder.txt_email.setText(emailList.get(i).emailAddress);
         if(img == false){
             holder.img_edt_email.setVisibility(View.VISIBLE);
-            if(i == 0){
+
+            if(App.getInstance().GetEmailName().equalsIgnoreCase(emailList.get(i).emailAddress)){
                 holder.img_edt_email.setVisibility(View.GONE);
             }
+            if (i == emailList.size()-1){
+                holder.line_view.setVisibility(View.GONE);
+            }
+
             holder.img_edt_email.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,11 +105,13 @@ public class EmailListAdapter extends RecyclerView.Adapter<EmailListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txt_emailtype,txt_email;
         ImageButton img_edt_email;
+        View line_view;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img_edt_email = itemView.findViewById(R.id.img_edt_email);
             txt_email = itemView.findViewById(R.id.txt_email);
             txt_emailtype = itemView.findViewById(R.id.txt_emailtype);
+            line_view = itemView.findViewById(R.id.line_view);
         }
     }
     public void getShowImage(boolean getimg){

@@ -12,16 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.fragment.FammeoFragment.AboutFragment;
 import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.List;
 
 public class HobbyAdapterSetting extends RecyclerView.Adapter<HobbyAdapterSetting.ViewHolder> {
-    VewProfileFragment context;
+    AboutFragment context;
     List<CommonModel> hobbyList;
     Context mfragment;
-    public HobbyAdapterSetting(VewProfileFragment fragment, Context mcontext, List<CommonModel> hobbyList) {
+    public HobbyAdapterSetting(AboutFragment fragment, Context mcontext, List<CommonModel> hobbyList) {
         this.context = fragment;
         this.hobbyList = hobbyList;
         this.mfragment = mcontext;

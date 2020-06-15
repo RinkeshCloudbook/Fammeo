@@ -12,16 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fammeo.app.R;
 import com.fammeo.app.activity.SettingEdit;
+import com.fammeo.app.fragment.FammeoFragment.AboutFragment;
 import com.fammeo.app.fragment.VewProfileFragment;
 import com.fammeo.app.model.CommonModel;
 
 import java.util.List;
 
 public class SkillAdapterSetting extends RecyclerView.Adapter<SkillAdapterSetting.ViewHolder> {
-    VewProfileFragment context;
+    AboutFragment context;
     List<CommonModel> skillList;
     Context mfragment;
-    public SkillAdapterSetting(VewProfileFragment fragment, Context mcontext, List<CommonModel> skillList) {
+    public SkillAdapterSetting(AboutFragment fragment, Context mcontext, List<CommonModel> skillList) {
         this.context = fragment;
         this.skillList = skillList;
         this.mfragment = mcontext;
